@@ -1,0 +1,21 @@
+# File: requirements.txt
+
+pandas
+kiteconnect
+python-dotenv
+numpy
+scipy
+
+#Ise Chalane Ke Liye Antim Steps:
+
+#Check Config: Ek baar phir config.py aur .env files ko check kar lein ki sabhi jaankari sahi hai.
+
+#Install Libraries: Apne terminal/command prompt mein PaperTradingV1.3 folder ke andar jaakar yeh command chalayein:
+#pip install -r requirements.txt
+
+#Generate Token (if needed): Agar aapka access token purana ho gaya hai, toh naya token generate karein:
+#python broker_interface.py
+
+#Run The Engine: Ab system ko chalu karein:
+#python main_papertrader.py
+

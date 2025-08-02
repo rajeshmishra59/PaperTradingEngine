@@ -1,0 +1,1227 @@
+2025-08-02 14:29:31,339 - __main__ - INFO - 🚀 --- Starting Paper Trading System v1.3 --- 🚀
+2025-08-02 14:29:48,133 - __main__ - INFO - 🚀 --- Starting Paper Trading System v1.3 --- 🚀
+2025-08-02 14:32:04,462 - __main__ - INFO - 🚀 --- Starting Paper Trading System v1.3 --- 🚀
+2025-08-02 14:32:04,463 - broker_interface - INFO - ✅ Zerodha Access Token set successfully.
+2025-08-02 14:32:04,463 - broker_interface - WARNING - 'instruments.csv' not found. Fetching from Zerodha...
+2025-08-02 14:32:05,080 - broker_interface - INFO - ✅ Instruments fetched and saved to 'instruments.csv'.
+2025-08-02 14:32:05,089 - portfolio_manager - WARNING - No state file found. Starting with a fresh portfolio.
+2025-08-02 14:32:05,091 - portfolio_manager - INFO - ✅ Portfolio Manager initialized.
+2025-08-02 14:32:05,091 - portfolio_manager - INFO - --- Portfolio Summary ---
+2025-08-02 14:32:05,091 - portfolio_manager - INFO -   > Strategy: AlphaOneStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:32:05,092 - portfolio_manager - INFO -   > Strategy: ApexStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:32:05,092 - portfolio_manager - INFO -   > Strategy: NumeroUnoStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:32:05,092 - portfolio_manager - INFO - -------------------------
+2025-08-02 14:32:05,388 - __main__ - INFO - Fetched initial 57 1-min candles for RELIANCE
+2025-08-02 14:32:05,624 - __main__ - INFO - Fetched initial 57 1-min candles for TCS
+2025-08-02 14:32:05,864 - __main__ - INFO - Fetched initial 57 1-min candles for INFY
+2025-08-02 14:32:06,113 - __main__ - INFO - Fetched initial 57 1-min candles for HDFCBANK
+2025-08-02 14:32:06,342 - __main__ - INFO - Fetched initial 57 1-min candles for ICICIBANK
+2025-08-02 14:32:06,580 - __main__ - INFO - Fetched initial 57 1-min candles for SBIN
+2025-08-02 14:32:06,839 - __main__ - INFO - Fetched initial 57 1-min candles for KOTAKBANK
+2025-08-02 14:32:07,086 - __main__ - INFO - Fetched initial 57 1-min candles for AXISBANK
+2025-08-02 14:32:07,136 - strategies.base_strategy - INFO - [AlphaOne][RELIANCE] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for RELIANCE.
+2025-08-02 14:32:07,136 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:32:07,136 - strategies.base_strategy - INFO - [AlphaOne][TCS] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for TCS.
+2025-08-02 14:32:07,137 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:32:07,137 - strategies.base_strategy - INFO - [AlphaOne][INFY] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for INFY.
+2025-08-02 14:32:07,137 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:32:07,137 - strategies.base_strategy - INFO - [AlphaOne][HDFCBANK] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for HDFCBANK.
+2025-08-02 14:32:07,137 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:32:07,137 - strategies.base_strategy - INFO - [AlphaOne][ICICIBANK] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for ICICIBANK.
+2025-08-02 14:32:07,138 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:32:07,138 - strategies.base_strategy - INFO - [AlphaOne][SBIN] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for SBIN.
+2025-08-02 14:32:07,138 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:32:07,138 - strategies.base_strategy - INFO - [AlphaOne][KOTAKBANK] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for KOTAKBANK.
+2025-08-02 14:32:07,138 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:32:07,138 - strategies.base_strategy - INFO - [AlphaOne][AXISBANK] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for AXISBANK.
+2025-08-02 14:32:07,139 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:32:07,140 - strategies.base_strategy - INFO - [Apex][RELIANCE] ApexStrategy initialized for RELIANCE with 15 min timeframe.
+2025-08-02 14:32:07,141 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:32:07,141 - strategies.base_strategy - INFO - [Apex][TCS] ApexStrategy initialized for TCS with 15 min timeframe.
+2025-08-02 14:32:07,141 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:32:07,141 - strategies.base_strategy - INFO - [Apex][INFY] ApexStrategy initialized for INFY with 15 min timeframe.
+2025-08-02 14:32:07,141 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:32:07,142 - strategies.base_strategy - INFO - [Apex][HDFCBANK] ApexStrategy initialized for HDFCBANK with 15 min timeframe.
+2025-08-02 14:32:07,142 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:32:07,143 - strategies.base_strategy - INFO - [Apex][ICICIBANK] ApexStrategy initialized for ICICIBANK with 15 min timeframe.
+2025-08-02 14:32:07,143 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:32:07,143 - strategies.base_strategy - INFO - [Apex][SBIN] ApexStrategy initialized for SBIN with 5 min timeframe.
+2025-08-02 14:32:07,143 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:32:07,144 - strategies.base_strategy - INFO - [Apex][KOTAKBANK] ApexStrategy initialized for KOTAKBANK with 5 min timeframe.
+2025-08-02 14:32:07,144 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:32:07,144 - strategies.base_strategy - INFO - [Apex][AXISBANK] ApexStrategy initialized for AXISBANK with 5 min timeframe.
+2025-08-02 14:32:07,144 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:32:12,996 - strategies.base_strategy - INFO - [NumeroUno][RELIANCE] NumeroUnoStrategy (v2.0) initialized for RELIANCE with 15-min timeframe.
+2025-08-02 14:32:12,996 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:32:12,997 - strategies.base_strategy - INFO - [NumeroUno][TCS] NumeroUnoStrategy (v2.0) initialized for TCS with 15-min timeframe.
+2025-08-02 14:32:12,997 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:32:12,997 - strategies.base_strategy - INFO - [NumeroUno][INFY] NumeroUnoStrategy (v2.0) initialized for INFY with 15-min timeframe.
+2025-08-02 14:32:12,997 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:32:12,997 - strategies.base_strategy - INFO - [NumeroUno][HDFCBANK] NumeroUnoStrategy (v2.0) initialized for HDFCBANK with 15-min timeframe.
+2025-08-02 14:32:12,998 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:32:12,998 - strategies.base_strategy - INFO - [NumeroUno][ICICIBANK] NumeroUnoStrategy (v2.0) initialized for ICICIBANK with 15-min timeframe.
+2025-08-02 14:32:12,998 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:32:12,998 - strategies.base_strategy - INFO - [NumeroUno][SBIN] NumeroUnoStrategy (v2.0) initialized for SBIN with 5-min timeframe.
+2025-08-02 14:32:12,998 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:32:12,999 - strategies.base_strategy - INFO - [NumeroUno][KOTAKBANK] NumeroUnoStrategy (v2.0) initialized for KOTAKBANK with 5-min timeframe.
+2025-08-02 14:32:12,999 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:32:12,999 - strategies.base_strategy - INFO - [NumeroUno][AXISBANK] NumeroUnoStrategy (v2.0) initialized for AXISBANK with 5-min timeframe.
+2025-08-02 14:32:12,999 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:32:13,000 - __main__ - ERROR - An unexpected error occurred in the main loop: can't compare offset-naive and offset-aware datetimes
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 104, in run_paper_trader
+    new_data = broker.get_historical_data(symbol, 'minute', from_date=latest_timestamp + timedelta(minutes=1), to_date=datetime.now())
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\broker_interface.py", line 91, in get_historical_data
+    while cur_from < to_date:
+          ^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/tslibs/timestamps.pyx", line 337, in pandas._libs.tslibs.timestamps._Timestamp.__richcmp__
+TypeError: can't compare offset-naive and offset-aware datetimes
+2025-08-02 14:32:43,003 - __main__ - ERROR - An unexpected error occurred in the main loop: can't compare offset-naive and offset-aware datetimes
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 104, in run_paper_trader
+    new_data = broker.get_historical_data(symbol, 'minute', from_date=latest_timestamp + timedelta(minutes=1), to_date=datetime.now())
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\broker_interface.py", line 91, in get_historical_data
+    while cur_from < to_date:
+          ^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/tslibs/timestamps.pyx", line 337, in pandas._libs.tslibs.timestamps._Timestamp.__richcmp__
+TypeError: can't compare offset-naive and offset-aware datetimes
+2025-08-02 14:33:13,007 - __main__ - ERROR - An unexpected error occurred in the main loop: can't compare offset-naive and offset-aware datetimes
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 104, in run_paper_trader
+    new_data = broker.get_historical_data(symbol, 'minute', from_date=latest_timestamp + timedelta(minutes=1), to_date=datetime.now())
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\broker_interface.py", line 91, in get_historical_data
+    while cur_from < to_date:
+          ^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/tslibs/timestamps.pyx", line 337, in pandas._libs.tslibs.timestamps._Timestamp.__richcmp__
+TypeError: can't compare offset-naive and offset-aware datetimes
+2025-08-02 14:33:43,010 - __main__ - ERROR - An unexpected error occurred in the main loop: can't compare offset-naive and offset-aware datetimes
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 104, in run_paper_trader
+    new_data = broker.get_historical_data(symbol, 'minute', from_date=latest_timestamp + timedelta(minutes=1), to_date=datetime.now())
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\broker_interface.py", line 91, in get_historical_data
+    while cur_from < to_date:
+          ^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/tslibs/timestamps.pyx", line 337, in pandas._libs.tslibs.timestamps._Timestamp.__richcmp__
+TypeError: can't compare offset-naive and offset-aware datetimes
+2025-08-02 14:33:56,182 - __main__ - INFO - 🚀 --- Starting Paper Trading System v1.3 --- 🚀
+2025-08-02 14:33:56,182 - broker_interface - INFO - ✅ Zerodha Access Token set successfully.
+2025-08-02 14:33:56,223 - broker_interface - INFO - ✅ Loaded instruments from local 'instruments.csv'.
+2025-08-02 14:33:56,237 - portfolio_manager - INFO - ✅ Loaded portfolio state from 'portfolio_state.json'.
+2025-08-02 14:33:56,237 - portfolio_manager - INFO - ✅ Portfolio Manager initialized.
+2025-08-02 14:33:56,238 - portfolio_manager - INFO - --- Portfolio Summary ---
+2025-08-02 14:33:56,238 - portfolio_manager - INFO -   > Strategy: AlphaOneStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:33:56,239 - portfolio_manager - INFO -   > Strategy: ApexStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:33:56,239 - portfolio_manager - INFO -   > Strategy: NumeroUnoStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:33:56,239 - portfolio_manager - INFO - -------------------------
+2025-08-02 14:33:56,819 - __main__ - INFO - Fetched initial 56 1-min candles for RELIANCE
+2025-08-02 14:33:57,050 - __main__ - INFO - Fetched initial 56 1-min candles for TCS
+2025-08-02 14:33:57,276 - __main__ - INFO - Fetched initial 56 1-min candles for INFY
+2025-08-02 14:33:57,506 - __main__ - INFO - Fetched initial 56 1-min candles for HDFCBANK
+2025-08-02 14:33:57,743 - __main__ - INFO - Fetched initial 56 1-min candles for ICICIBANK
+2025-08-02 14:33:57,967 - __main__ - INFO - Fetched initial 56 1-min candles for SBIN
+2025-08-02 14:33:58,255 - __main__ - INFO - Fetched initial 56 1-min candles for KOTAKBANK
+2025-08-02 14:33:58,466 - __main__ - INFO - Fetched initial 56 1-min candles for AXISBANK
+2025-08-02 14:33:58,480 - strategies.base_strategy - INFO - [AlphaOne][RELIANCE] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for RELIANCE.
+2025-08-02 14:33:58,480 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:33:58,481 - strategies.base_strategy - INFO - [AlphaOne][TCS] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for TCS.
+2025-08-02 14:33:58,481 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:33:58,481 - strategies.base_strategy - INFO - [AlphaOne][INFY] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for INFY.
+2025-08-02 14:33:58,482 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:33:58,482 - strategies.base_strategy - INFO - [AlphaOne][HDFCBANK] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for HDFCBANK.
+2025-08-02 14:33:58,483 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:33:58,483 - strategies.base_strategy - INFO - [AlphaOne][ICICIBANK] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for ICICIBANK.
+2025-08-02 14:33:58,483 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:33:58,483 - strategies.base_strategy - INFO - [AlphaOne][SBIN] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for SBIN.
+2025-08-02 14:33:58,484 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:33:58,484 - strategies.base_strategy - INFO - [AlphaOne][KOTAKBANK] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for KOTAKBANK.
+2025-08-02 14:33:58,484 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:33:58,484 - strategies.base_strategy - INFO - [AlphaOne][AXISBANK] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for AXISBANK.
+2025-08-02 14:33:58,484 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:33:58,485 - strategies.base_strategy - INFO - [Apex][RELIANCE] ApexStrategy initialized for RELIANCE with 15 min timeframe.
+2025-08-02 14:33:58,486 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:33:58,486 - strategies.base_strategy - INFO - [Apex][TCS] ApexStrategy initialized for TCS with 15 min timeframe.
+2025-08-02 14:33:58,486 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:33:58,487 - strategies.base_strategy - INFO - [Apex][INFY] ApexStrategy initialized for INFY with 15 min timeframe.
+2025-08-02 14:33:58,487 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:33:58,488 - strategies.base_strategy - INFO - [Apex][HDFCBANK] ApexStrategy initialized for HDFCBANK with 15 min timeframe.
+2025-08-02 14:33:58,488 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:33:58,488 - strategies.base_strategy - INFO - [Apex][ICICIBANK] ApexStrategy initialized for ICICIBANK with 15 min timeframe.
+2025-08-02 14:33:58,488 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:33:58,489 - strategies.base_strategy - INFO - [Apex][SBIN] ApexStrategy initialized for SBIN with 5 min timeframe.
+2025-08-02 14:33:58,489 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:33:58,490 - strategies.base_strategy - INFO - [Apex][KOTAKBANK] ApexStrategy initialized for KOTAKBANK with 5 min timeframe.
+2025-08-02 14:33:58,490 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:33:58,490 - strategies.base_strategy - INFO - [Apex][AXISBANK] ApexStrategy initialized for AXISBANK with 5 min timeframe.
+2025-08-02 14:33:58,490 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:33:59,004 - strategies.base_strategy - INFO - [NumeroUno][RELIANCE] NumeroUnoStrategy (v2.0) initialized for RELIANCE with 15-min timeframe.
+2025-08-02 14:33:59,004 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:33:59,005 - strategies.base_strategy - INFO - [NumeroUno][TCS] NumeroUnoStrategy (v2.0) initialized for TCS with 15-min timeframe.
+2025-08-02 14:33:59,005 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:33:59,005 - strategies.base_strategy - INFO - [NumeroUno][INFY] NumeroUnoStrategy (v2.0) initialized for INFY with 15-min timeframe.
+2025-08-02 14:33:59,005 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:33:59,005 - strategies.base_strategy - INFO - [NumeroUno][HDFCBANK] NumeroUnoStrategy (v2.0) initialized for HDFCBANK with 15-min timeframe.
+2025-08-02 14:33:59,006 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:33:59,006 - strategies.base_strategy - INFO - [NumeroUno][ICICIBANK] NumeroUnoStrategy (v2.0) initialized for ICICIBANK with 15-min timeframe.
+2025-08-02 14:33:59,006 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:33:59,006 - strategies.base_strategy - INFO - [NumeroUno][SBIN] NumeroUnoStrategy (v2.0) initialized for SBIN with 5-min timeframe.
+2025-08-02 14:33:59,006 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:33:59,006 - strategies.base_strategy - INFO - [NumeroUno][KOTAKBANK] NumeroUnoStrategy (v2.0) initialized for KOTAKBANK with 5-min timeframe.
+2025-08-02 14:33:59,006 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:33:59,007 - strategies.base_strategy - INFO - [NumeroUno][AXISBANK] NumeroUnoStrategy (v2.0) initialized for AXISBANK with 5-min timeframe.
+2025-08-02 14:33:59,007 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:33:59,007 - __main__ - ERROR - An unexpected error occurred in the main loop: can't compare offset-naive and offset-aware datetimes
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 105, in run_paper_trader
+    new_data = broker.get_historical_data(symbol, 'minute', from_date=latest_timestamp + timedelta(minutes=1), to_date=datetime.now())
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\broker_interface.py", line 91, in get_historical_data
+    while cur_from < to_date:
+          ^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/tslibs/timestamps.pyx", line 337, in pandas._libs.tslibs.timestamps._Timestamp.__richcmp__
+TypeError: can't compare offset-naive and offset-aware datetimes
+2025-08-02 14:34:29,010 - __main__ - ERROR - An unexpected error occurred in the main loop: can't compare offset-naive and offset-aware datetimes
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 105, in run_paper_trader
+    new_data = broker.get_historical_data(symbol, 'minute', from_date=latest_timestamp + timedelta(minutes=1), to_date=datetime.now())
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\broker_interface.py", line 91, in get_historical_data
+    while cur_from < to_date:
+          ^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/tslibs/timestamps.pyx", line 337, in pandas._libs.tslibs.timestamps._Timestamp.__richcmp__
+TypeError: can't compare offset-naive and offset-aware datetimes
+2025-08-02 14:34:59,014 - __main__ - ERROR - An unexpected error occurred in the main loop: can't compare offset-naive and offset-aware datetimes
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 105, in run_paper_trader
+    new_data = broker.get_historical_data(symbol, 'minute', from_date=latest_timestamp + timedelta(minutes=1), to_date=datetime.now())
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\broker_interface.py", line 91, in get_historical_data
+    while cur_from < to_date:
+          ^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/tslibs/timestamps.pyx", line 337, in pandas._libs.tslibs.timestamps._Timestamp.__richcmp__
+TypeError: can't compare offset-naive and offset-aware datetimes
+2025-08-02 14:35:29,018 - __main__ - ERROR - An unexpected error occurred in the main loop: can't compare offset-naive and offset-aware datetimes
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 105, in run_paper_trader
+    # --- NEW DATA FETCH (FIXED) ---
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\broker_interface.py", line 91, in get_historical_data
+    while cur_from < to_date:
+          ^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/tslibs/timestamps.pyx", line 337, in pandas._libs.tslibs.timestamps._Timestamp.__richcmp__
+TypeError: can't compare offset-naive and offset-aware datetimes
+2025-08-02 14:35:32,446 - __main__ - INFO - --- Starting Paper Trading System v1.3 ---
+2025-08-02 14:35:32,446 - broker_interface - INFO - ✅ Zerodha Access Token set successfully.
+2025-08-02 14:35:32,458 - broker_interface - INFO - ✅ Loaded instruments from local 'instruments.csv'.
+2025-08-02 14:35:32,462 - portfolio_manager - INFO - ✅ Loaded portfolio state from 'portfolio_state.json'.
+2025-08-02 14:35:32,464 - portfolio_manager - INFO - ✅ Portfolio Manager initialized.
+2025-08-02 14:35:32,464 - portfolio_manager - INFO - --- Portfolio Summary ---
+2025-08-02 14:35:32,465 - portfolio_manager - INFO -   > Strategy: AlphaOneStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:35:32,465 - portfolio_manager - INFO -   > Strategy: ApexStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:35:32,466 - portfolio_manager - INFO -   > Strategy: NumeroUnoStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:35:32,466 - portfolio_manager - INFO - -------------------------
+2025-08-02 14:35:35,278 - __main__ - INFO - Fetched initial 54 1-min candles for RELIANCE
+2025-08-02 14:35:35,465 - __main__ - INFO - Fetched initial 54 1-min candles for TCS
+2025-08-02 14:35:35,652 - __main__ - INFO - Fetched initial 54 1-min candles for INFY
+2025-08-02 14:35:35,841 - __main__ - INFO - Fetched initial 54 1-min candles for HDFCBANK
+2025-08-02 14:35:36,028 - __main__ - INFO - Fetched initial 54 1-min candles for ICICIBANK
+2025-08-02 14:35:36,214 - __main__ - INFO - Fetched initial 54 1-min candles for SBIN
+2025-08-02 14:35:36,404 - __main__ - INFO - Fetched initial 54 1-min candles for KOTAKBANK
+2025-08-02 14:35:36,603 - __main__ - INFO - Fetched initial 54 1-min candles for AXISBANK
+2025-08-02 14:35:36,615 - strategies.base_strategy - INFO - [AlphaOne][RELIANCE] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for RELIANCE.
+2025-08-02 14:35:36,615 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:35:36,616 - strategies.base_strategy - INFO - [AlphaOne][TCS] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for TCS.
+2025-08-02 14:35:36,617 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:35:36,617 - strategies.base_strategy - INFO - [AlphaOne][INFY] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for INFY.
+2025-08-02 14:35:36,618 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:35:36,618 - strategies.base_strategy - INFO - [AlphaOne][HDFCBANK] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for HDFCBANK.
+2025-08-02 14:35:36,619 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:35:36,620 - strategies.base_strategy - INFO - [AlphaOne][ICICIBANK] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for ICICIBANK.
+2025-08-02 14:35:36,620 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:35:36,620 - strategies.base_strategy - INFO - [AlphaOne][SBIN] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for SBIN.
+2025-08-02 14:35:36,621 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:35:36,621 - strategies.base_strategy - INFO - [AlphaOne][KOTAKBANK] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for KOTAKBANK.
+2025-08-02 14:35:36,622 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:35:36,622 - strategies.base_strategy - INFO - [AlphaOne][AXISBANK] AlphaOneStrategy (v5.3 - 2-Stage Exit) initialized for AXISBANK.
+2025-08-02 14:35:36,622 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:35:36,624 - strategies.base_strategy - INFO - [Apex][RELIANCE] ApexStrategy initialized for RELIANCE with 15 min timeframe.
+2025-08-02 14:35:36,625 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:35:36,625 - strategies.base_strategy - INFO - [Apex][TCS] ApexStrategy initialized for TCS with 15 min timeframe.
+2025-08-02 14:35:36,625 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:35:36,625 - strategies.base_strategy - INFO - [Apex][INFY] ApexStrategy initialized for INFY with 15 min timeframe.
+2025-08-02 14:35:36,626 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:35:36,626 - strategies.base_strategy - INFO - [Apex][HDFCBANK] ApexStrategy initialized for HDFCBANK with 15 min timeframe.
+2025-08-02 14:35:36,626 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:35:36,626 - strategies.base_strategy - INFO - [Apex][ICICIBANK] ApexStrategy initialized for ICICIBANK with 15 min timeframe.
+2025-08-02 14:35:36,626 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:35:36,627 - strategies.base_strategy - INFO - [Apex][SBIN] ApexStrategy initialized for SBIN with 5 min timeframe.
+2025-08-02 14:35:36,627 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:35:36,627 - strategies.base_strategy - INFO - [Apex][KOTAKBANK] ApexStrategy initialized for KOTAKBANK with 5 min timeframe.
+2025-08-02 14:35:36,628 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:35:36,628 - strategies.base_strategy - INFO - [Apex][AXISBANK] ApexStrategy initialized for AXISBANK with 5 min timeframe.
+2025-08-02 14:35:36,628 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:35:37,164 - strategies.base_strategy - INFO - [NumeroUno][RELIANCE] NumeroUnoStrategy (v2.0) initialized for RELIANCE with 15-min timeframe.
+2025-08-02 14:35:37,164 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:35:37,164 - strategies.base_strategy - INFO - [NumeroUno][TCS] NumeroUnoStrategy (v2.0) initialized for TCS with 15-min timeframe.
+2025-08-02 14:35:37,164 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:35:37,165 - strategies.base_strategy - INFO - [NumeroUno][INFY] NumeroUnoStrategy (v2.0) initialized for INFY with 15-min timeframe.
+2025-08-02 14:35:37,165 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:35:37,165 - strategies.base_strategy - INFO - [NumeroUno][HDFCBANK] NumeroUnoStrategy (v2.0) initialized for HDFCBANK with 15-min timeframe.
+2025-08-02 14:35:37,165 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:35:37,165 - strategies.base_strategy - INFO - [NumeroUno][ICICIBANK] NumeroUnoStrategy (v2.0) initialized for ICICIBANK with 15-min timeframe.
+2025-08-02 14:35:37,165 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:35:37,166 - strategies.base_strategy - INFO - [NumeroUno][SBIN] NumeroUnoStrategy (v2.0) initialized for SBIN with 5-min timeframe.
+2025-08-02 14:35:37,166 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:35:37,166 - strategies.base_strategy - INFO - [NumeroUno][KOTAKBANK] NumeroUnoStrategy (v2.0) initialized for KOTAKBANK with 5-min timeframe.
+2025-08-02 14:35:37,166 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:35:37,166 - strategies.base_strategy - INFO - [NumeroUno][AXISBANK] NumeroUnoStrategy (v2.0) initialized for AXISBANK with 5-min timeframe.
+2025-08-02 14:35:37,167 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:35:37,272 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:35:37,366 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:35:37,463 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:35:37,564 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:35:37,653 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:35:37,741 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:35:37,826 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:35:37,920 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:35:37,950 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    if latest_candle['entry_signal'] in ['LONG', 'SHORT']:
+       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:36:08,086 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:36:08,186 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:36:08,292 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:36:08,398 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:36:08,482 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:36:08,571 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:36:08,656 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:36:08,744 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:36:08,752 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    if latest_candle['entry_signal'] in ['LONG', 'SHORT']:
+       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:36:38,854 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:36:38,951 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:36:39,038 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:36:39,132 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:36:39,222 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:36:39,308 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:36:39,395 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:36:39,482 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:36:39,491 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    if latest_candle['entry_signal'] in ['LONG', 'SHORT']:
+       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:37:09,602 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:37:09,691 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:37:09,774 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:37:09,873 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:37:09,961 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:37:10,044 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:37:10,131 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:37:10,211 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:37:10,215 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    if latest_candle['entry_signal'] in ['LONG', 'SHORT']:
+       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:37:40,327 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:37:40,414 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:37:40,506 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:37:40,593 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:37:40,681 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:37:40,763 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:37:40,849 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:37:40,932 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:37:40,945 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    if latest_candle['entry_signal'] in ['LONG', 'SHORT']:
+       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:38:11,041 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:38:11,125 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:38:11,215 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:38:11,296 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:38:11,386 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:38:11,473 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:38:11,616 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:38:11,700 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:38:11,710 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    if latest_candle['entry_signal'] in ['LONG', 'SHORT']:
+       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:38:41,827 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:38:41,912 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:38:41,994 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:38:42,084 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:38:42,169 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:38:42,253 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:38:42,339 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:38:42,420 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:38:42,425 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    if latest_candle['entry_signal'] in ['LONG', 'SHORT']:
+       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:39:12,516 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:39:12,599 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:39:12,680 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:39:12,768 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:39:12,852 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:39:12,938 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:39:13,022 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:39:13,107 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:39:13,113 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    if latest_candle['entry_signal'] in ['LONG', 'SHORT']:
+       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:39:43,204 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:39:43,289 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:39:43,373 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:39:43,459 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:39:43,542 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:39:43,623 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:39:43,706 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:39:43,787 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:39:43,792 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    if latest_candle['entry_signal'] in ['LONG', 'SHORT']:
+       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:40:13,888 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:40:13,973 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:40:14,064 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:40:14,146 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:40:14,230 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:40:14,320 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:40:14,415 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:40:14,498 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:40:14,505 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    if latest_candle['entry_signal'] in ['LONG', 'SHORT']:
+       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:40:44,614 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:40:44,705 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:40:44,791 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:40:44,880 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:40:44,971 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:40:45,058 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:40:45,146 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:40:45,232 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:40:45,242 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    if latest_candle['entry_signal'] in ['LONG', 'SHORT']:
+       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:41:15,334 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:41:15,421 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:41:15,511 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:41:15,597 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:41:15,684 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:41:15,770 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:41:15,860 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:41:15,943 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:41:15,949 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    else:
+    
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:41:46,054 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:41:46,139 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:41:46,223 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:41:46,308 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:41:46,391 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:41:46,477 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:41:46,563 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:41:46,646 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:41:46,653 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    else:
+    
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:42:16,743 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:42:16,831 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:42:16,915 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:42:16,998 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:42:17,087 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:42:17,180 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:42:17,260 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:42:17,347 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:42:17,354 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    else:
+    
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:42:47,490 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:42:47,594 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:42:47,687 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:42:47,775 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:42:47,859 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:42:47,940 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:42:48,032 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:42:48,135 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:42:48,141 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    else:
+    
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:43:18,234 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:43:18,317 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:43:18,434 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:43:18,518 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:43:18,601 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:43:18,686 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:43:18,778 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:43:18,866 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:43:18,873 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    else:
+    
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:43:48,977 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:43:49,067 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:43:49,155 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:43:49,244 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:43:49,339 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:43:49,424 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:43:49,506 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:43:49,599 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:43:49,609 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    else:
+    
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:44:19,701 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:44:19,792 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:44:19,879 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:44:19,959 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:44:20,045 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:44:20,128 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:44:20,216 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:44:20,316 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:44:20,322 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    else:
+    
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:44:50,423 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:44:50,506 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:44:50,603 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:44:50,691 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:44:50,782 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:44:50,875 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:44:50,964 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:44:51,046 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:44:51,054 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    else:
+    
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:45:21,182 - broker_interface - ERROR - ❌ Error fetching data chunk for RELIANCE: invalid from date
+2025-08-02 14:45:21,268 - broker_interface - ERROR - ❌ Error fetching data chunk for TCS: invalid from date
+2025-08-02 14:45:21,388 - broker_interface - ERROR - ❌ Error fetching data chunk for INFY: invalid from date
+2025-08-02 14:45:21,468 - broker_interface - ERROR - ❌ Error fetching data chunk for HDFCBANK: invalid from date
+2025-08-02 14:45:21,593 - broker_interface - ERROR - ❌ Error fetching data chunk for ICICIBANK: invalid from date
+2025-08-02 14:45:21,686 - broker_interface - ERROR - ❌ Error fetching data chunk for SBIN: invalid from date
+2025-08-02 14:45:21,811 - broker_interface - ERROR - ❌ Error fetching data chunk for KOTAKBANK: invalid from date
+2025-08-02 14:45:21,937 - broker_interface - ERROR - ❌ Error fetching data chunk for AXISBANK: invalid from date
+2025-08-02 14:45:21,941 - __main__ - ERROR - An unexpected error occurred in the main loop: 'entry_signal'
+Traceback (most recent call last):
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'entry_signal'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AppDevelopment\AI Generated App\PaperTradingV1.3\main_papertrader.py", line 146, in run_paper_trader
+    else:
+    
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1130, in __getitem__
+    return self._get_value(key)
+           ~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\series.py", line 1246, in _get_value
+    loc = self.index.get_loc(label)
+  File "C:\Users\Acer\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'entry_signal'
+2025-08-02 14:45:39,021 - __main__ - INFO - --- Starting Paper Trading System v1.3 ---
+2025-08-02 14:45:39,022 - broker_interface - INFO - ✅ Zerodha Access Token set successfully.
+2025-08-02 14:45:39,035 - broker_interface - INFO - ✅ Loaded instruments from local 'instruments.csv'.
+2025-08-02 14:45:39,038 - portfolio_manager - INFO - ✅ Loaded portfolio state from 'portfolio_state.json'.
+2025-08-02 14:45:39,038 - portfolio_manager - INFO - ✅ Portfolio Manager initialized.
+2025-08-02 14:45:39,039 - portfolio_manager - INFO - --- Portfolio Summary ---
+2025-08-02 14:45:39,039 - portfolio_manager - INFO -   > Strategy: AlphaOneStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:45:39,039 - portfolio_manager - INFO -   > Strategy: ApexStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:45:39,039 - portfolio_manager - INFO -   > Strategy: NumeroUnoStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:45:39,040 - portfolio_manager - INFO - -------------------------
+2025-08-02 14:45:39,729 - __main__ - INFO - Fetched initial 44 1-min candles for RELIANCE
+2025-08-02 14:45:39,962 - __main__ - INFO - Fetched initial 44 1-min candles for TCS
+2025-08-02 14:45:40,328 - __main__ - INFO - Fetched initial 44 1-min candles for INFY
+2025-08-02 14:45:40,601 - __main__ - INFO - Fetched initial 44 1-min candles for HDFCBANK
+2025-08-02 14:45:40,845 - __main__ - INFO - Fetched initial 44 1-min candles for ICICIBANK
+2025-08-02 14:45:41,154 - __main__ - INFO - Fetched initial 44 1-min candles for SBIN
+2025-08-02 14:45:41,435 - __main__ - INFO - Fetched initial 44 1-min candles for KOTAKBANK
+2025-08-02 14:45:41,676 - __main__ - INFO - Fetched initial 44 1-min candles for AXISBANK
+2025-08-02 14:45:41,693 - strategies.base_strategy - INFO - [AlphaOne][RELIANCE] AlphaOneStrategy (v5.3) initialized for RELIANCE.
+2025-08-02 14:45:41,693 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:45:41,693 - strategies.base_strategy - INFO - [AlphaOne][TCS] AlphaOneStrategy (v5.3) initialized for TCS.
+2025-08-02 14:45:41,694 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:45:41,694 - strategies.base_strategy - INFO - [AlphaOne][INFY] AlphaOneStrategy (v5.3) initialized for INFY.
+2025-08-02 14:45:41,694 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:45:41,694 - strategies.base_strategy - INFO - [AlphaOne][HDFCBANK] AlphaOneStrategy (v5.3) initialized for HDFCBANK.
+2025-08-02 14:45:41,694 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:45:41,694 - strategies.base_strategy - INFO - [AlphaOne][ICICIBANK] AlphaOneStrategy (v5.3) initialized for ICICIBANK.
+2025-08-02 14:45:41,694 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:45:41,695 - strategies.base_strategy - INFO - [AlphaOne][SBIN] AlphaOneStrategy (v5.3) initialized for SBIN.
+2025-08-02 14:45:41,695 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:45:41,695 - strategies.base_strategy - INFO - [AlphaOne][KOTAKBANK] AlphaOneStrategy (v5.3) initialized for KOTAKBANK.
+2025-08-02 14:45:41,695 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:45:41,695 - strategies.base_strategy - INFO - [AlphaOne][AXISBANK] AlphaOneStrategy (v5.3) initialized for AXISBANK.
+2025-08-02 14:45:41,695 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:45:41,709 - __main__ - ERROR - ❌ Failed to load or instantiate from module strategies.apex_strategy: 'ApexStrategy' object has no attribute 'primary_timeframe'
+2025-08-02 14:45:42,284 - __main__ - ERROR - ❌ Failed to load or instantiate from module strategies.numerouno_strategy: 'NumeroUnoStrategy' object has no attribute 'primary_timeframe'
+2025-08-02 14:45:42,284 - __main__ - INFO - Market is closed. Waiting... Current time: 14:45:42
+2025-08-02 14:46:42,285 - __main__ - INFO - Market is closed. Waiting... Current time: 14:46:42
+2025-08-02 14:47:42,287 - __main__ - INFO - Market is closed. Waiting... Current time: 14:47:42
+2025-08-02 14:48:19,878 - __main__ - INFO - User interrupted the system. Shutting down gracefully.
+2025-08-02 14:48:19,878 - __main__ - INFO - --- Paper Trading System Stopped ---
+2025-08-02 14:48:24,143 - __main__ - INFO - --- Starting Paper Trading System v1.3 ---
+2025-08-02 14:48:24,143 - broker_interface - INFO - ✅ Zerodha Access Token set successfully.
+2025-08-02 14:48:24,158 - broker_interface - INFO - ✅ Loaded instruments from local 'instruments.csv'.
+2025-08-02 14:48:24,161 - portfolio_manager - INFO - ✅ Loaded portfolio state from 'portfolio_state.json'.
+2025-08-02 14:48:24,161 - portfolio_manager - INFO - ✅ Portfolio Manager initialized.
+2025-08-02 14:48:24,161 - portfolio_manager - INFO - --- Portfolio Summary ---
+2025-08-02 14:48:24,162 - portfolio_manager - INFO -   > Strategy: AlphaOneStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:48:24,162 - portfolio_manager - INFO -   > Strategy: ApexStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:48:24,162 - portfolio_manager - INFO -   > Strategy: NumeroUnoStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 14:48:24,162 - portfolio_manager - INFO - -------------------------
+2025-08-02 14:48:24,510 - __main__ - INFO - Fetched initial 41 1-min candles for RELIANCE
+2025-08-02 14:48:24,669 - __main__ - INFO - Fetched initial 41 1-min candles for TCS
+2025-08-02 14:48:24,829 - __main__ - INFO - Fetched initial 41 1-min candles for INFY
+2025-08-02 14:48:24,981 - __main__ - INFO - Fetched initial 41 1-min candles for HDFCBANK
+2025-08-02 14:48:25,123 - __main__ - INFO - Fetched initial 41 1-min candles for ICICIBANK
+2025-08-02 14:48:25,277 - __main__ - INFO - Fetched initial 41 1-min candles for SBIN
+2025-08-02 14:48:25,443 - __main__ - INFO - Fetched initial 41 1-min candles for KOTAKBANK
+2025-08-02 14:48:25,590 - __main__ - INFO - Fetched initial 41 1-min candles for AXISBANK
+2025-08-02 14:48:25,593 - strategies.base_strategy - INFO - [AlphaOne][RELIANCE] AlphaOneStrategy (v5.3) initialized for RELIANCE.
+2025-08-02 14:48:25,593 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:48:25,594 - strategies.base_strategy - INFO - [AlphaOne][TCS] AlphaOneStrategy (v5.3) initialized for TCS.
+2025-08-02 14:48:25,595 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:48:25,595 - strategies.base_strategy - INFO - [AlphaOne][INFY] AlphaOneStrategy (v5.3) initialized for INFY.
+2025-08-02 14:48:25,596 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:48:25,596 - strategies.base_strategy - INFO - [AlphaOne][HDFCBANK] AlphaOneStrategy (v5.3) initialized for HDFCBANK.
+2025-08-02 14:48:25,597 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:48:25,598 - strategies.base_strategy - INFO - [AlphaOne][ICICIBANK] AlphaOneStrategy (v5.3) initialized for ICICIBANK.
+2025-08-02 14:48:25,598 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:48:25,599 - strategies.base_strategy - INFO - [AlphaOne][SBIN] AlphaOneStrategy (v5.3) initialized for SBIN.
+2025-08-02 14:48:25,599 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:48:25,600 - strategies.base_strategy - INFO - [AlphaOne][KOTAKBANK] AlphaOneStrategy (v5.3) initialized for KOTAKBANK.
+2025-08-02 14:48:25,601 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:48:25,602 - strategies.base_strategy - INFO - [AlphaOne][AXISBANK] AlphaOneStrategy (v5.3) initialized for AXISBANK.
+2025-08-02 14:48:25,602 - __main__ - INFO - ✅ Successfully loaded strategy 'AlphaOneStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:48:25,614 - strategies.base_strategy - INFO - [Apex][RELIANCE] ApexStrategy initialized for RELIANCE with 15 min timeframe.
+2025-08-02 14:48:25,615 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:48:25,616 - strategies.base_strategy - INFO - [Apex][TCS] ApexStrategy initialized for TCS with 15 min timeframe.
+2025-08-02 14:48:25,617 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:48:25,617 - strategies.base_strategy - INFO - [Apex][INFY] ApexStrategy initialized for INFY with 15 min timeframe.
+2025-08-02 14:48:25,617 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:48:25,617 - strategies.base_strategy - INFO - [Apex][HDFCBANK] ApexStrategy initialized for HDFCBANK with 15 min timeframe.
+2025-08-02 14:48:25,617 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:48:25,617 - strategies.base_strategy - INFO - [Apex][ICICIBANK] ApexStrategy initialized for ICICIBANK with 15 min timeframe.
+2025-08-02 14:48:25,617 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:48:25,618 - strategies.base_strategy - INFO - [Apex][SBIN] ApexStrategy initialized for SBIN with 5 min timeframe.
+2025-08-02 14:48:25,618 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:48:25,618 - strategies.base_strategy - INFO - [Apex][KOTAKBANK] ApexStrategy initialized for KOTAKBANK with 5 min timeframe.
+2025-08-02 14:48:25,618 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:48:25,618 - strategies.base_strategy - INFO - [Apex][AXISBANK] ApexStrategy initialized for AXISBANK with 5 min timeframe.
+2025-08-02 14:48:25,618 - __main__ - INFO - ✅ Successfully loaded strategy 'ApexStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:48:26,169 - strategies.base_strategy - INFO - [NumeroUno][RELIANCE] NumeroUnoStrategy (v2.0) initialized for RELIANCE with 15-min timeframe.
+2025-08-02 14:48:26,169 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 14:48:26,169 - strategies.base_strategy - INFO - [NumeroUno][TCS] NumeroUnoStrategy (v2.0) initialized for TCS with 15-min timeframe.
+2025-08-02 14:48:26,170 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 14:48:26,170 - strategies.base_strategy - INFO - [NumeroUno][INFY] NumeroUnoStrategy (v2.0) initialized for INFY with 15-min timeframe.
+2025-08-02 14:48:26,170 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 14:48:26,170 - strategies.base_strategy - INFO - [NumeroUno][HDFCBANK] NumeroUnoStrategy (v2.0) initialized for HDFCBANK with 15-min timeframe.
+2025-08-02 14:48:26,170 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 14:48:26,171 - strategies.base_strategy - INFO - [NumeroUno][ICICIBANK] NumeroUnoStrategy (v2.0) initialized for ICICIBANK with 15-min timeframe.
+2025-08-02 14:48:26,171 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 14:48:26,171 - strategies.base_strategy - INFO - [NumeroUno][SBIN] NumeroUnoStrategy (v2.0) initialized for SBIN with 5-min timeframe.
+2025-08-02 14:48:26,171 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 14:48:26,171 - strategies.base_strategy - INFO - [NumeroUno][KOTAKBANK] NumeroUnoStrategy (v2.0) initialized for KOTAKBANK with 5-min timeframe.
+2025-08-02 14:48:26,171 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 14:48:26,172 - strategies.base_strategy - INFO - [NumeroUno][AXISBANK] NumeroUnoStrategy (v2.0) initialized for AXISBANK with 5-min timeframe.
+2025-08-02 14:48:26,172 - __main__ - INFO - ✅ Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 14:48:26,172 - __main__ - INFO - Market is closed. Waiting... Current time: 14:48:26
+2025-08-02 14:49:26,172 - __main__ - INFO - Market is closed. Waiting... Current time: 14:49:26
+2025-08-02 14:50:26,173 - __main__ - INFO - Market is closed. Waiting... Current time: 14:50:26
+2025-08-02 14:51:26,175 - __main__ - INFO - Market is closed. Waiting... Current time: 14:51:26
+2025-08-02 14:52:26,177 - __main__ - INFO - Market is closed. Waiting... Current time: 14:52:26
+2025-08-02 14:53:26,183 - __main__ - INFO - Market is closed. Waiting... Current time: 14:53:26
+2025-08-02 14:54:26,184 - __main__ - INFO - Market is closed. Waiting... Current time: 14:54:26
+2025-08-02 14:54:59,689 - __main__ - INFO - User interrupted the system. Shutting down gracefully.
+2025-08-02 14:54:59,690 - __main__ - INFO - --- Paper Trading System Stopped ---
+2025-08-02 15:10:36,754 - __main__ - INFO - --- Starting Paper Trading System v1.3 ---
+2025-08-02 15:10:36,755 - broker_interface - INFO - ✅ Zerodha Access Token set successfully.
+2025-08-02 15:10:36,773 - broker_interface - INFO - ✅ Loaded instruments from local 'instruments.csv'.
+2025-08-02 15:10:36,776 - portfolio_manager - INFO - ✅ Loaded portfolio state from 'portfolio_state.json'.
+2025-08-02 15:10:36,776 - portfolio_manager - INFO - ✅ Portfolio Manager initialized.
+2025-08-02 15:10:36,777 - portfolio_manager - INFO - --- Portfolio Summary ---
+2025-08-02 15:10:36,777 - portfolio_manager - INFO -   > Strategy: AlphaOneStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 15:10:36,777 - portfolio_manager - INFO -   > Strategy: ApexStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 15:10:36,777 - portfolio_manager - INFO -   > Strategy: NumeroUnoStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 15:10:36,777 - portfolio_manager - INFO - -------------------------
+2025-08-02 15:10:38,792 - __main__ - INFO - Fetched initial 19 1-min candles for RELIANCE
+2025-08-02 15:10:39,742 - __main__ - INFO - Fetched initial 19 1-min candles for TCS
+2025-08-02 15:10:40,741 - __main__ - INFO - Fetched initial 19 1-min candles for INFY
+2025-08-02 15:10:41,732 - __main__ - INFO - Fetched initial 19 1-min candles for HDFCBANK
+2025-08-02 15:10:43,499 - __main__ - INFO - Fetched initial 19 1-min candles for ICICIBANK
+2025-08-02 15:10:44,475 - __main__ - INFO - Fetched initial 19 1-min candles for SBIN
+2025-08-02 15:10:46,748 - __main__ - INFO - Fetched initial 19 1-min candles for KOTAKBANK
+2025-08-02 15:10:47,743 - __main__ - INFO - Fetched initial 19 1-min candles for AXISBANK
+2025-08-02 15:10:47,746 - strategies.base_strategy - INFO - [AlphaOne][RELIANCE] AlphaOneStrategy (v5.3) initialized for RELIANCE.
+2025-08-02 15:10:47,746 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 15:10:47,746 - strategies.base_strategy - INFO - [AlphaOne][TCS] AlphaOneStrategy (v5.3) initialized for TCS.
+2025-08-02 15:10:47,746 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 15:10:47,746 - strategies.base_strategy - INFO - [AlphaOne][INFY] AlphaOneStrategy (v5.3) initialized for INFY.
+2025-08-02 15:10:47,747 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 15:10:47,747 - strategies.base_strategy - INFO - [AlphaOne][HDFCBANK] AlphaOneStrategy (v5.3) initialized for HDFCBANK.
+2025-08-02 15:10:47,747 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 15:10:47,747 - strategies.base_strategy - INFO - [AlphaOne][ICICIBANK] AlphaOneStrategy (v5.3) initialized for ICICIBANK.
+2025-08-02 15:10:47,747 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 15:10:47,748 - strategies.base_strategy - INFO - [AlphaOne][SBIN] AlphaOneStrategy (v5.3) initialized for SBIN.
+2025-08-02 15:10:47,748 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 15:10:47,748 - strategies.base_strategy - INFO - [AlphaOne][KOTAKBANK] AlphaOneStrategy (v5.3) initialized for KOTAKBANK.
+2025-08-02 15:10:47,748 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 15:10:47,749 - strategies.base_strategy - INFO - [AlphaOne][AXISBANK] AlphaOneStrategy (v5.3) initialized for AXISBANK.
+2025-08-02 15:10:47,750 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 15:10:47,751 - strategies.base_strategy - INFO - [Apex][RELIANCE] ApexStrategy initialized for RELIANCE with 15 min timeframe.
+2025-08-02 15:10:47,752 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 15:10:47,752 - strategies.base_strategy - INFO - [Apex][TCS] ApexStrategy initialized for TCS with 15 min timeframe.
+2025-08-02 15:10:47,753 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 15:10:47,753 - strategies.base_strategy - INFO - [Apex][INFY] ApexStrategy initialized for INFY with 15 min timeframe.
+2025-08-02 15:10:47,754 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 15:10:47,755 - strategies.base_strategy - INFO - [Apex][HDFCBANK] ApexStrategy initialized for HDFCBANK with 15 min timeframe.
+2025-08-02 15:10:47,755 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 15:10:47,755 - strategies.base_strategy - INFO - [Apex][ICICIBANK] ApexStrategy initialized for ICICIBANK with 15 min timeframe.
+2025-08-02 15:10:47,756 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 15:10:47,756 - strategies.base_strategy - INFO - [Apex][SBIN] ApexStrategy initialized for SBIN with 5 min timeframe.
+2025-08-02 15:10:47,756 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 15:10:47,756 - strategies.base_strategy - INFO - [Apex][KOTAKBANK] ApexStrategy initialized for KOTAKBANK with 5 min timeframe.
+2025-08-02 15:10:47,756 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 15:10:47,757 - strategies.base_strategy - INFO - [Apex][AXISBANK] ApexStrategy initialized for AXISBANK with 5 min timeframe.
+2025-08-02 15:10:47,757 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 15:10:48,295 - strategies.base_strategy - INFO - [NumeroUno][RELIANCE] NumeroUnoStrategy (v2.0) initialized for RELIANCE with 15-min timeframe.
+2025-08-02 15:10:48,296 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 15:10:48,296 - strategies.base_strategy - INFO - [NumeroUno][TCS] NumeroUnoStrategy (v2.0) initialized for TCS with 15-min timeframe.
+2025-08-02 15:10:48,296 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 15:10:48,296 - strategies.base_strategy - INFO - [NumeroUno][INFY] NumeroUnoStrategy (v2.0) initialized for INFY with 15-min timeframe.
+2025-08-02 15:10:48,296 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 15:10:48,297 - strategies.base_strategy - INFO - [NumeroUno][HDFCBANK] NumeroUnoStrategy (v2.0) initialized for HDFCBANK with 15-min timeframe.
+2025-08-02 15:10:48,297 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 15:10:48,297 - strategies.base_strategy - INFO - [NumeroUno][ICICIBANK] NumeroUnoStrategy (v2.0) initialized for ICICIBANK with 15-min timeframe.
+2025-08-02 15:10:48,297 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 15:10:48,297 - strategies.base_strategy - INFO - [NumeroUno][SBIN] NumeroUnoStrategy (v2.0) initialized for SBIN with 5-min timeframe.
+2025-08-02 15:10:48,297 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 15:10:48,297 - strategies.base_strategy - INFO - [NumeroUno][KOTAKBANK] NumeroUnoStrategy (v2.0) initialized for KOTAKBANK with 5-min timeframe.
+2025-08-02 15:10:48,298 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 15:10:48,298 - strategies.base_strategy - INFO - [NumeroUno][AXISBANK] NumeroUnoStrategy (v2.0) initialized for AXISBANK with 5-min timeframe.
+2025-08-02 15:10:48,298 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 15:10:48,298 - __main__ - INFO - Market is closed. Waiting... Current time: 15:10:48
+2025-08-02 15:11:48,298 - __main__ - INFO - Market is closed. Waiting... Current time: 15:11:48
+2025-08-02 15:12:48,299 - __main__ - INFO - Market is closed. Waiting... Current time: 15:12:48
+2025-08-02 15:13:48,302 - __main__ - INFO - Market is closed. Waiting... Current time: 15:13:48
+2025-08-02 15:14:48,305 - __main__ - INFO - Market is closed. Waiting... Current time: 15:14:48
+2025-08-02 15:15:48,308 - __main__ - INFO - Market is closed. Waiting... Current time: 15:15:48
+2025-08-02 15:16:48,311 - __main__ - INFO - Market is closed. Waiting... Current time: 15:16:48
+2025-08-02 15:17:48,312 - __main__ - INFO - Market is closed. Waiting... Current time: 15:17:48
+2025-08-02 15:18:48,313 - __main__ - INFO - Market is closed. Waiting... Current time: 15:18:48
+2025-08-02 15:19:48,314 - __main__ - INFO - Market is closed. Waiting... Current time: 15:19:48
+2025-08-02 15:20:48,316 - __main__ - INFO - Market is closed. Waiting... Current time: 15:20:48
+2025-08-02 15:21:48,318 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:21:58,320 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:22:08,322 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:22:18,324 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:22:28,326 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:22:38,327 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:22:48,328 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:22:58,329 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:23:08,332 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:23:18,334 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:23:28,336 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:23:32,218 - __main__ - INFO - User interrupted the system. Shutting down gracefully.
+2025-08-02 15:23:32,219 - __main__ - INFO - --- Paper Trading System Stopped ---
+2025-08-02 15:23:48,997 - __main__ - INFO - --- Starting Paper Trading System v1.4 ---
+2025-08-02 15:23:48,997 - broker_interface - INFO - ✅ Zerodha Access Token set successfully.
+2025-08-02 15:23:49,010 - broker_interface - INFO - ✅ Loaded instruments from local 'instruments.csv'.
+2025-08-02 15:23:49,014 - portfolio_manager - INFO - ✅ Loaded portfolio state from 'portfolio_state.json'.
+2025-08-02 15:23:49,016 - portfolio_manager - INFO - ✅ Portfolio Manager initialized.
+2025-08-02 15:23:49,018 - portfolio_manager - INFO - --- Portfolio Summary ---
+2025-08-02 15:23:49,018 - portfolio_manager - INFO -   > Strategy: AlphaOneStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 15:23:49,018 - portfolio_manager - INFO -   > Strategy: ApexStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 15:23:49,018 - portfolio_manager - INFO -   > Strategy: NumeroUnoStrategy | Cash: ₹100,000.00 | Open Positions: 0
+2025-08-02 15:23:49,019 - portfolio_manager - INFO - -------------------------
+2025-08-02 15:23:49,514 - __main__ - INFO - Fetched initial 6 1-min candles for RELIANCE
+2025-08-02 15:23:49,771 - __main__ - INFO - Fetched initial 6 1-min candles for TCS
+2025-08-02 15:23:49,969 - __main__ - INFO - Fetched initial 6 1-min candles for INFY
+2025-08-02 15:23:50,123 - __main__ - INFO - Fetched initial 6 1-min candles for HDFCBANK
+2025-08-02 15:23:50,283 - __main__ - INFO - Fetched initial 6 1-min candles for ICICIBANK
+2025-08-02 15:23:50,431 - __main__ - INFO - Fetched initial 6 1-min candles for SBIN
+2025-08-02 15:23:50,598 - __main__ - INFO - Fetched initial 6 1-min candles for KOTAKBANK
+2025-08-02 15:23:50,753 - __main__ - INFO - Fetched initial 6 1-min candles for AXISBANK
+2025-08-02 15:23:50,756 - strategies.base_strategy - INFO - [AlphaOne][RELIANCE] AlphaOneStrategy (v5.3) initialized for RELIANCE.
+2025-08-02 15:23:50,757 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 15:23:50,758 - strategies.base_strategy - INFO - [AlphaOne][TCS] AlphaOneStrategy (v5.3) initialized for TCS.
+2025-08-02 15:23:50,758 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 15:23:50,759 - strategies.base_strategy - INFO - [AlphaOne][INFY] AlphaOneStrategy (v5.3) initialized for INFY.
+2025-08-02 15:23:50,759 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 15:23:50,760 - strategies.base_strategy - INFO - [AlphaOne][HDFCBANK] AlphaOneStrategy (v5.3) initialized for HDFCBANK.
+2025-08-02 15:23:50,760 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 15:23:50,761 - strategies.base_strategy - INFO - [AlphaOne][ICICIBANK] AlphaOneStrategy (v5.3) initialized for ICICIBANK.
+2025-08-02 15:23:50,763 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 15:23:50,764 - strategies.base_strategy - INFO - [AlphaOne][SBIN] AlphaOneStrategy (v5.3) initialized for SBIN.
+2025-08-02 15:23:50,765 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 15:23:50,766 - strategies.base_strategy - INFO - [AlphaOne][KOTAKBANK] AlphaOneStrategy (v5.3) initialized for KOTAKBANK.
+2025-08-02 15:23:50,767 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 15:23:50,767 - strategies.base_strategy - INFO - [AlphaOne][AXISBANK] AlphaOneStrategy (v5.3) initialized for AXISBANK.
+2025-08-02 15:23:50,767 - __main__ - INFO - Successfully loaded strategy 'AlphaOneStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 15:23:50,770 - strategies.base_strategy - INFO - [Apex][RELIANCE] ApexStrategy initialized for RELIANCE with 15 min timeframe.
+2025-08-02 15:23:50,770 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 15:23:50,771 - strategies.base_strategy - INFO - [Apex][TCS] ApexStrategy initialized for TCS with 15 min timeframe.
+2025-08-02 15:23:50,771 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 15:23:50,771 - strategies.base_strategy - INFO - [Apex][INFY] ApexStrategy initialized for INFY with 15 min timeframe.
+2025-08-02 15:23:50,771 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 15:23:50,772 - strategies.base_strategy - INFO - [Apex][HDFCBANK] ApexStrategy initialized for HDFCBANK with 15 min timeframe.
+2025-08-02 15:23:50,772 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 15:23:50,772 - strategies.base_strategy - INFO - [Apex][ICICIBANK] ApexStrategy initialized for ICICIBANK with 15 min timeframe.
+2025-08-02 15:23:50,773 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 15:23:50,773 - strategies.base_strategy - INFO - [Apex][SBIN] ApexStrategy initialized for SBIN with 5 min timeframe.
+2025-08-02 15:23:50,773 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 15:23:50,773 - strategies.base_strategy - INFO - [Apex][KOTAKBANK] ApexStrategy initialized for KOTAKBANK with 5 min timeframe.
+2025-08-02 15:23:50,773 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 15:23:50,774 - strategies.base_strategy - INFO - [Apex][AXISBANK] ApexStrategy initialized for AXISBANK with 5 min timeframe.
+2025-08-02 15:23:50,774 - __main__ - INFO - Successfully loaded strategy 'ApexStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 15:23:51,304 - strategies.base_strategy - INFO - [NumeroUno][RELIANCE] NumeroUnoStrategy (v2.0) initialized for RELIANCE with 15-min timeframe.
+2025-08-02 15:23:51,304 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'RELIANCE' with 15-min TF.
+2025-08-02 15:23:51,305 - strategies.base_strategy - INFO - [NumeroUno][TCS] NumeroUnoStrategy (v2.0) initialized for TCS with 15-min timeframe.
+2025-08-02 15:23:51,305 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'TCS' with 15-min TF.
+2025-08-02 15:23:51,305 - strategies.base_strategy - INFO - [NumeroUno][INFY] NumeroUnoStrategy (v2.0) initialized for INFY with 15-min timeframe.
+2025-08-02 15:23:51,305 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'INFY' with 15-min TF.
+2025-08-02 15:23:51,305 - strategies.base_strategy - INFO - [NumeroUno][HDFCBANK] NumeroUnoStrategy (v2.0) initialized for HDFCBANK with 15-min timeframe.
+2025-08-02 15:23:51,305 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'HDFCBANK' with 15-min TF.
+2025-08-02 15:23:51,305 - strategies.base_strategy - INFO - [NumeroUno][ICICIBANK] NumeroUnoStrategy (v2.0) initialized for ICICIBANK with 15-min timeframe.
+2025-08-02 15:23:51,306 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'ICICIBANK' with 15-min TF.
+2025-08-02 15:23:51,306 - strategies.base_strategy - INFO - [NumeroUno][SBIN] NumeroUnoStrategy (v2.0) initialized for SBIN with 5-min timeframe.
+2025-08-02 15:23:51,306 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'SBIN' with 5-min TF.
+2025-08-02 15:23:51,306 - strategies.base_strategy - INFO - [NumeroUno][KOTAKBANK] NumeroUnoStrategy (v2.0) initialized for KOTAKBANK with 5-min timeframe.
+2025-08-02 15:23:51,306 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'KOTAKBANK' with 5-min TF.
+2025-08-02 15:23:51,307 - strategies.base_strategy - INFO - [NumeroUno][AXISBANK] NumeroUnoStrategy (v2.0) initialized for AXISBANK with 5-min timeframe.
+2025-08-02 15:23:51,307 - __main__ - INFO - Successfully loaded strategy 'NumeroUnoStrategy' for symbol 'AXISBANK' with 5-min TF.
+2025-08-02 15:23:51,307 - __main__ - INFO - Market is closed. Waiting... Current time: 15:23:51
+2025-08-02 15:24:11,322 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:24:16,324 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:24:21,326 - __main__ - WARNING - STOP signal received. Pausing trading engine.
+2025-08-02 15:24:26,327 - __main__ - INFO - Market is closed. Waiting... Current time: 15:24:26
+2025-08-02 15:25:26,401 - __main__ - INFO - Market is closed. Waiting... Current time: 15:25:26
+2025-08-02 15:26:26,469 - __main__ - INFO - Market is closed. Waiting... Current time: 15:26:26
+2025-08-02 15:27:26,554 - __main__ - INFO - Market is closed. Waiting... Current time: 15:27:26
+2025-08-02 15:28:26,622 - __main__ - INFO - Market is closed. Waiting... Current time: 15:28:26
+2025-08-02 15:29:26,694 - __main__ - INFO - Market is closed. Waiting... Current time: 15:29:26
+2025-08-02 15:30:26,782 - __main__ - INFO - Market is closed. Waiting... Current time: 15:30:26
+2025-08-02 15:31:26,843 - __main__ - INFO - Market is closed. Waiting... Current time: 15:31:26
+2025-08-02 15:32:26,904 - __main__ - INFO - Market is closed. Waiting... Current time: 15:32:26
+2025-08-02 15:33:26,965 - __main__ - INFO - Market is closed. Waiting... Current time: 15:33:26
+2025-08-02 15:34:27,031 - __main__ - INFO - Market is closed. Waiting... Current time: 15:34:27
+2025-08-02 15:35:27,098 - __main__ - INFO - Market is closed. Waiting... Current time: 15:35:27
+2025-08-02 15:36:27,158 - __main__ - INFO - Market is closed. Waiting... Current time: 15:36:27
+2025-08-02 15:37:27,218 - __main__ - INFO - Market is closed. Waiting... Current time: 15:37:27
+2025-08-02 15:38:27,282 - __main__ - INFO - Market is closed. Waiting... Current time: 15:38:27
+2025-08-02 15:39:27,344 - __main__ - INFO - Market is closed. Waiting... Current time: 15:39:27
+2025-08-02 15:40:04,523 - __main__ - INFO - User interrupted the system. Shutting down gracefully.
+2025-08-02 15:40:04,524 - __main__ - INFO - --- Paper Trading System Stopped ---

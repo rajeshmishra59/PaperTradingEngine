@@ -1,0 +1,12 @@
+{
+    "cash": {
+        "AlphaOneStrategy": 100000,
+        "ApexStrategy": 100000,
+        "NumeroUnoStrategy": 100000
+    },
+    "positions": {
+        "AlphaOneStrategy": {},
+        "ApexStrategy": {},
+        "NumeroUnoStrategy": {}
+    }
+}
