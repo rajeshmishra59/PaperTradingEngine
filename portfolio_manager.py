@@ -1,8 +1,5 @@
-# File: portfolio_manager.py (Version 1.8 - Final)
-
-import json
-import os
-import logging
+# File: portfolio_manager.py (Version 1.9 - TSL Support)
+import json, os, logging
 from datetime import datetime
 from charge_calculator import calculate_charges
 
@@ -14,7 +11,7 @@ class PortfolioManager:
         self.state_file = state_file
         self.cash, self.positions, self.banked_profit, self.total_charges, self.initial_capital = {}, {}, {}, {}, {}
         self._load_state()
-        logger.info("✅ Portfolio Manager (v1.8) initialized.")
+        logger.info("✅ Portfolio Manager (v1.9) initialized.")
         self.log_portfolio_summary()
 
     def _load_state(self):
@@ -47,18 +44,45 @@ class PortfolioManager:
         except Exception as e:
             logger.error(f"❌ Could not save portfolio state! Error: {e}")
             
-    def record_trade(self, strategy_name: str, symbol: str, action: str, price: float, quantity: int, timestamp: datetime):
+    def record_trade(self, strategy_name: str, symbol: str, action: str, price: float, quantity: int, timestamp: datetime, 
+                     stop_loss: float, target: float, trailing_sl_pct: float = 0.0):
         entry_charges = calculate_charges(quantity, price)['total']
         total_cost = (price * quantity) + entry_charges
         if self.cash.get(strategy_name, 0) < total_cost: return False
+
         self.cash[strategy_name] -= total_cost
-        self.total_charges.setdefault(strategy_name, 0)
-        self.total_charges[strategy_name] += entry_charges
-        position_details = {'action': action.upper(), 'entry_price': price, 'quantity': quantity, 'entry_time': timestamp.isoformat()}
+        self.total_charges.setdefault(strategy_name, 0); self.total_charges[strategy_name] += entry_charges
+        
+        position_details = {
+            'action': action.upper(), 'entry_price': price, 'quantity': quantity,
+            'entry_time': timestamp.isoformat(), 'stop_loss': stop_loss, 'target': target,
+            'trailing_sl_pct': trailing_sl_pct,
+            'highest_price_since_entry': price if action.upper() == 'LONG' else 0,
+            'lowest_price_since_entry': price if action.upper() == 'SHORT' else 999999,
+        }
         self.positions.setdefault(strategy_name, {})[symbol] = position_details
-        self._save_state()
-        logger.info(f"EXECUTED: {strategy_name} {action.upper()} {quantity} of {symbol} @ {price:.2f}")
+        self._save_state(); logger.info(f"EXECUTED: {strategy_name} {action.upper()} {quantity} of {symbol} @ {price:.2f}")
         return True
+
+    def update_position_price_and_sl(self, strategy_name: str, symbol: str, current_price: float):
+        position = self.get_open_position(strategy_name, symbol)
+        if not position or position.get('trailing_sl_pct', 0) == 0: return
+
+        original_sl = position['stop_loss']
+        new_sl = original_sl
+
+        if position['action'] == 'LONG':
+            position['highest_price_since_entry'] = max(position.get('highest_price_since_entry', 0), current_price)
+            trailing_stop_price = position['highest_price_since_entry'] * (1 - position['trailing_sl_pct'] / 100)
+            new_sl = max(original_sl, trailing_stop_price)
+        elif position['action'] == 'SHORT':
+            position['lowest_price_since_entry'] = min(position.get('lowest_price_since_entry', 999999), current_price)
+            trailing_stop_price = position['lowest_price_since_entry'] * (1 + position['trailing_sl_pct'] / 100)
+            new_sl = min(original_sl, trailing_stop_price)
+
+        if new_sl != original_sl:
+            position['stop_loss'] = new_sl
+            logger.info(f"TSL UPDATE for {symbol}: Stop-loss trailed to ₹{new_sl:,.2f}"); self._save_state()
 
     def close_position(self, strategy_name: str, symbol: str, closing_price: float, timestamp: datetime):
         open_position = self.get_open_position(strategy_name, symbol)
@@ -75,12 +99,10 @@ class PortfolioManager:
         self.cash[strategy_name] += closing_value
         if net_pnl > 0:
             profit_to_reinvest, profit_to_bank = net_pnl * 0.50, net_pnl * 0.50
-            self.banked_profit.setdefault(strategy_name, 0)
-            self.banked_profit[strategy_name] += profit_to_bank
+            self.banked_profit.setdefault(strategy_name, 0); self.banked_profit[strategy_name] += profit_to_bank
             self.cash[strategy_name] = initial_cap + profit_to_reinvest
         else:
-            self.banked_profit.setdefault(strategy_name, 0)
-            self.banked_profit[strategy_name] += net_pnl
+            self.banked_profit.setdefault(strategy_name, 0); self.banked_profit[strategy_name] += net_pnl
             self.cash[strategy_name] = initial_cap
         del self.positions[strategy_name][symbol]
         self._save_state()
