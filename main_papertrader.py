@@ -1,4 +1,4 @@
-# File: main_papertrader.py (Final Version with Enhanced Logging)
+# File: main_papertrader.py (Final Corrected Version)
 
 import logging
 import time
@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 def load_strategies_and_data(broker):
     strategy_instances = []
     all_symbols_needed = set()
+    # --- FIX: Corrected typo from STRATEA_CONFIG to STRATEGY_CONFIG ---
     strategy_capital = {name: conf['capital'] for name, conf in config.STRATEGY_CONFIG.items()}
     
     for strategy_name, conf in config.STRATEGY_CONFIG.items():
@@ -122,7 +123,6 @@ def run_paper_trader():
                             if not new_data.empty:
                                 all_data_1min[symbol] = pd.concat([all_data_1min[symbol], new_data]).drop_duplicates()
                     
-                    trades_found_this_cycle = 0
                     for strategy in strategy_instances:
                         symbol = strategy.symbol
                         df_1m = all_data_1min.get(symbol, pd.DataFrame()).copy()
@@ -154,14 +154,9 @@ def run_paper_trader():
                                 if quantity > 0:
                                     success = portfolio.record_trade(strategy.name, symbol, action, price, quantity, now_aware, stop_loss=sl, target=tg, trailing_sl_pct=tsl_pct)
                                     if success:
-                                        trades_found_this_cycle += 1
                                         trade_logger.log_trade(now_aware, strategy.name, symbol, action, price, quantity, f"Cash Left: {portfolio.cash[strategy.name]:.2f}")
                     
-                    if trades_found_this_cycle == 0:
-                        logger.info("Scan complete. No new trade opportunities found.")
-                    else:
-                        logger.info(f"Scan complete. Found and executed {trades_found_this_cycle} new trade(s).")
-
+                    logger.info("Scan complete. Waiting for next candle...")
                     for _ in range(config.MAIN_LOOP_SLEEP_SECONDS):
                         if check_control_signal() == "STOP": break
                         time.sleep(1)
