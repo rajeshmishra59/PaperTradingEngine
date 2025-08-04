@@ -1,8 +1,12 @@
-# File: main_papertrader.py (Database Integrated Version)
+# File: main_papertrader.py (Final Version with Enhanced Logging)
 
-import logging, time, os, importlib, inspect
+import logging
+import time
 from datetime import datetime, timedelta
 import pandas as pd
+import os
+import importlib
+import inspect
 import pytz
 
 # Importing our custom modules
@@ -32,7 +36,8 @@ def load_strategies_and_data(broker):
     all_data_1min = {}
     kolkata_tz = pytz.timezone('Asia/Kolkata')
     for symbol in all_symbols_needed:
-        to_date, from_date = datetime.now(kolkata_tz), datetime.now(kolkata_tz) - timedelta(days=10)
+        to_date = datetime.now(kolkata_tz)
+        from_date = to_date - timedelta(days=10)
         df = broker.get_historical_data(symbol, 'minute', from_date, to_date)
         if not df.empty:
             all_data_1min[symbol] = df
@@ -79,7 +84,7 @@ def check_force_exit_command():
 
 # --- 3. MAIN TRADING FUNCTION ---
 def run_paper_trader():
-    logger.info("--- Starting Paper Trading System (DB Version) ---")
+    logger.info("--- Starting Paper Trading System ---")
     db_manager = DatabaseManager()
     
     try:
@@ -96,33 +101,33 @@ def run_paper_trader():
         while True:
             try:
                 update_heartbeat()
-                exit_strategy, exit_symbol = check_force_exit_command()
-                if exit_strategy and exit_symbol:
-                    open_pos = portfolio.get_open_position(exit_strategy, exit_symbol)
-                    if open_pos and exit_symbol in all_data_1min and not all_data_1min[exit_symbol].empty:
-                        last_price = all_data_1min[exit_symbol].iloc[-1]['close']
-                        logger.warning(f"FORCE EXIT for {exit_symbol} at {last_price:.2f}")
-                        pnl = portfolio.close_position(exit_strategy, exit_symbol, last_price, datetime.now(kolkata_tz))
-                        if pnl is not None:
-                            trade_logger.log_trade(datetime.now(kolkata_tz), exit_strategy, exit_symbol, "FORCE EXIT", last_price, open_pos['quantity'], f"PnL: {pnl:.2f}")
-
+                
                 if check_control_signal() == "STOP":
-                    logger.warning("STOP signal received. Pausing engine."); time.sleep(5); continue
+                    logger.warning("STOP signal received. Pausing engine.")
+                    time.sleep(5)
+                    continue
 
                 now_aware = datetime.now(kolkata_tz)
                 is_market_hours = config.TRADING_START_TIME <= now_aware.time() < config.TRADING_END_TIME
                 is_weekday = now_aware.weekday() < 5
 
                 if is_market_hours and is_weekday:
+                    logger.info("Market is OPEN. Scanning for signals...")
+                    
                     for symbol in all_data_1min.keys():
                         latest_timestamp = all_data_1min[symbol].index[-1]
-                        new_data = broker.get_historical_data(symbol, 'minute', from_date=latest_timestamp + timedelta(minutes=1), to_date=now_aware)
-                        if not new_data.empty:
-                            all_data_1min[symbol] = pd.concat([all_data_1min[symbol], new_data]).drop_duplicates()
+                        from_date_live = latest_timestamp.to_pydatetime() + timedelta(minutes=1)
+                        if from_date_live < now_aware:
+                            new_data = broker.get_historical_data(symbol, 'minute', from_date=from_date_live, to_date=now_aware)
+                            if not new_data.empty:
+                                all_data_1min[symbol] = pd.concat([all_data_1min[symbol], new_data]).drop_duplicates()
                     
+                    trades_found_this_cycle = 0
                     for strategy in strategy_instances:
-                        symbol, df_1m = strategy.symbol, all_data_1min.get(strategy.symbol, pd.DataFrame()).copy()
+                        symbol = strategy.symbol
+                        df_1m = all_data_1min.get(symbol, pd.DataFrame()).copy()
                         if df_1m.empty: continue
+                        
                         strategy.df_1min_raw = df_1m
                         signals_df = strategy.run()
                         if signals_df.empty: continue
@@ -130,7 +135,7 @@ def run_paper_trader():
                         latest_candle, current_price = signals_df.iloc[-1], signals_df.iloc[-1]['close']
                         open_position = portfolio.get_open_position(strategy.name, symbol)
                         
-                        if open_position: # Exit Logic (including TSL)
+                        if open_position:
                             portfolio.update_position_price_and_sl(strategy.name, symbol, current_price)
                             active_pos = portfolio.get_open_position(strategy.name, symbol)
                             if active_pos:
@@ -142,28 +147,34 @@ def run_paper_trader():
                                     pnl = portfolio.close_position(strategy.name, symbol, current_price, now_aware)
                                     if pnl is not None:
                                         trade_logger.log_trade(now_aware, strategy.name, symbol, f"EXIT_{open_position['action']}", current_price, open_position['quantity'], f"PnL: {pnl:.2f}")
-                        else: # Entry Logic
+                        else:
                             if latest_candle.get('entry_signal') in ['LONG', 'SHORT']:
                                 action, price, sl, tg, tsl_pct = (latest_candle['entry_signal'], latest_candle['close'], latest_candle.get('stop_loss'), latest_candle.get('target'), latest_candle.get('trailing_sl_pct', 0.0))
                                 quantity = int((portfolio.cash.get(strategy.name, 0) * 0.1) / price)
                                 if quantity > 0:
                                     success = portfolio.record_trade(strategy.name, symbol, action, price, quantity, now_aware, stop_loss=sl, target=tg, trailing_sl_pct=tsl_pct)
                                     if success:
+                                        trades_found_this_cycle += 1
                                         trade_logger.log_trade(now_aware, strategy.name, symbol, action, price, quantity, f"Cash Left: {portfolio.cash[strategy.name]:.2f}")
                     
-                    logger.info(f"Cycle complete. Waiting for next candle...")
+                    if trades_found_this_cycle == 0:
+                        logger.info("Scan complete. No new trade opportunities found.")
+                    else:
+                        logger.info(f"Scan complete. Found and executed {trades_found_this_cycle} new trade(s).")
+
                     for _ in range(config.MAIN_LOOP_SLEEP_SECONDS):
                         if check_control_signal() == "STOP": break
                         time.sleep(1)
                 else:
-                    logger.info(f"Market is closed. Waiting... ({now_aware.strftime('%H:%M:%S')})")
+                    logger.info(f"Market is CLOSED. Waiting... ({now_aware.strftime('%H:%M:%S')})")
                     for _ in range(60):
                         if check_control_signal() == "STOP": break
                         time.sleep(1)
+
             except KeyboardInterrupt:
                 logger.info("User interrupted. Shutting down."); break
             except Exception as e:
-                logger.error(f"An unexpected error occurred: {e}", exc_info=True); time.sleep(30)
+                logger.error(f"An unexpected error occurred in the main loop: {e}", exc_info=True); time.sleep(30)
     finally:
         db_manager.close_connection()
         for file in ['control_signal.txt', 'exit_command.txt', HEARTBEAT_FILE]:

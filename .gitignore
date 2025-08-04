@@ -10,7 +10,7 @@ instruments.csv
 portfolio_state.json
 control_signal.txt
 exit_command.txt
-trading_data.db  # <-- Add this line
+trading_data.db  # <-- Add this line    
 
 # Log files
 logs/
