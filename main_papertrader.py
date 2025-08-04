@@ -1,8 +1,12 @@
-# File: main_papertrader.py (Database Integrated Version)
+# File: main_papertrader.py (Final Production Version)
 
-import logging, time, os, importlib, inspect
+import logging
+import time
 from datetime import datetime, timedelta
 import pandas as pd
+import os
+import importlib
+import inspect
 import pytz
 
 # Importing our custom modules
@@ -15,8 +19,18 @@ from strategies.base_strategy import BaseStrategy
 
 # --- 1. SETUP ---
 HEARTBEAT_FILE = "heartbeat.txt"
-if not os.path.exists('logs'): os.makedirs('logs')
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', handlers=[logging.FileHandler("logs/papertrading.log", encoding='utf-8'), logging.StreamHandler()])
+
+if not os.path.exists('logs'):
+    os.makedirs('logs')
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("logs/papertrading.log", encoding='utf-8'),
+        logging.StreamHandler()
+    ]
+)
 logger = logging.getLogger(__name__)
 
 # --- 2. HELPER FUNCTIONS ---
@@ -32,7 +46,8 @@ def load_strategies_and_data(broker):
     all_data_1min = {}
     kolkata_tz = pytz.timezone('Asia/Kolkata')
     for symbol in all_symbols_needed:
-        to_date, from_date = datetime.now(kolkata_tz), datetime.now(kolkata_tz) - timedelta(days=10)
+        to_date = datetime.now(kolkata_tz)
+        from_date = to_date - timedelta(days=10)
         df = broker.get_historical_data(symbol, 'minute', from_date, to_date)
         if not df.empty:
             all_data_1min[symbol] = df
@@ -40,7 +55,8 @@ def load_strategies_and_data(broker):
 
     strategy_dir = "strategies"
     for file in os.listdir(strategy_dir):
-        if not (file.endswith(".py") and not file.startswith("__")): continue
+        if not (file.endswith(".py") and not file.startswith("__")):
+            continue
         module_name = f"{strategy_dir}.{file[:-3]}"
         try:
             module = importlib.import_module(module_name)
@@ -60,26 +76,31 @@ def load_strategies_and_data(broker):
     return strategy_instances, all_data_1min, strategy_capital
 
 def update_heartbeat():
-    with open(HEARTBEAT_FILE, "w") as f: f.write(datetime.now().isoformat())
+    with open(HEARTBEAT_FILE, "w") as f:
+        f.write(datetime.now().isoformat())
 
 def check_control_signal():
     if os.path.exists('control_signal.txt'):
-        with open('control_signal.txt', 'r') as f: return f.read().strip().upper()
+        with open('control_signal.txt', 'r') as f:
+            return f.read().strip().upper()
     return "RUN"
 
 def check_force_exit_command():
     if os.path.exists('exit_command.txt'):
-        with open('exit_command.txt', 'r') as f: command = f.read().strip()
+        with open('exit_command.txt', 'r') as f:
+            command = f.read().strip()
         os.remove('exit_command.txt')
         if command:
             try:
-                strategy_name, symbol = command.split(','); return strategy_name, symbol
-            except ValueError: logger.error(f"Invalid command in exit_command.txt: {command}")
+                strategy_name, symbol = command.split(',')
+                return strategy_name, symbol
+            except ValueError:
+                logger.error(f"Invalid command in exit_command.txt: {command}")
     return None, None
 
 # --- 3. MAIN TRADING FUNCTION ---
 def run_paper_trader():
-    logger.info("--- Starting Paper Trading System (DB Version) ---")
+    logger.info("--- Starting Paper Trading System ---")
     db_manager = DatabaseManager()
     
     try:
@@ -87,7 +108,8 @@ def run_paper_trader():
         strategy_instances, all_data_1min, strategy_capital = load_strategies_and_data(broker)
         
         if not strategy_instances:
-            logger.error("No strategies loaded. Exiting."); return
+            logger.error("No strategies loaded. Exiting.")
+            return
             
         portfolio = PortfolioManager(db_manager=db_manager, strategy_capital=strategy_capital)
         trade_logger = TradeLogger(db_manager=db_manager)
@@ -96,18 +118,19 @@ def run_paper_trader():
         while True:
             try:
                 update_heartbeat()
+                
                 exit_strategy, exit_symbol = check_force_exit_command()
                 if exit_strategy and exit_symbol:
                     open_pos = portfolio.get_open_position(exit_strategy, exit_symbol)
                     if open_pos and exit_symbol in all_data_1min and not all_data_1min[exit_symbol].empty:
                         last_price = all_data_1min[exit_symbol].iloc[-1]['close']
                         logger.warning(f"FORCE EXIT for {exit_symbol} at {last_price:.2f}")
-                        pnl = portfolio.close_full_position(exit_strategy, exit_symbol, last_price, datetime.now(kolkata_tz))
-                        if pnl is not None:
-                            trade_logger.log_trade(datetime.now(kolkata_tz), exit_strategy, exit_symbol, "FORCE EXIT", last_price, open_pos['original_quantity'], f"PnL: {pnl:.2f}")
+                        portfolio.close_full_position(exit_strategy, exit_symbol, last_price, datetime.now(kolkata_tz))
 
                 if check_control_signal() == "STOP":
-                    logger.warning("STOP signal received. Pausing engine."); time.sleep(5); continue
+                    logger.warning("STOP signal received. Pausing engine.")
+                    time.sleep(5)
+                    continue
 
                 now_aware = datetime.now(kolkata_tz)
                 is_market_hours = config.TRADING_START_TIME <= now_aware.time() < config.TRADING_END_TIME
@@ -126,16 +149,21 @@ def run_paper_trader():
                     
                     trades_found_this_cycle = 0
                     for strategy in strategy_instances:
-                        symbol, df_1m = strategy.symbol, all_data_1min.get(strategy.symbol, pd.DataFrame()).copy()
-                        if df_1m.empty: continue
+                        symbol = strategy.symbol
+                        df_1m = all_data_1min.get(symbol, pd.DataFrame()).copy()
+                        if df_1m.empty:
+                            continue
+                        
                         strategy.df_1min_raw = df_1m
                         signals_df = strategy.run()
-                        if signals_df.empty: continue
+                        if signals_df.empty:
+                            continue
                         
-                        latest_candle, current_price = signals_df.iloc[-1], signals_df.iloc[-1]['close']
+                        latest_candle = signals_df.iloc[-1]
+                        current_price = latest_candle['close']
                         open_position = portfolio.get_open_position(strategy.name, symbol)
                         
-                        if open_position: # MULTI-STAGE EXIT LOGIC
+                        if open_position:
                             if (open_position['action'] == 'LONG' and current_price <= open_position['stop_loss']) or \
                                (open_position['action'] == 'SHORT' and current_price >= open_position['stop_loss']):
                                 logger.warning(f"STOP-LOSS hit for {symbol} at {current_price:.2f}")
@@ -148,14 +176,16 @@ def run_paper_trader():
                             qty_per_target = open_position['original_quantity'] // num_targets if num_targets > 0 else 0
 
                             for level, target_price in sorted(targets.items()):
-                                if level not in exited_targets:
+                                if target_price and level not in exited_targets:
                                     if (open_position['action'] == 'LONG' and current_price >= target_price) or \
                                        (open_position['action'] == 'SHORT' and current_price <= target_price):
                                         portfolio.close_partial_position(strategy.name, symbol, current_price, qty_per_target, level, now_aware)
                                         break
-                        else: # ENTRY LOGIC
+                        else:
                             if latest_candle.get('entry_signal') in ['LONG', 'SHORT']:
-                                action, price, sl = latest_candle['entry_signal'], latest_candle['close'], latest_candle.get('stop_loss')
+                                action = latest_candle['entry_signal']
+                                price = latest_candle['close']
+                                sl = latest_candle.get('stop_loss')
                                 
                                 targets = {
                                     'target1': latest_candle.get('target'),
@@ -178,22 +208,30 @@ def run_paper_trader():
                         logger.info(f"Scan complete. Found and executed {trades_found_this_cycle} new trade(s).")
 
                     for _ in range(config.MAIN_LOOP_SLEEP_SECONDS):
-                        if check_control_signal() == "STOP": break
+                        if check_control_signal() == "STOP":
+                            break
                         time.sleep(1)
                 else:
                     logger.info(f"Market is CLOSED. Waiting... ({now_aware.strftime('%H:%M:%S')})")
                     for _ in range(60):
-                        if check_control_signal() == "STOP": break
+                        if check_control_signal() == "STOP":
+                            break
                         time.sleep(1)
+
             except KeyboardInterrupt:
-                logger.info("User interrupted. Shutting down."); break
+                logger.info("User interrupted. Shutting down.")
+                break
             except Exception as e:
-                logger.error(f"An unexpected error occurred in the main loop: {e}", exc_info=True); time.sleep(30)
+                logger.error(f"An unexpected error occurred in the main loop: {e}", exc_info=True)
+                time.sleep(30)
+
     finally:
         db_manager.close_connection()
         for file in ['control_signal.txt', 'exit_command.txt', HEARTBEAT_FILE]:
-            if os.path.exists(file): os.remove(file)
+            if os.path.exists(file):
+                os.remove(file)
         logger.info("--- Paper Trading System Stopped ---")
+
 
 if __name__ == "__main__":
     run_paper_trader()

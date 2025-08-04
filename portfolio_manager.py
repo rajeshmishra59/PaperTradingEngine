@@ -67,7 +67,7 @@ class PortfolioManager:
         net_pnl = self._calculate_pnl(strategy_name, open_position['entry_price'], closing_price, quantity_to_close, open_position['action'])
         
         self.cash[strategy_name] += closing_price * quantity_to_close
-        self.banked_profit[strategy_name] += net_pnl
+        self.banked_profit[strategy_name] += net_pnl # Bank all partial profits
         open_position['exited_targets'].append(target_level)
         
         self._update_db_state(strategy_name)
