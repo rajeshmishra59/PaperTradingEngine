@@ -1,8 +1,10 @@
-# File: portfolio_manager.py (Final Version with Partial Exits)
-import json, os, logging
+# File: portfolio_manager.py
+# Final Version with Database and Trailing Stop-Loss
+
+import logging
 from datetime import datetime
-from charge_calculator import calculate_charges
 from database_manager import DatabaseManager
+from charge_calculator import calculate_charges
 
 logger = logging.getLogger(__name__)
 
@@ -10,92 +12,125 @@ class PortfolioManager:
     def __init__(self, db_manager: DatabaseManager, strategy_capital: dict):
         self.db = db_manager
         self.strategy_capital_config = strategy_capital
-        self.cash, self.banked_profit, self.total_charges, self.initial_capital, self.positions = {}, {}, {}, {}, {}
+        
+        self.cash = {}
+        self.banked_profit = {}
+        self.total_charges = {}
+        self.initial_capital = {}
+        self.positions = {}
+        
         self._initialize_state()
-        logger.info("✅ Portfolio Manager (Partial Exits) initialized.")
+        logger.info("✅ Portfolio Manager (DB version) initialized.")
         self.log_portfolio_summary()
 
     def _initialize_state(self):
         state_from_db = self.db.load_full_portfolio_state()
+        
         for strat_name, initial_cap in self.strategy_capital_config.items():
             if strat_name in state_from_db:
-                self.initial_capital[strat_name], self.cash[strat_name], self.banked_profit[strat_name], self.total_charges[strat_name] = state_from_db[strat_name]['initial_capital'], state_from_db[strat_name]['trading_capital'], state_from_db[strat_name]['banked_profit'], state_from_db[strat_name]['total_charges']
+                self.initial_capital[strat_name] = state_from_db[strat_name]['initial_capital']
+                self.cash[strat_name] = state_from_db[strat_name]['trading_capital']
+                self.banked_profit[strat_name] = state_from_db[strat_name]['banked_profit']
+                self.total_charges[strat_name] = state_from_db[strat_name]['total_charges']
             else:
-                logger.warning(f"No state for '{strat_name}' in DB. Creating fresh record.")
-                self.initial_capital[strat_name], self.cash[strat_name], self.banked_profit[strat_name], self.total_charges[strat_name] = initial_cap, initial_cap, 0.0, 0.0
+                logger.warning(f"No state found for '{strat_name}' in DB. Creating fresh record.")
+                self.initial_capital[strat_name] = initial_cap
+                self.cash[strat_name] = initial_cap
+                self.banked_profit[strat_name] = 0.0
+                self.total_charges[strat_name] = 0.0
                 self.db.save_portfolio_state(strat_name, initial_cap, initial_cap, 0.0, 0.0)
 
     def _update_db_state(self, strategy_name):
-        self.db.save_portfolio_state(strategy_name=strategy_name, initial_capital=self.initial_capital[strategy_name], trading_capital=self.cash[strategy_name], banked_profit=self.banked_profit[strategy_name], total_charges=self.total_charges[strategy_name])
+        self.db.save_portfolio_state(
+            strategy_name=strategy_name,
+            initial_capital=self.initial_capital[strategy_name],
+            trading_capital=self.cash[strategy_name],
+            banked_profit=self.banked_profit[strategy_name],
+            total_charges=self.total_charges[strategy_name]
+        )
 
     def record_trade(self, strategy_name: str, symbol: str, action: str, price: float, quantity: int, timestamp: datetime, 
-                     stop_loss: float, targets: dict):
+                     stop_loss: float, target: float, trailing_sl_pct: float = 0.0):
         entry_charges = calculate_charges(quantity, price)['total']
         total_cost = (price * quantity) + entry_charges
-        if self.cash.get(strategy_name, 0) < total_cost: return False
+        
+        if self.cash.get(strategy_name, 0) < total_cost:
+            logger.warning(f"REJECTED: Insufficient funds for {strategy_name}.")
+            return False
+
+        if self.get_open_position(strategy_name, symbol):
+            logger.warning(f"REJECTED: {strategy_name} already has a position for {symbol}.")
+            return False
 
         self.cash[strategy_name] -= total_cost
         self.total_charges[strategy_name] += entry_charges
         
         position_details = {
-            'action': action.upper(), 'entry_price': price, 'original_quantity': quantity,
-            'current_quantity': quantity, 'entry_time': timestamp.isoformat(), 
-            'stop_loss': stop_loss, 'targets': targets, 'exited_targets': []
+            'action': action.upper(), 'entry_price': price, 'quantity': quantity,
+            'entry_time': timestamp.isoformat(), 'stop_loss': stop_loss, 'target': target,
+            'trailing_sl_pct': trailing_sl_pct,
+            'highest_price_since_entry': price if action.upper() == 'LONG' else 0,
+            'lowest_price_since_entry': price if action.upper() == 'SHORT' else 999999,
         }
         self.positions.setdefault(strategy_name, {})[symbol] = position_details
+        
         self._update_db_state(strategy_name)
         logger.info(f"EXECUTED: {strategy_name} {action.upper()} {quantity} of {symbol} @ {price:.2f}")
         return True
 
-    def _calculate_pnl(self, position_strategy, entry_price, closing_price, quantity, action):
+    def close_position(self, strategy_name: str, symbol: str, closing_price: float, timestamp: datetime):
+        open_position = self.get_open_position(strategy_name, symbol)
+        if not open_position: return None
+
+        entry_price, quantity = open_position['entry_price'], open_position['quantity']
+        closing_value = closing_price * quantity
+        entry_value = entry_price * quantity
         entry_charges = calculate_charges(quantity, entry_price)['total']
         exit_charges = calculate_charges(quantity, closing_price)['total']
         total_trade_charges = entry_charges + exit_charges
-        
-        gross_pnl = (closing_price - entry_price) * quantity if action == 'LONG' else (entry_price - closing_price) * quantity
+        gross_pnl = (closing_value - entry_value) if open_position['action'] == 'LONG' else (entry_value - closing_value)
         net_pnl = gross_pnl - total_trade_charges
         
-        self.total_charges[position_strategy] += total_trade_charges
-        return net_pnl
+        self.cash[strategy_name] += closing_value
+        self.total_charges[strategy_name] += exit_charges
+        
+        initial_cap = self.initial_capital.get(strategy_name, 0)
 
-    def close_partial_position(self, strategy_name: str, symbol: str, closing_price: float, quantity_to_close: int, target_level: str, timestamp: datetime):
-        open_position = self.get_open_position(strategy_name, symbol)
-        if not open_position or quantity_to_close == 0: return None
-        
-        open_position['current_quantity'] -= quantity_to_close
-        
-        net_pnl = self._calculate_pnl(strategy_name, open_position['entry_price'], closing_price, quantity_to_close, open_position['action'])
-        
-        self.cash[strategy_name] += closing_price * quantity_to_close
-        self.banked_profit[strategy_name] += net_pnl # Bank all partial profits
-        open_position['exited_targets'].append(target_level)
-        
-        self._update_db_state(strategy_name)
-        logger.info(f"PARTIAL EXIT ({target_level}): Closed {quantity_to_close} of {symbol}. P&L: ₹{net_pnl:,.2f}")
-        self.log_portfolio_summary()
-        return net_pnl
-
-    def close_full_position(self, strategy_name: str, symbol: str, closing_price: float, timestamp: datetime):
-        open_position = self.get_open_position(strategy_name, symbol)
-        if not open_position: return None
-        
-        remaining_quantity = open_position['current_quantity']
-        net_pnl = self._calculate_pnl(strategy_name, open_position['entry_price'], closing_price, remaining_quantity, open_position['action'])
-        
-        self.cash[strategy_name] += closing_price * remaining_quantity
-        
         if net_pnl > 0:
-            self.banked_profit[strategy_name] += net_pnl * 0.5
-            self.cash[strategy_name] = self.initial_capital[strategy_name] + (net_pnl * 0.5)
+            profit_to_reinvest = net_pnl * 0.50
+            profit_to_bank = net_pnl * 0.50
+            self.banked_profit[strategy_name] += profit_to_bank
+            self.cash[strategy_name] = initial_cap + profit_to_reinvest
         else:
             self.banked_profit[strategy_name] += net_pnl
-            self.cash[strategy_name] = self.initial_capital[strategy_name]
+            self.cash[strategy_name] = initial_cap
 
         del self.positions[strategy_name][symbol]
+        
         self._update_db_state(strategy_name)
-        logger.info(f"FULL EXIT: Closed remaining {remaining_quantity} of {symbol}. P&L: ₹{net_pnl:,.2f}")
+        logger.info(f"CLOSED: {strategy_name} position for {symbol}. Net P&L: ₹{net_pnl:,.2f}")
         self.log_portfolio_summary()
         return net_pnl
+
+    def update_position_price_and_sl(self, strategy_name: str, symbol: str, current_price: float):
+        position = self.get_open_position(strategy_name, symbol)
+        if not position or position.get('trailing_sl_pct', 0) == 0: return
+
+        original_sl = position['stop_loss']
+        new_sl = original_sl
+
+        if position['action'] == 'LONG':
+            position['highest_price_since_entry'] = max(position.get('highest_price_since_entry', 0), current_price)
+            trailing_stop_price = position['highest_price_since_entry'] * (1 - position['trailing_sl_pct'] / 100)
+            new_sl = max(original_sl, trailing_stop_price)
+        elif position['action'] == 'SHORT':
+            position['lowest_price_since_entry'] = min(position.get('lowest_price_since_entry', 999999), current_price)
+            trailing_stop_price = position['lowest_price_since_entry'] * (1 + position['trailing_sl_pct'] / 100)
+            new_sl = min(original_sl, trailing_stop_price)
+
+        if new_sl != original_sl:
+            position['stop_loss'] = new_sl
+            logger.info(f"TSL UPDATE for {symbol}: Stop-loss trailed to ₹{new_sl:,.2f}"); self._save_state()
 
     def get_open_position(self, strategy_name: str, symbol: str):
         return self.positions.get(strategy_name, {}).get(symbol)
