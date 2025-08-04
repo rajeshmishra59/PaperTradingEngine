@@ -1,12 +1,8 @@
-# File: main_papertrader.py (Final Corrected Version)
+# File: main_papertrader.py (Database Integrated Version)
 
-import logging
-import time
+import logging, time, os, importlib, inspect
 from datetime import datetime, timedelta
 import pandas as pd
-import os
-import importlib
-import inspect
 import pytz
 
 # Importing our custom modules
@@ -27,7 +23,6 @@ logger = logging.getLogger(__name__)
 def load_strategies_and_data(broker):
     strategy_instances = []
     all_symbols_needed = set()
-    # --- FIX: Corrected typo from STRATEA_CONFIG to STRATEGY_CONFIG ---
     strategy_capital = {name: conf['capital'] for name, conf in config.STRATEGY_CONFIG.items()}
     
     for strategy_name, conf in config.STRATEGY_CONFIG.items():
@@ -37,8 +32,7 @@ def load_strategies_and_data(broker):
     all_data_1min = {}
     kolkata_tz = pytz.timezone('Asia/Kolkata')
     for symbol in all_symbols_needed:
-        to_date = datetime.now(kolkata_tz)
-        from_date = to_date - timedelta(days=10)
+        to_date, from_date = datetime.now(kolkata_tz), datetime.now(kolkata_tz) - timedelta(days=10)
         df = broker.get_historical_data(symbol, 'minute', from_date, to_date)
         if not df.empty:
             all_data_1min[symbol] = df
@@ -85,7 +79,7 @@ def check_force_exit_command():
 
 # --- 3. MAIN TRADING FUNCTION ---
 def run_paper_trader():
-    logger.info("--- Starting Paper Trading System ---")
+    logger.info("--- Starting Paper Trading System (DB Version) ---")
     db_manager = DatabaseManager()
     
     try:
@@ -102,11 +96,18 @@ def run_paper_trader():
         while True:
             try:
                 update_heartbeat()
-                
+                exit_strategy, exit_symbol = check_force_exit_command()
+                if exit_strategy and exit_symbol:
+                    open_pos = portfolio.get_open_position(exit_strategy, exit_symbol)
+                    if open_pos and exit_symbol in all_data_1min and not all_data_1min[exit_symbol].empty:
+                        last_price = all_data_1min[exit_symbol].iloc[-1]['close']
+                        logger.warning(f"FORCE EXIT for {exit_symbol} at {last_price:.2f}")
+                        pnl = portfolio.close_full_position(exit_strategy, exit_symbol, last_price, datetime.now(kolkata_tz))
+                        if pnl is not None:
+                            trade_logger.log_trade(datetime.now(kolkata_tz), exit_strategy, exit_symbol, "FORCE EXIT", last_price, open_pos['original_quantity'], f"PnL: {pnl:.2f}")
+
                 if check_control_signal() == "STOP":
-                    logger.warning("STOP signal received. Pausing engine.")
-                    time.sleep(5)
-                    continue
+                    logger.warning("STOP signal received. Pausing engine."); time.sleep(5); continue
 
                 now_aware = datetime.now(kolkata_tz)
                 is_market_hours = config.TRADING_START_TIME <= now_aware.time() < config.TRADING_END_TIME
@@ -123,11 +124,10 @@ def run_paper_trader():
                             if not new_data.empty:
                                 all_data_1min[symbol] = pd.concat([all_data_1min[symbol], new_data]).drop_duplicates()
                     
+                    trades_found_this_cycle = 0
                     for strategy in strategy_instances:
-                        symbol = strategy.symbol
-                        df_1m = all_data_1min.get(symbol, pd.DataFrame()).copy()
+                        symbol, df_1m = strategy.symbol, all_data_1min.get(strategy.symbol, pd.DataFrame()).copy()
                         if df_1m.empty: continue
-                        
                         strategy.df_1min_raw = df_1m
                         signals_df = strategy.run()
                         if signals_df.empty: continue
@@ -135,28 +135,48 @@ def run_paper_trader():
                         latest_candle, current_price = signals_df.iloc[-1], signals_df.iloc[-1]['close']
                         open_position = portfolio.get_open_position(strategy.name, symbol)
                         
-                        if open_position:
-                            portfolio.update_position_price_and_sl(strategy.name, symbol, current_price)
-                            active_pos = portfolio.get_open_position(strategy.name, symbol)
-                            if active_pos:
-                                active_stop_loss, target_price = active_pos['stop_loss'], active_pos['target']
-                                exit_signal = False
-                                if open_position['action'] == 'LONG' and (current_price <= active_stop_loss or current_price >= target_price): exit_signal = True
-                                elif open_position['action'] == 'SHORT' and (current_price >= active_stop_loss or current_price <= target_price): exit_signal = True
-                                if exit_signal:
-                                    pnl = portfolio.close_position(strategy.name, symbol, current_price, now_aware)
-                                    if pnl is not None:
-                                        trade_logger.log_trade(now_aware, strategy.name, symbol, f"EXIT_{open_position['action']}", current_price, open_position['quantity'], f"PnL: {pnl:.2f}")
-                        else:
+                        if open_position: # MULTI-STAGE EXIT LOGIC
+                            if (open_position['action'] == 'LONG' and current_price <= open_position['stop_loss']) or \
+                               (open_position['action'] == 'SHORT' and current_price >= open_position['stop_loss']):
+                                logger.warning(f"STOP-LOSS hit for {symbol} at {current_price:.2f}")
+                                portfolio.close_full_position(strategy.name, symbol, current_price, now_aware)
+                                continue
+
+                            targets = open_position.get('targets', {})
+                            exited_targets = open_position.get('exited_targets', [])
+                            num_targets = len(targets)
+                            qty_per_target = open_position['original_quantity'] // num_targets if num_targets > 0 else 0
+
+                            for level, target_price in sorted(targets.items()):
+                                if level not in exited_targets:
+                                    if (open_position['action'] == 'LONG' and current_price >= target_price) or \
+                                       (open_position['action'] == 'SHORT' and current_price <= target_price):
+                                        portfolio.close_partial_position(strategy.name, symbol, current_price, qty_per_target, level, now_aware)
+                                        break
+                        else: # ENTRY LOGIC
                             if latest_candle.get('entry_signal') in ['LONG', 'SHORT']:
-                                action, price, sl, tg, tsl_pct = (latest_candle['entry_signal'], latest_candle['close'], latest_candle.get('stop_loss'), latest_candle.get('target'), latest_candle.get('trailing_sl_pct', 0.0))
-                                quantity = int((portfolio.cash.get(strategy.name, 0) * 0.1) / price)
-                                if quantity > 0:
-                                    success = portfolio.record_trade(strategy.name, symbol, action, price, quantity, now_aware, stop_loss=sl, target=tg, trailing_sl_pct=tsl_pct)
-                                    if success:
-                                        trade_logger.log_trade(now_aware, strategy.name, symbol, action, price, quantity, f"Cash Left: {portfolio.cash[strategy.name]:.2f}")
+                                action, price, sl = latest_candle['entry_signal'], latest_candle['close'], latest_candle.get('stop_loss')
+                                
+                                targets = {
+                                    'target1': latest_candle.get('target'),
+                                    'target2': latest_candle.get('target2'),
+                                    'target3': latest_candle.get('target3')
+                                }
+                                targets = {k: v for k, v in targets.items() if pd.notna(v)}
+
+                                if sl and targets:
+                                    quantity = int((portfolio.cash.get(strategy.name, 0) * 0.1) / price)
+                                    if quantity > 0:
+                                        success = portfolio.record_trade(strategy.name, symbol, action, price, quantity, now_aware, stop_loss=sl, targets=targets)
+                                        if success:
+                                            trades_found_this_cycle += 1
+                                            trade_logger.log_trade(now_aware, strategy.name, symbol, action, price, quantity, f"Cash Left: {portfolio.cash[strategy.name]:.2f}")
                     
-                    logger.info("Scan complete. Waiting for next candle...")
+                    if trades_found_this_cycle == 0:
+                        logger.info("Scan complete. No new trade opportunities found.")
+                    else:
+                        logger.info(f"Scan complete. Found and executed {trades_found_this_cycle} new trade(s).")
+
                     for _ in range(config.MAIN_LOOP_SLEEP_SECONDS):
                         if check_control_signal() == "STOP": break
                         time.sleep(1)
@@ -165,7 +185,6 @@ def run_paper_trader():
                     for _ in range(60):
                         if check_control_signal() == "STOP": break
                         time.sleep(1)
-
             except KeyboardInterrupt:
                 logger.info("User interrupted. Shutting down."); break
             except Exception as e:

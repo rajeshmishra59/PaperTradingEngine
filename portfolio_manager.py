@@ -2,11 +2,12 @@
 import json, os, logging
 from datetime import datetime
 from charge_calculator import calculate_charges
+from database_manager import DatabaseManager
 
 logger = logging.getLogger(__name__)
 
 class PortfolioManager:
-    def __init__(self, db_manager, strategy_capital: dict):
+    def __init__(self, db_manager: DatabaseManager, strategy_capital: dict):
         self.db = db_manager
         self.strategy_capital_config = strategy_capital
         self.cash, self.banked_profit, self.total_charges, self.initial_capital, self.positions = {}, {}, {}, {}, {}
@@ -46,21 +47,29 @@ class PortfolioManager:
         logger.info(f"EXECUTED: {strategy_name} {action.upper()} {quantity} of {symbol} @ {price:.2f}")
         return True
 
-    def _calculate_pnl(self, position, closing_price, quantity):
-        entry_price = position['entry_price']
-        charges = calculate_charges(quantity, entry_price)['total'] + calculate_charges(quantity, closing_price)['total']
-        gross_pnl = (closing_price - entry_price) * quantity if position['action'] == 'LONG' else (entry_price - closing_price) * quantity
-        net_pnl = gross_pnl - charges
-        self.total_charges[position['strategy']] += charges
+    def _calculate_pnl(self, position_strategy, entry_price, closing_price, quantity, action):
+        entry_charges = calculate_charges(quantity, entry_price)['total']
+        exit_charges = calculate_charges(quantity, closing_price)['total']
+        total_trade_charges = entry_charges + exit_charges
+        
+        gross_pnl = (closing_price - entry_price) * quantity if action == 'LONG' else (entry_price - closing_price) * quantity
+        net_pnl = gross_pnl - total_trade_charges
+        
+        self.total_charges[position_strategy] += total_trade_charges
         return net_pnl
 
     def close_partial_position(self, strategy_name: str, symbol: str, closing_price: float, quantity_to_close: int, target_level: str, timestamp: datetime):
         open_position = self.get_open_position(strategy_name, symbol)
         if not open_position or quantity_to_close == 0: return None
+        
         open_position['current_quantity'] -= quantity_to_close
-        net_pnl = self._calculate_pnl(open_position, closing_price, quantity_to_close)
-        self.cash[strategy_name] += closing_price * quantity_to_close + net_pnl
+        
+        net_pnl = self._calculate_pnl(strategy_name, open_position['entry_price'], closing_price, quantity_to_close, open_position['action'])
+        
+        self.cash[strategy_name] += closing_price * quantity_to_close
+        self.banked_profit[strategy_name] += net_pnl
         open_position['exited_targets'].append(target_level)
+        
         self._update_db_state(strategy_name)
         logger.info(f"PARTIAL EXIT ({target_level}): Closed {quantity_to_close} of {symbol}. P&L: ₹{net_pnl:,.2f}")
         self.log_portfolio_summary()
@@ -69,15 +78,19 @@ class PortfolioManager:
     def close_full_position(self, strategy_name: str, symbol: str, closing_price: float, timestamp: datetime):
         open_position = self.get_open_position(strategy_name, symbol)
         if not open_position: return None
+        
         remaining_quantity = open_position['current_quantity']
-        net_pnl = self._calculate_pnl(open_position, closing_price, remaining_quantity)
+        net_pnl = self._calculate_pnl(strategy_name, open_position['entry_price'], closing_price, remaining_quantity, open_position['action'])
+        
         self.cash[strategy_name] += closing_price * remaining_quantity
+        
         if net_pnl > 0:
             self.banked_profit[strategy_name] += net_pnl * 0.5
             self.cash[strategy_name] = self.initial_capital[strategy_name] + (net_pnl * 0.5)
         else:
             self.banked_profit[strategy_name] += net_pnl
             self.cash[strategy_name] = self.initial_capital[strategy_name]
+
         del self.positions[strategy_name][symbol]
         self._update_db_state(strategy_name)
         logger.info(f"FULL EXIT: Closed remaining {remaining_quantity} of {symbol}. P&L: ₹{net_pnl:,.2f}")
