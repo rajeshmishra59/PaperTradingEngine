@@ -65,7 +65,7 @@ class ZerodhaInterface:
             return pd.DataFrame()
         
         try:
-            records = self.kite.historical_data(instrument_token=instrument_token, from_date=from_date, to_date=to_date, interval=interval)
+            records = self.kite.historical_data(instrument_token=instrument_token, from_date=from_date.replace(tzinfo=None), to_date=to_date.replace(tzinfo=None), interval=interval)
             if not records:
                 logger.warning(f"No historical data received for {symbol} for the given period.")
                 return pd.DataFrame()

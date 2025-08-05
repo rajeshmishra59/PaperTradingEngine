@@ -116,7 +116,7 @@ def run_paper_trader():
                     
                     for symbol in all_data_1min.keys():
                         latest_timestamp = all_data_1min[symbol].index[-1]
-                        from_date_live = latest_timestamp.to_pydatetime() + timedelta(minutes=1)
+                        from_date_live = latest_timestamp.to_pydatetime().astimezone(kolkata_tz) + timedelta(minutes=1)
                         if from_date_live < now_aware:
                             new_data = broker.get_historical_data(symbol, 'minute', from_date=from_date_live, to_date=now_aware)
                             if not new_data.empty:

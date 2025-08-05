@@ -5,6 +5,8 @@ kiteconnect
 python-dotenv
 numpy
 scipy
+pandas_ta
+
 
 #Ise Chalane Ke Liye Antim Steps:
 
