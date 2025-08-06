@@ -1,16 +1,17 @@
-# File: config.py (Updated "Best of Both Worlds" Version)
+# File: config.py (Final Centralized Version)
 
 from datetime import time
 import os
 from dotenv import load_dotenv
 
 # --- API KEY LOADING ---
-# .env file se API credentials load karega
+# .env file se sabhi zaroori credentials yahin load honge
 load_dotenv() 
 ZERODHA_API_KEY = os.getenv("ZERODHA_API_KEY")
+ZERODHA_API_SECRET = os.getenv("ZERODHA_API_SECRET") # <-- YAHAN PAR SECRET KEY KO ADD KIYA GAYA HAI
 ZERODHA_ACCESS_TOKEN = os.getenv("ZERODHA_ACCESS_TOKEN")
 
-# --- TRADING SESSION (from new config) ---
+# --- TRADING SESSION ---
 TRADING_START_TIME = time(9, 15)
 TRADING_END_TIME = time(15, 35) # NSE Equities ke liye standard time
 
@@ -31,11 +32,6 @@ NIFTY_NEXT_50 = [
 ]
 
 # --- STRATEGY & SYMBOL CONFIGURATION ---
-# Yahan aap har strategy ke liye uska timeframe aur symbol list set kar sakte hain.
-
-# Sabhi 100 stocks ki ek master list
-ALL_SYMBOLS = NIFTY_50 + NIFTY_NEXT_50
-
 STRATEGY_CONFIG = {
     "AlphaOneStrategy": {
         "timeframe": 15,
@@ -51,20 +47,19 @@ STRATEGY_CONFIG = {
         "timeframe": 5,
         "symbols": NIFTY_50,
         "capital": 100000
-    },  # <-- YEH COMMA MISSING THA
+    },
     "SankhyaEkStrategy": {
         "timeframe": 5,
         "symbols": NIFTY_50,
         "capital": 100000
     },
-    # --- Add your new strategy here ---
     "TestStrategy": {
-        "timeframe": 1,  # Using 1-minute timeframe for this strategy
-        "symbols": NIFTY_50,  # Assign a few symbols to test
-        "capital": 100000  # Allocate capital for the test strategy
+        "timeframe": 1,
+        "symbols": NIFTY_50,
+        "capital": 100000
     }
 }
 
-# --- EXECUTION SETTINGS (from new config) ---
+# --- EXECUTION SETTINGS ---
 MAIN_LOOP_SLEEP_SECONDS = 30
 REQUIRED_INITIAL_CANDLES = 100

@@ -1,5 +1,5 @@
 # File: portfolio_manager.py
-# Final Corrected Version with all fixes
+# Final Professional Version: Ismein 2% risk rule aur advanced P&L management shaamil hai.
 
 import logging
 from datetime import datetime
@@ -18,13 +18,21 @@ class PortfolioManager:
         self.banked_profit = {}
         self.total_charges = {}
         self.initial_capital = {}
-        self.positions = {}
         
-        self._initialize_state()
-        logger.info("✅ Portfolio Manager (DB version) initialized.")
+        # --- UPGRADE: Positions ko ab database se load kiya jaayega ---
+        self.positions = self.db.load_all_open_positions() 
+        
+        self._initialize_financial_state()
+        logger.info("✅ Portfolio Manager (Professional Version) initialized.")
         self.log_portfolio_summary()
+        if self.positions:
+            logger.info("--- Loaded Carry-Forward Positions ---")
+            for strat, sym_dict in self.positions.items():
+                for sym, pos in sym_dict.items():
+                    logger.info(f"  > {strat}: {pos['action']} {sym} @ {pos['entry_price']}")
 
-    def _initialize_state(self):
+    def _initialize_financial_state(self):
+        """Sirf financial data (capital, pnl) ko initialize karta hai."""
         state_from_db = self.db.load_full_portfolio_state()
         
         for strat_name, initial_cap in self.strategy_capital_config.items():
@@ -42,6 +50,7 @@ class PortfolioManager:
                 self.db.save_portfolio_state(strat_name, initial_cap, initial_cap, 0.0, 0.0)
 
     def _update_db_state(self, strategy_name):
+        """Financial state ko database mein update karta hai."""
         self.db.save_portfolio_state(
             strategy_name=strategy_name,
             initial_capital=self.initial_capital[strategy_name],
@@ -50,13 +59,34 @@ class PortfolioManager:
             total_charges=self.total_charges[strategy_name]
         )
 
-    # --- SAHI LOGIC WALA FUNCTION ---
     def record_trade(self, strategy_name: str, symbol: str, action: str, price: float, quantity: int, timestamp: datetime, 
                      stop_loss: float, target: float, trailing_sl_pct: float = 0.0):
+        """Ek naye trade ko record karta hai, 2% risk rule check karta hai, aur use DB mein save karta hai."""
+        
+        # --- NAYA LOGIC: 2% Risk Rule ---
+        trading_capital = self.cash.get(strategy_name, 0)
+        max_allowed_risk = trading_capital * 0.02 # Trading capital ka 2%
+
+        if action.upper() == 'LONG':
+            potential_loss = (price - stop_loss) * quantity
+        else: # SHORT
+            potential_loss = (stop_loss - price) * quantity
+        
+        if potential_loss <= 0:
+            logger.warning(f"REJECTED: Invalid SL for {symbol}. Potential loss is not positive.")
+            return False
+
+        if potential_loss > max_allowed_risk:
+            logger.warning(f"REJECTED: Risk for {symbol} (₹{potential_loss:,.2f}) exceeds 2% of capital (Max Risk: ₹{max_allowed_risk:,.2f}).")
+            return False
+        
+        logger.info(f"RISK CHECK PASSED for {symbol}: Potential Loss ₹{potential_loss:,.2f} is within the 2% limit.")
+
+        # Purani checks waise hi rahenge
         entry_charges = calculate_charges(quantity, price, is_intraday=True)['total']
         total_cost = (price * quantity) + entry_charges
         
-        if self.cash.get(strategy_name, 0) < total_cost:
+        if trading_capital < total_cost:
             logger.warning(f"REJECTED: Insufficient funds for {strategy_name}.")
             return False
 
@@ -64,13 +94,8 @@ class PortfolioManager:
             logger.warning(f"REJECTED: {strategy_name} already has a position for {symbol}.")
             return False
 
-        # Cash se poori laagat (cost) kam karein
         self.cash[strategy_name] -= total_cost
-        
-        # --- YAHAN PAR BUG FIX KIYA GAYA HAI ---
-        # Entry charges ko total charges me record karein
         self.total_charges[strategy_name] += entry_charges
-        # --- END OF FIX ---
         
         position_details = {
             'action': action.upper(), 'entry_price': price, 'quantity': quantity,
@@ -81,11 +106,15 @@ class PortfolioManager:
         }
         self.positions.setdefault(strategy_name, {})[symbol] = position_details
         
+        self.db.save_open_position(strategy_name, symbol, position_details)
         self._update_db_state(strategy_name)
         logger.info(f"EXECUTED: {strategy_name} {action.upper()} {quantity} of {symbol} @ {price:.2f}")
         return True
 
     def close_position(self, strategy_name: str, symbol: str, closing_price: float, timestamp: datetime):
+        """
+        Ek position ko close karta hai aur advanced P&L logic aur drawdown protection apply karta hai.
+        """
         open_position = self.get_open_position(strategy_name, symbol)
         if not open_position: return None
 
@@ -94,42 +123,58 @@ class PortfolioManager:
         
         entry_value = entry_price * quantity
         closing_value = closing_price * quantity
-        entry_charges = calculate_charges(quantity, entry_price, is_intraday=True)['total']
+        
+        entry_charges_on_open = calculate_charges(quantity, entry_price, is_intraday=True)['total']
         exit_charges = calculate_charges(quantity, closing_price, is_intraday=True)['total']
-        total_trade_charges = entry_charges + exit_charges
+        
         gross_pnl = (closing_value - entry_value) if open_position['action'] == 'LONG' else (entry_value - closing_value)
-        net_pnl = gross_pnl - total_trade_charges
+        # Net PnL = Gross PnL - (entry + exit charges)
+        net_pnl = gross_pnl - entry_charges_on_open - exit_charges
 
-        self.cash[strategy_name] += (closing_value - exit_charges)
+        # Cash update
+        self.cash[strategy_name] += closing_value - exit_charges
         self.total_charges[strategy_name] += exit_charges
 
-        initial_cap = self.initial_capital.get(strategy_name, 0)
-        
+        # --- NAYA LOGIC: Advanced P&L Management & Drawdown Protection ---
         if net_pnl > 0:
+            # Profit hua hai
             profit_to_bank = net_pnl * 0.50
+            # Trading capital se 50% profit nikalkar bank mein daalein
             self.cash[strategy_name] -= profit_to_bank
-            self.banked_profit[strategy_name] += net_pnl
-            logger.info(f"PROFIT: Moved ₹{profit_to_bank:,.2f} to bank for {strategy_name}.")
+            self.banked_profit[strategy_name] += profit_to_bank
+            logger.info(f"PROFIT: Net PnL ₹{net_pnl:,.2f}. Moved ₹{profit_to_bank:,.2f} (50%) to banked profit for {strategy_name}.")
         else:
-            self.banked_profit[strategy_name] += net_pnl
+            # Loss hua hai
+            # Loss trading capital se automatically kam ho chuka hai
+            logger.warning(f"LOSS: Net PnL for {symbol} is ₹{net_pnl:,.2f}.")
             
-            if self.cash[strategy_name] < initial_cap:
-                shortfall = initial_cap - self.cash[strategy_name]
-                available_bank_funds = max(0, self.banked_profit[strategy_name] - net_pnl)
-                refill_amount = min(shortfall, available_bank_funds)
+            # Drawdown Protection Logic
+            initial_cap = self.initial_capital.get(strategy_name, 0)
+            current_trading_cap = self.cash.get(strategy_name, 0)
+            
+            if current_trading_cap < initial_cap:
+                drawdown = initial_cap - current_trading_cap
+                available_banked_profit = self.banked_profit.get(strategy_name, 0)
+                
+                # Bank se utna hi paisa nikalein jitna zaroori hai aur jitna available hai
+                refill_amount = min(drawdown, available_banked_profit)
                 
                 if refill_amount > 0:
                     self.cash[strategy_name] += refill_amount
                     self.banked_profit[strategy_name] -= refill_amount
-                    logger.info(f"REFILL: Moved ₹{refill_amount:,.2f} from bank to capital for {strategy_name}.")
+                    logger.info(f"DRAWDOWN REFILL: Moved ₹{refill_amount:,.2f} from banked profit to trading capital for {strategy_name}.")
 
+        # Memory aur DB se position delete karein
         del self.positions[strategy_name][symbol]
+        self.db.delete_open_position(strategy_name, symbol)
+
         self._update_db_state(strategy_name)
         logger.info(f"CLOSED: {strategy_name} position for {symbol}. Net P&L: ₹{net_pnl:,.2f}")
         self.log_portfolio_summary()
         return net_pnl
-
+    
     def update_position_price_and_sl(self, strategy_name: str, symbol: str, current_price: float):
+        """Position ka TSL update karta hai aur use database mein save karta hai."""
         position = self.get_open_position(strategy_name, symbol)
         if not position or position.get('trailing_sl_pct', 0) == 0: return
 
@@ -148,7 +193,7 @@ class PortfolioManager:
         if new_sl != original_sl:
             position['stop_loss'] = new_sl
             logger.info(f"TSL UPDATE for {symbol}: Stop-loss trailed to ₹{new_sl:,.2f}")
-            self._update_db_state(strategy_name)
+            self.db.save_open_position(strategy_name, symbol, position)
 
     def get_open_position(self, strategy_name: str, symbol: str):
         return self.positions.get(strategy_name, {}).get(symbol)

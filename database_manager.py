@@ -1,16 +1,17 @@
 # File: database_manager.py
-# Manages all interactions with the SQLite database.
+# Swing Trading Upgrade: open_positions table ko manage karne ke liye naye functions.
 
 import sqlite3
 import logging
 import pandas as pd
+import json # JSON ka istemal position details ko save karne ke liye
 
 logger = logging.getLogger(__name__)
 
 class DatabaseManager:
     def __init__(self, db_name="trading_data.db"):
         """
-        Initializes the Database Manager and ensures all necessary tables exist.
+        Database Manager ko initialize karta hai aur sabhi zaroori tables banata hai.
         """
         self.db_name = db_name
         
@@ -24,11 +25,11 @@ class DatabaseManager:
 
     def _create_tables(self):
         """
-        Creates the 'portfolio_state' and 'trades' tables if they don't already exist.
+        Zaroori tables (portfolio_state, trades, open_positions) banata hai.
         """
         cursor = self.conn.cursor()
         try:
-            # Table to store portfolio state for each strategy
+            # Table 1: Har strategy ka financial state store karne ke liye
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS portfolio_state (
                     strategy_name TEXT PRIMARY KEY,
@@ -39,7 +40,7 @@ class DatabaseManager:
                 )
             """)
             
-            # Table to log every single trade
+            # Table 2: Har trade ko log karne ke liye
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS trades (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,16 +53,69 @@ class DatabaseManager:
                     details TEXT
                 )
             """)
+
+            # --- NAYI TABLE: Open positions ko save karne ke liye ---
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS open_positions (
+                    id TEXT PRIMARY KEY, -- "strategy_name:symbol" format
+                    strategy_name TEXT NOT NULL,
+                    symbol TEXT NOT NULL,
+                    position_details TEXT NOT NULL -- Position dictionary ko JSON string ke roop mein save karein
+                )
+            """)
+
             self.conn.commit()
             logger.info("✅ Database tables verified/created successfully.")
         except sqlite3.Error as e:
             logger.error(f"❌ Error creating tables: {e}")
             self.conn.rollback()
 
+    # --- NAYE FUNCTIONS ---
+
+    def save_open_position(self, strategy_name, symbol, position_details):
+        """Ek open position ko database mein save ya update karta hai."""
+        position_id = f"{strategy_name}:{symbol}"
+        details_json = json.dumps(position_details) # Dictionary ko JSON string mein convert karein
+        try:
+            with self.conn:
+                self.conn.execute("""
+                    INSERT INTO open_positions (id, strategy_name, symbol, position_details)
+                    VALUES (?, ?, ?, ?)
+                    ON CONFLICT(id) DO UPDATE SET
+                    position_details=excluded.position_details
+                """, (position_id, strategy_name, symbol, details_json))
+        except sqlite3.Error as e:
+            logger.error(f"❌ Failed to save open position for {symbol}: {e}")
+
+    def delete_open_position(self, strategy_name, symbol):
+        """Ek open position ko database se delete karta hai jab woh close ho jaati hai."""
+        position_id = f"{strategy_name}:{symbol}"
+        try:
+            with self.conn:
+                self.conn.execute("DELETE FROM open_positions WHERE id = ?", (position_id,))
+        except sqlite3.Error as e:
+            logger.error(f"❌ Failed to delete open position for {symbol}: {e}")
+
+    def load_all_open_positions(self):
+        """Engine start hone par sabhi open positions ko database se load karta hai."""
+        try:
+            with self.conn:
+                cursor = self.conn.execute("SELECT strategy_name, symbol, position_details FROM open_positions")
+                rows = cursor.fetchall()
+                positions = {}
+                for row in rows:
+                    strategy_name, symbol, details_json = row
+                    if strategy_name not in positions:
+                        positions[strategy_name] = {}
+                    positions[strategy_name][symbol] = json.loads(details_json) # JSON string ko dictionary mein convert karein
+                logger.info(f"Loaded {len(rows)} open position(s) from database.")
+                return positions
+        except sqlite3.Error as e:
+            logger.error(f"❌ Failed to load open positions: {e}")
+            return {}
+
+    # --- Purane functions waise hi rahenge ---
     def save_portfolio_state(self, strategy_name, initial_capital, trading_capital, banked_profit, total_charges):
-        """
-        Saves or updates the financial state for a single strategy.
-        """
         try:
             with self.conn:
                 self.conn.execute("""
@@ -76,15 +130,10 @@ class DatabaseManager:
             logger.error(f"❌ Failed to save portfolio state for {strategy_name}: {e}")
 
     def load_full_portfolio_state(self):
-        """
-        Loads the complete financial state for all strategies from the database.
-        Returns a dictionary.
-        """
         try:
             with self.conn:
                 cursor = self.conn.execute("SELECT * FROM portfolio_state")
                 rows = cursor.fetchall()
-                # Convert list of tuples to a nested dictionary for easy access
                 state = {
                     row[0]: {
                         'initial_capital': row[1],
@@ -99,9 +148,6 @@ class DatabaseManager:
             return {}
 
     def log_trade(self, timestamp, strategy_name, symbol, action, price, quantity, details):
-        """
-        Inserts a new trade record into the 'trades' table.
-        """
         try:
             with self.conn:
                 self.conn.execute("""
@@ -112,9 +158,6 @@ class DatabaseManager:
             logger.error(f"❌ Failed to log trade for {strategy_name}: {e}")
             
     def load_all_trades(self):
-        """
-        Loads all trades from the 'trades' table into a pandas DataFrame.
-        """
         try:
             df = pd.read_sql_query("SELECT * FROM trades", self.conn)
             return df
@@ -123,9 +166,6 @@ class DatabaseManager:
             return pd.DataFrame()
 
     def close_connection(self):
-        """
-        Closes the database connection.
-        """
         if self.conn:
             self.conn.close()
             logger.info("Database connection closed.")
