@@ -13,7 +13,7 @@ class DatabaseManager:
         Initializes the Database Manager and ensures all necessary tables exist.
         """
         self.db_name = db_name
-        self.conn = None
+        
         try:
             self.conn = sqlite3.connect(self.db_name, check_same_thread=False)
             logger.info(f"✅ Successfully connected to database '{self.db_name}'.")

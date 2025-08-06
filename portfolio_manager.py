@@ -1,8 +1,9 @@
 # File: portfolio_manager.py
-# Final Version with Database and Trailing Stop-Loss
+# Final Corrected Version with all fixes
 
 import logging
 from datetime import datetime
+from typing import Optional
 from database_manager import DatabaseManager
 from charge_calculator import calculate_charges
 
@@ -49,9 +50,10 @@ class PortfolioManager:
             total_charges=self.total_charges[strategy_name]
         )
 
+    # --- SAHI LOGIC WALA FUNCTION ---
     def record_trade(self, strategy_name: str, symbol: str, action: str, price: float, quantity: int, timestamp: datetime, 
                      stop_loss: float, target: float, trailing_sl_pct: float = 0.0):
-        entry_charges = calculate_charges(quantity, price)['total']
+        entry_charges = calculate_charges(quantity, price, is_intraday=True)['total']
         total_cost = (price * quantity) + entry_charges
         
         if self.cash.get(strategy_name, 0) < total_cost:
@@ -62,8 +64,13 @@ class PortfolioManager:
             logger.warning(f"REJECTED: {strategy_name} already has a position for {symbol}.")
             return False
 
+        # Cash se poori laagat (cost) kam karein
         self.cash[strategy_name] -= total_cost
+        
+        # --- YAHAN PAR BUG FIX KIYA GAYA HAI ---
+        # Entry charges ko total charges me record karein
         self.total_charges[strategy_name] += entry_charges
+        # --- END OF FIX ---
         
         position_details = {
             'action': action.upper(), 'entry_price': price, 'quantity': quantity,
@@ -82,31 +89,41 @@ class PortfolioManager:
         open_position = self.get_open_position(strategy_name, symbol)
         if not open_position: return None
 
-        entry_price, quantity = open_position['entry_price'], open_position['quantity']
-        closing_value = closing_price * quantity
+        entry_price = open_position['entry_price']
+        quantity = open_position['quantity']
+        
         entry_value = entry_price * quantity
-        entry_charges = calculate_charges(quantity, entry_price)['total']
-        exit_charges = calculate_charges(quantity, closing_price)['total']
+        closing_value = closing_price * quantity
+        entry_charges = calculate_charges(quantity, entry_price, is_intraday=True)['total']
+        exit_charges = calculate_charges(quantity, closing_price, is_intraday=True)['total']
         total_trade_charges = entry_charges + exit_charges
         gross_pnl = (closing_value - entry_value) if open_position['action'] == 'LONG' else (entry_value - closing_value)
         net_pnl = gross_pnl - total_trade_charges
-        
-        self.cash[strategy_name] += closing_value
-        self.total_charges[strategy_name] += exit_charges
-        
-        initial_cap = self.initial_capital.get(strategy_name, 0)
 
+        self.cash[strategy_name] += (closing_value - exit_charges)
+        self.total_charges[strategy_name] += exit_charges
+
+        initial_cap = self.initial_capital.get(strategy_name, 0)
+        
         if net_pnl > 0:
-            profit_to_reinvest = net_pnl * 0.50
             profit_to_bank = net_pnl * 0.50
-            self.banked_profit[strategy_name] += profit_to_bank
-            self.cash[strategy_name] = initial_cap + profit_to_reinvest
+            self.cash[strategy_name] -= profit_to_bank
+            self.banked_profit[strategy_name] += net_pnl
+            logger.info(f"PROFIT: Moved ₹{profit_to_bank:,.2f} to bank for {strategy_name}.")
         else:
             self.banked_profit[strategy_name] += net_pnl
-            self.cash[strategy_name] = initial_cap
+            
+            if self.cash[strategy_name] < initial_cap:
+                shortfall = initial_cap - self.cash[strategy_name]
+                available_bank_funds = max(0, self.banked_profit[strategy_name] - net_pnl)
+                refill_amount = min(shortfall, available_bank_funds)
+                
+                if refill_amount > 0:
+                    self.cash[strategy_name] += refill_amount
+                    self.banked_profit[strategy_name] -= refill_amount
+                    logger.info(f"REFILL: Moved ₹{refill_amount:,.2f} from bank to capital for {strategy_name}.")
 
         del self.positions[strategy_name][symbol]
-        
         self._update_db_state(strategy_name)
         logger.info(f"CLOSED: {strategy_name} position for {symbol}. Net P&L: ₹{net_pnl:,.2f}")
         self.log_portfolio_summary()
@@ -130,7 +147,8 @@ class PortfolioManager:
 
         if new_sl != original_sl:
             position['stop_loss'] = new_sl
-            logger.info(f"TSL UPDATE for {symbol}: Stop-loss trailed to ₹{new_sl:,.2f}"); self._save_state()
+            logger.info(f"TSL UPDATE for {symbol}: Stop-loss trailed to ₹{new_sl:,.2f}")
+            self._update_db_state(strategy_name)
 
     def get_open_position(self, strategy_name: str, symbol: str):
         return self.positions.get(strategy_name, {}).get(symbol)

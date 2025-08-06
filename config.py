@@ -12,7 +12,7 @@ ZERODHA_ACCESS_TOKEN = os.getenv("ZERODHA_ACCESS_TOKEN")
 
 # --- TRADING SESSION (from new config) ---
 TRADING_START_TIME = time(9, 15)
-TRADING_END_TIME = time(15, 30) # NSE Equities ke liye standard time
+TRADING_END_TIME = time(15, 35) # NSE Equities ke liye standard time
 
 # --- MASTER SYMBOL LISTS ---
 NIFTY_50 = [
@@ -38,22 +38,33 @@ ALL_SYMBOLS = NIFTY_50 + NIFTY_NEXT_50
 
 STRATEGY_CONFIG = {
     "AlphaOneStrategy": {
-        "timeframe": 15,  # AlphaOne 15-minute timeframe par chalegi
+        "timeframe": 15,
         "symbols": NIFTY_50,
         "capital": 100000
     },
     "ApexStrategy": {
-        "timeframe": 5,   # Apex 5-minute timeframe par chalegi
-        "symbols": ALL_SYMBOLS,
+        "timeframe": 5,
+        "symbols": NIFTY_50,
         "capital": 100000
     },
     "NumeroUnoStrategy": {
-        "timeframe": 5,   # NumeroUno 5-minute timeframe par chalegi
-        "symbols": ALL_SYMBOLS,
+        "timeframe": 5,
+        "symbols": NIFTY_50,
         "capital": 100000
+    },  # <-- YEH COMMA MISSING THA
+    "SankhyaEkStrategy": {
+        "timeframe": 5,
+        "symbols": NIFTY_50,
+        "capital": 100000
+    },
+    # --- Add your new strategy here ---
+    "TestStrategy": {
+        "timeframe": 1,  # Using 1-minute timeframe for this strategy
+        "symbols": NIFTY_50,  # Assign a few symbols to test
+        "capital": 100000  # Allocate capital for the test strategy
     }
 }
 
 # --- EXECUTION SETTINGS (from new config) ---
-MAIN_LOOP_SLEEP_SECONDS = 60
+MAIN_LOOP_SLEEP_SECONDS = 30
 REQUIRED_INITIAL_CANDLES = 100

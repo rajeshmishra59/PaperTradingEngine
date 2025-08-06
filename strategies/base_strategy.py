@@ -1,7 +1,8 @@
-# File: strategies/base_strategy.py
+# File: strategies/base_strategy.py (Final Production Version)
 
 import pandas as pd
 import logging
+from typing import Optional
 
 class BaseStrategy:
     """
@@ -9,53 +10,59 @@ class BaseStrategy:
     strategy has a consistent interface for initialization, logging, and 
     signal generation.
     """
-    def __init__(self, df: pd.DataFrame, df_15min: pd.DataFrame = None, symbol: str = None, logger=None, **kwargs):
+    def __init__(self, df: pd.DataFrame, symbol: Optional[str] = None, logger=None, 
+                 primary_timeframe: Optional[int] = None, **kwargs):
         """
         Initializes the base strategy.
 
         Args:
-            df (pd.DataFrame): The primary DataFrame, which will be the raw 1-minute data.
-            df_15min (pd.DataFrame, optional): Secondary timeframe data. Defaults to None.
-            symbol (str, optional): The trading symbol. Defaults to None.
+            df (pd.DataFrame): The primary DataFrame, which must be the raw 1-minute data.
+            symbol (Optional[str], optional): The trading symbol. Defaults to None.
             logger (logging.Logger, optional): The logger instance. Defaults to None.
+            primary_timeframe (Optional[int], optional): The main timeframe for the strategy (e.g., 5 for 5-min).
         """
         self.name = self.__class__.__name__
         self.symbol = symbol
-        self.df = df # This will hold the aggregated dataframe
-        self.df_1min_raw = df # This will always be the raw 1-min data
+        self.primary_timeframe = primary_timeframe
+        
+        # This will always hold the raw 1-min data passed during initialization
+        self.df_1min_raw = df 
+        
+        # This will hold the resampled, strategy-specific timeframe data (e.g., 5-min)
+        # It's initialized as empty and populated by calculate_indicators()
+        self.df = pd.DataFrame() 
+        
         self.logger = logger or logging.getLogger(__name__)
 
-    def log(self, message, level='info'):
-        """Helper method for logging."""
+    def log(self, message: str, level: str = 'info'):
+        """Helper method for structured logging."""
         if self.logger:
-            if level == 'info':
-                self.logger.info(f"[{self.name}][{self.symbol}] {message}")
-            elif level == 'debug':
-                self.logger.debug(f"[{self.name}][{self.symbol}] {message}")
-            elif level == 'warning':
-                self.logger.warning(f"[{self.name}][{self.symbol}] {message}")
-            elif level == 'error':
-                self.logger.error(f"[{self.name}][{self.symbol}] {message}")
+            # Safely get the logging function (e.g., logger.info, logger.warning)
+            log_func = getattr(self.logger, level, self.logger.info)
+            log_func(f"[{self.name}][{self.symbol}] {message}")
 
     def calculate_indicators(self):
         """
-        Placeholder for calculating technical indicators.
+        Resamples data and calculates technical indicators.
         Must be implemented by child strategies.
+        This method is responsible for populating `self.df`.
         """
-        raise NotImplementedError("Each strategy must implement 'calculate_indicators'")
+        raise NotImplementedError(f"'calculate_indicators' must be implemented in {self.name}")
 
     def generate_signals(self):
         """
-        Placeholder for generating trading signals.
+        Generates trading signals based on calculated indicators.
         Must be implemented by child strategies.
         """
-        raise NotImplementedError("Each strategy must implement 'generate_signals'")
+        raise NotImplementedError(f"'generate_signals' must be implemented in {self.name}")
 
-    def run(self):
+    def run(self) -> pd.DataFrame:
         """
-        Executes the strategy's logic: calculates indicators and generates signals.
+        Executes the full strategy logic: calculates indicators and generates signals.
         Returns the DataFrame with signals.
         """
         self.calculate_indicators()
-        self.generate_signals()
+        # Only generate signals if the indicators were calculated successfully
+        if not self.df.empty:
+            self.generate_signals()
         return self.df
