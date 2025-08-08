@@ -53,8 +53,13 @@ STRATEGY_CONFIG = {
         "symbols": NIFTY_50,
         "capital": 100000
     },
+    "RangeBoundStrategy": {
+        "timeframe": 15, 
+        "symbols": NIFTY_50,
+        "capital": 100000
+    },
     "TestStrategy": {
-        "timeframe": 1,
+        "timeframe": 15,
         "symbols": NIFTY_50,
         "capital": 100000
     }

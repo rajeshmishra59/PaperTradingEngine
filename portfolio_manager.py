@@ -1,5 +1,6 @@
 # File: portfolio_manager.py
 # Final Professional Version: Ismein 2% risk rule aur advanced P&L management shaamil hai.
+# UPDATED: Now saves the current price to the database for live P&L tracking.
 
 import logging
 from datetime import datetime
@@ -19,7 +20,6 @@ class PortfolioManager:
         self.total_charges = {}
         self.initial_capital = {}
         
-        # --- UPGRADE: Positions ko ab database se load kiya jaayega ---
         self.positions = self.db.load_all_open_positions() 
         
         self._initialize_financial_state()
@@ -63,9 +63,8 @@ class PortfolioManager:
                      stop_loss: float, target: float, trailing_sl_pct: float = 0.0):
         """Ek naye trade ko record karta hai, 2% risk rule check karta hai, aur use DB mein save karta hai."""
         
-        # --- NAYA LOGIC: 2% Risk Rule ---
         trading_capital = self.cash.get(strategy_name, 0)
-        max_allowed_risk = trading_capital * 0.02 # Trading capital ka 2%
+        max_allowed_risk = trading_capital * 0.02 
 
         if action.upper() == 'LONG':
             potential_loss = (price - stop_loss) * quantity
@@ -82,7 +81,6 @@ class PortfolioManager:
         
         logger.info(f"RISK CHECK PASSED for {symbol}: Potential Loss ₹{potential_loss:,.2f} is within the 2% limit.")
 
-        # Purani checks waise hi rahenge
         entry_charges = calculate_charges(quantity, price, is_intraday=True)['total']
         total_cost = (price * quantity) + entry_charges
         
@@ -103,6 +101,7 @@ class PortfolioManager:
             'trailing_sl_pct': trailing_sl_pct,
             'highest_price_since_entry': price if action.upper() == 'LONG' else 0,
             'lowest_price_since_entry': price if action.upper() == 'SHORT' else 999999,
+            'current_price': price # Initialize current_price with entry_price
         }
         self.positions.setdefault(strategy_name, {})[symbol] = position_details
         
@@ -128,27 +127,19 @@ class PortfolioManager:
         exit_charges = calculate_charges(quantity, closing_price, is_intraday=True)['total']
         
         gross_pnl = (closing_value - entry_value) if open_position['action'] == 'LONG' else (entry_value - closing_value)
-        # Net PnL = Gross PnL - (entry + exit charges)
         net_pnl = gross_pnl - entry_charges_on_open - exit_charges
 
-        # Cash update
         self.cash[strategy_name] += closing_value - exit_charges
         self.total_charges[strategy_name] += exit_charges
 
-        # --- NAYA LOGIC: Advanced P&L Management & Drawdown Protection ---
         if net_pnl > 0:
-            # Profit hua hai
             profit_to_bank = net_pnl * 0.50
-            # Trading capital se 50% profit nikalkar bank mein daalein
             self.cash[strategy_name] -= profit_to_bank
             self.banked_profit[strategy_name] += profit_to_bank
             logger.info(f"PROFIT: Net PnL ₹{net_pnl:,.2f}. Moved ₹{profit_to_bank:,.2f} (50%) to banked profit for {strategy_name}.")
         else:
-            # Loss hua hai
-            # Loss trading capital se automatically kam ho chuka hai
             logger.warning(f"LOSS: Net PnL for {symbol} is ₹{net_pnl:,.2f}.")
             
-            # Drawdown Protection Logic
             initial_cap = self.initial_capital.get(strategy_name, 0)
             current_trading_cap = self.cash.get(strategy_name, 0)
             
@@ -156,7 +147,6 @@ class PortfolioManager:
                 drawdown = initial_cap - current_trading_cap
                 available_banked_profit = self.banked_profit.get(strategy_name, 0)
                 
-                # Bank se utna hi paisa nikalein jitna zaroori hai aur jitna available hai
                 refill_amount = min(drawdown, available_banked_profit)
                 
                 if refill_amount > 0:
@@ -164,7 +154,6 @@ class PortfolioManager:
                     self.banked_profit[strategy_name] -= refill_amount
                     logger.info(f"DRAWDOWN REFILL: Moved ₹{refill_amount:,.2f} from banked profit to trading capital for {strategy_name}.")
 
-        # Memory aur DB se position delete karein
         del self.positions[strategy_name][symbol]
         self.db.delete_open_position(strategy_name, symbol)
 
@@ -176,24 +165,31 @@ class PortfolioManager:
     def update_position_price_and_sl(self, strategy_name: str, symbol: str, current_price: float):
         """Position ka TSL update karta hai aur use database mein save karta hai."""
         position = self.get_open_position(strategy_name, symbol)
-        if not position or position.get('trailing_sl_pct', 0) == 0: return
+        if not position: return
 
-        original_sl = position['stop_loss']
-        new_sl = original_sl
+        # --- NEW: Update the current price in the position details ---
+        position['current_price'] = current_price
 
-        if position['action'] == 'LONG':
-            position['highest_price_since_entry'] = max(position.get('highest_price_since_entry', 0), current_price)
-            trailing_stop_price = position['highest_price_since_entry'] * (1 - position['trailing_sl_pct'] / 100)
-            new_sl = max(original_sl, trailing_stop_price)
-        elif position['action'] == 'SHORT':
-            position['lowest_price_since_entry'] = min(position.get('lowest_price_since_entry', 999999), current_price)
-            trailing_stop_price = position['lowest_price_since_entry'] * (1 + position['trailing_sl_pct'] / 100)
-            new_sl = min(original_sl, trailing_stop_price)
+        # TSL Logic (only if TSL is enabled for the position)
+        if position.get('trailing_sl_pct', 0) > 0:
+            original_sl = position['stop_loss']
+            new_sl = original_sl
 
-        if new_sl != original_sl:
-            position['stop_loss'] = new_sl
-            logger.info(f"TSL UPDATE for {symbol}: Stop-loss trailed to ₹{new_sl:,.2f}")
-            self.db.save_open_position(strategy_name, symbol, position)
+            if position['action'] == 'LONG':
+                position['highest_price_since_entry'] = max(position.get('highest_price_since_entry', 0), current_price)
+                trailing_stop_price = position['highest_price_since_entry'] * (1 - position['trailing_sl_pct'] / 100)
+                new_sl = max(original_sl, trailing_stop_price)
+            elif position['action'] == 'SHORT':
+                position['lowest_price_since_entry'] = min(position.get('lowest_price_since_entry', 999999), current_price)
+                trailing_stop_price = position['lowest_price_since_entry'] * (1 + position['trailing_sl_pct'] / 100)
+                new_sl = min(original_sl, trailing_stop_price)
+
+            if new_sl != original_sl:
+                position['stop_loss'] = new_sl
+                logger.info(f"TSL UPDATE for {symbol}: Stop-loss trailed to ₹{new_sl:,.2f}")
+        
+        # Save all updates (current_price and any TSL changes) to the database
+        self.db.save_open_position(strategy_name, symbol, position)
 
     def get_open_position(self, strategy_name: str, symbol: str):
         return self.positions.get(strategy_name, {}).get(symbol)

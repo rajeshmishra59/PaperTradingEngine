@@ -1,0 +1,66 @@
+# File: config.yml
+# Centralized configuration for the Paper Trading Engine
+
+# --- API KEY LOADING ---
+# These are loaded from your .env file into the environment
+# The application will read them from the environment variables
+zerodha:
+  api_key: ${ZERODHA_API_KEY}
+  api_secret: ${ZERODHA_API_SECRET}
+  access_token: ${ZERODHA_ACCESS_TOKEN}
+
+# --- TRADING SESSION ---
+trading_session:
+  start_time: "09:15"
+  end_time: "15:35"
+
+# --- EXECUTION SETTINGS ---
+execution:
+  main_loop_sleep_seconds: 30
+  required_initial_candles: 100
+  # Define constants for risk management
+  risk_management:
+    aggressive_tsl_start_time: "15:00"
+    final_exit_time: "15:20"
+    eod_aggressive_tsl_pct: 0.001 # 0.1%
+
+# --- MASTER SYMBOL LISTS ---
+# Define symbol lists that can be reused in strategies
+symbol_lists:
+  nifty_50: [
+    "RELIANCE", "TCS", "INFY", "HDFCBANK", "ICICIBANK", "HINDUNILVR", "SBIN", "ITC", "BHARTIARTL", "KOTAKBANK",
+    "LT", "ASIANPAINT", "HCLTECH", "BAJFINANCE", "MARUTI", "AXISBANK", "ULTRACEMCO", "NESTLEIND", "SUNPHARMA", "TITAN",
+    "WIPRO", "TECHM", "POWERGRID", "COALINDIA", "NTPC", "GRASIM", "TATAMOTORS", "JSWSTEEL", "ADANIENT", "ADANIPORTS",
+    "DIVISLAB", "ONGC", "HINDALCO", "SBILIFE", "BAJAJFINSV", "BRITANNIA", "HEROMOTOCO", "CIPLA", "EICHERMOT", "BPCL",
+    "UPL", "INDUSINDBK", "APOLLOHOSP", "HDFCLIFE", "BAJAJ-AUTO", "TATASTEEL", "SHREECEM", "DRREDDY", "M&M", "IOC"
+  ]
+  nifty_next_50: [
+    "AMBUJACEM", "AUROPHARMA", "BANKBARODA", "BERGEPAINT", "CANBK", "CHOLAFIN", "DABUR", "DLF", "GAIL",
+    "GODREJCP", "ICICIGI", "ICICIPRULI", "IDFCFIRSTB", "IGL", "INDIGO", "MUTHOOTFIN", "NAUKRI", "PIDILITIND",
+    "PNB", "RECLTD", "SAIL", "SRF", "TORNTPHARM", "TVSMOTOR", "UBL", "VEDL", "VOLTAS", "HAVELLS", "PEL", "PAGEIND", "COLPAL", "GLAND", "MPHASIS", "PETRONET", "HINDPETRO", "TRENT", "BEL",
+    "CUMMINSIND", "ABBOTINDIA", "SBICARD", "INDUSTOWER", "BIOCON", "YESBANK", "BOSCHLTD", "CONCOR", "NMDC"
+  ]
+
+# --- STRATEGY & SYMBOL CONFIGURATION ---
+# Link strategies to symbol lists and define their parameters
+strategy_config:
+  AlphaOneStrategy:
+    timeframe: 15
+    symbols: nifty_50 # Use the list name from above
+    capital: 100000
+  ApexStrategy:
+    timeframe: 5
+    symbols: nifty_50
+    capital: 100000
+  NumeroUnoStrategy:
+    timeframe: 5
+    symbols: nifty_50
+    capital: 100000
+  SankhyaEkStrategy:
+    timeframe: 5
+    symbols: nifty_50
+    capital: 100000
+  TestStrategy:
+    timeframe: 1
+    symbols: nifty_50
+    capital: 100000

@@ -1,18 +1,20 @@
-# File: main_papertrader.py (Final Version with Intraday-to-Swing (ITS) EOD Management)
-# Yeh version sabhi errors ko fix karke aur code ko robust banakar taiyaar kiya gaya hai.
+# File: main_papertrader.py (Full Version with YAML Config)
+# This version is updated to use the new YAML-based configuration system
+# and includes all original trading logic.
 
 import logging
 import time
-from datetime import datetime, timedelta, time as dt_time
+from datetime import datetime, timedelta
 import pandas as pd
 import os
 import importlib
 import inspect
 import pytz
-import sys # Graceful exit ke liye import karein
+import sys
 
-# Humare custom modules ko import karna
-import config
+# --- Updated Import ---
+# Import the loaded configuration object from our new loader
+from config_loader import CONFIG
 from broker_interface import ZerodhaInterface
 from database_manager import DatabaseManager
 from portfolio_manager import PortfolioManager
@@ -22,20 +24,21 @@ from strategies.base_strategy import BaseStrategy
 # --- 1. SETUP ---
 HEARTBEAT_FILE = "heartbeat.txt"
 if not os.path.exists('logs'): os.makedirs('logs')
-# Logging setup taaki har activity ka record rahe
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', handlers=[logging.FileHandler("logs/papertrading.log", encoding='utf-8'), logging.StreamHandler()])
 logger = logging.getLogger(__name__)
 
 # --- 2. HELPER FUNCTIONS ---
 def load_strategies_and_data(broker):
     """
-    Saari strategies aur unke liye zaroori historical data ko shuruaat mein load karta hai.
+    Loads all strategies and their required historical data at the start.
+    This function now reads from the CONFIG object.
     """
     strategy_instances = []
     all_symbols_needed = set()
-    strategy_capital = {name: conf['capital'] for name, conf in config.STRATEGY_CONFIG.items()}
+    # Get strategy config from the loaded CONFIG object
+    strategy_capital = {name: conf['capital'] for name, conf in CONFIG['strategy_config'].items()}
     
-    for strategy_name, conf in config.STRATEGY_CONFIG.items():
+    for strategy_name, conf in CONFIG['strategy_config'].items():
         for symbol in conf['symbols']:
             all_symbols_needed.add(symbol)
     
@@ -43,7 +46,8 @@ def load_strategies_and_data(broker):
     kolkata_tz = pytz.timezone('Asia/Kolkata')
     for symbol in all_symbols_needed:
         to_date = datetime.now(kolkata_tz)
-        from_date = to_date - timedelta(days=10) # Shuruaati data ke liye 10 din ka data fetch karein
+        # Use the required initial candles setting from config
+        from_date = to_date - timedelta(days=10) 
         df = broker.get_historical_data(symbol, 'minute', from_date, to_date)
         if not df.empty:
             all_data_1min[symbol] = df
@@ -56,8 +60,9 @@ def load_strategies_and_data(broker):
         try:
             module = importlib.import_module(module_name)
             for name, cls in inspect.getmembers(module, inspect.isclass):
-                if issubclass(cls, BaseStrategy) and cls is not BaseStrategy and name in config.STRATEGY_CONFIG:
-                    conf = config.STRATEGY_CONFIG[name]
+                # Check if the class is a strategy defined in our config
+                if issubclass(cls, BaseStrategy) and cls is not BaseStrategy and name in CONFIG['strategy_config']:
+                    conf = CONFIG['strategy_config'][name]
                     timeframe = conf['timeframe']
                     for symbol in conf['symbols']:
                         raw_df = all_data_1min.get(symbol)
@@ -71,21 +76,24 @@ def load_strategies_and_data(broker):
     return strategy_instances, all_data_1min, strategy_capital
 
 def update_heartbeat():
-    """Engine ke live status ke liye heartbeat file update karta hai."""
+    """Updates the heartbeat file to indicate the engine is live."""
     with open(HEARTBEAT_FILE, "w") as f: f.write(datetime.now().isoformat())
 
 def check_control_signal():
-    """Dashboard se RUN/STOP signal check karta hai."""
+    """Checks for a RUN/STOP signal from the dashboard."""
     if os.path.exists('control_signal.txt'):
         with open('control_signal.txt', 'r') as f: return f.read().strip().upper()
     return "RUN"
 
 def handle_eod_aggressive_tsl(portfolio, all_data_1min):
     """
-    3:00 PM ke baad sabhi open positions par aggressive 0.1% TSL lagata hai.
+    Applies an aggressive TSL to all open positions after the configured EOD time.
     """
     logger.info("Aggressive EOD TSL management starting for all open positions...")
     
+    # Get the TSL percentage from the config
+    eod_tsl_pct = CONFIG['execution']['risk_management']['eod_aggressive_tsl_pct']
+
     for strategy_name in list(portfolio.positions.keys()):
         if strategy_name not in portfolio.positions: continue
         
@@ -99,25 +107,34 @@ def handle_eod_aggressive_tsl(portfolio, all_data_1min):
 
             action = position['action']
             
-            # Logic: Sabhi trades par aggressive TSL lagayen
             new_sl = 0
             if action == 'LONG':
-                new_sl = current_price * 0.999  # 0.1% TSL
+                new_sl = current_price * (1 - eod_tsl_pct)
                 position['stop_loss'] = max(position.get('stop_loss', 0), new_sl)
             elif action == 'SHORT':
-                new_sl = current_price * 1.001  # 0.1% TSL
+                new_sl = current_price * (1 + eod_tsl_pct)
                 position['stop_loss'] = min(position.get('stop_loss', float('inf')), new_sl)
                 
             logger.info(f"EOD AGGRESSIVE TSL for {symbol}: SL updated to {position['stop_loss']:.2f}")
 
+
 # --- 3. MAIN TRADING FUNCTION ---
-def run_paper_trader(api_key: str, api_secret: str, access_token: str):
+def run_paper_trader():
     """
-    Yeh function ab saare trading logic ko chalata hai, yeh maante hue ki API keys sahi hain.
+    This function runs the main trading logic, using settings from the loaded CONFIG.
     """
     logger.info("--- Paper Trading System Initializing ---")
     db_manager = DatabaseManager()
     try:
+        # Get credentials from the loaded config
+        api_key = CONFIG['zerodha']['api_key']
+        api_secret = CONFIG['zerodha']['api_secret']
+        access_token = CONFIG['zerodha']['access_token']
+
+        if not all([api_key, api_secret, access_token]):
+            logger.critical("FATAL ERROR: API Key/Secret/Access Token not found. Please check your .env file and config.yml. Exiting.")
+            sys.exit(1)
+
         broker = ZerodhaInterface(api_key=api_key, api_secret=api_secret, access_token=access_token)
         
         strategy_instances, all_data_1min, strategy_capital = load_strategies_and_data(broker)
@@ -129,8 +146,11 @@ def run_paper_trader(api_key: str, api_secret: str, access_token: str):
         trade_logger = TradeLogger(db_manager=db_manager)
         kolkata_tz = pytz.timezone('Asia/Kolkata')
         
-        eod_tsl_start_time = dt_time(15, 0)
-        final_exit_time = dt_time(15, 20)
+        # Get time objects from the loaded config
+        trading_start_time = CONFIG['trading_session']['start_time_obj']
+        trading_end_time = CONFIG['trading_session']['end_time_obj']
+        eod_tsl_start_time = CONFIG['execution']['risk_management']['aggressive_tsl_start_time_obj']
+        final_exit_time = CONFIG['execution']['risk_management']['final_exit_time_obj']
 
         logger.info("--- System Initialized. Starting Main Loop ---")
         while True:
@@ -143,12 +163,13 @@ def run_paper_trader(api_key: str, api_secret: str, access_token: str):
                     continue
 
                 now_aware = datetime.now(kolkata_tz)
-                is_market_hours = config.TRADING_START_TIME <= now_aware.time() < config.TRADING_END_TIME
+                is_market_hours = trading_start_time <= now_aware.time() < trading_end_time
                 is_weekday = now_aware.weekday() < 5
 
                 if is_market_hours and is_weekday:
                     logger.info("Market is OPEN. Scanning for signals...")
                     
+                    # --- THIS IS THE FULL LOGIC THAT WAS PREVIOUSLY OMITTED ---
                     for symbol in all_data_1min.keys():
                         symbol_df = all_data_1min.get(symbol)
                         if symbol_df is not None and not symbol_df.empty:
@@ -213,7 +234,7 @@ def run_paper_trader(api_key: str, api_secret: str, access_token: str):
                                 if exit_signal:
                                     pnl = portfolio.close_position(strategy.name, symbol, current_price, now_aware)
                                     if pnl is not None:
-                                        trade_logger.log_trade(now_aware, strategy_name, symbol, f"EXIT_{open_position['action']}", current_price, open_position['quantity'], f"PnL: {pnl:.2f}")
+                                        trade_logger.log_trade(now_aware, strategy.name, symbol, f"EXIT_{open_position['action']}", current_price, open_position['quantity'], f"PnL: {pnl:.2f}")
                         else:
                             if now_aware.time() < final_exit_time:
                                 strategy.df_1min_raw = symbol_df.copy()
@@ -227,8 +248,11 @@ def run_paper_trader(api_key: str, api_secret: str, access_token: str):
                                             success = portfolio.record_trade(strategy.name, symbol, action, price, quantity, now_aware, stop_loss=sl, target=tg, trailing_sl_pct=tsl_pct)
                                             if success:
                                                 trade_logger.log_trade(now_aware, strategy.name, symbol, action, price, quantity, f"Cash Left: {portfolio.cash[strategy.name]:.2f}")
+                    # --- END OF FULL LOGIC BLOCK ---
 
-                    time.sleep(config.MAIN_LOOP_SLEEP_SECONDS)
+                    # Get sleep duration from config
+                    sleep_duration = CONFIG['execution']['main_loop_sleep_seconds']
+                    time.sleep(sleep_duration)
                 else:
                     logger.info(f"Market is CLOSED. Waiting... ({now_aware.strftime('%H:%M:%S')})")
                     time.sleep(60)
@@ -236,7 +260,8 @@ def run_paper_trader(api_key: str, api_secret: str, access_token: str):
             except KeyboardInterrupt:
                 logger.info("User interrupted. Shutting down."); break
             except Exception as e:
-                logger.error(f"An unexpected error occurred in the main loop: {e}", exc_info=True); time.sleep(30)
+                logger.error(f"An unexpected error occurred in the main loop: {e}", exc_info=True)
+                time.sleep(30)
     finally:
         db_manager.close_connection()
         for file in ['control_signal.txt', 'exit_command.txt', HEARTBEAT_FILE]:
@@ -245,20 +270,10 @@ def run_paper_trader(api_key: str, api_secret: str, access_token: str):
 
 def main():
     """
-    Program ka entry point. API keys ki jaanch karta hai aur fir trading logic ko call karta hai.
+    Program's entry point.
     """
-    logger.info("--- Validating Credentials ---")
-    api_key = config.ZERODHA_API_KEY
-    api_secret = config.ZERODHA_API_SECRET
-    access_token = config.ZERODHA_ACCESS_TOKEN
-
-    if not all([api_key, api_secret, access_token]):
-        logger.critical("FATAL ERROR: API Key/Secret/Access Token not found in config.py. Please check your .env file and ensure it is loaded correctly. Exiting.")
-        sys.exit(1)
-    
-    logger.info("✅ Credentials validated successfully.")
-    # Agar sab theek hai, to trading engine chalu karein
-    run_paper_trader(api_key, api_secret, access_token)
+    logger.info("--- Initializing Paper Trading Engine with YAML Config ---")
+    run_paper_trader()
 
 if __name__ == "__main__":
     main()
