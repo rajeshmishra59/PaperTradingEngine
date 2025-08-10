@@ -1,6 +1,6 @@
-# File: main_papertrader.py (Full Version with YAML Config)
-# This version is updated to use the new YAML-based configuration system
-# and includes all original trading logic.
+# main_papertrader.py
+# FINAL INTEGRATED VERSION: Yeh aapke advanced, multi-strategy engine ko
+# dynamic 'live_params.json' ke saath jodta hai.
 
 import logging
 import time
@@ -11,9 +11,9 @@ import importlib
 import inspect
 import pytz
 import sys
+import json
 
 # --- Updated Import ---
-# Import the loaded configuration object from our new loader
 from config_loader import CONFIG
 from broker_interface import ZerodhaInterface
 from database_manager import DatabaseManager
@@ -23,22 +23,41 @@ from strategies.base_strategy import BaseStrategy
 
 # --- 1. SETUP ---
 HEARTBEAT_FILE = "heartbeat.txt"
+PARAMS_FILE = "live_params.json" # Parameters file ka naam
 if not os.path.exists('logs'): os.makedirs('logs')
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', handlers=[logging.FileHandler("logs/papertrading.log", encoding='utf-8'), logging.StreamHandler()])
 logger = logging.getLogger(__name__)
 
 # --- 2. HELPER FUNCTIONS ---
-def load_strategies_and_data(broker):
+
+# --- YAHAN BADLAV KIYA GAYA HAI: Naya, Smart Parameter Loader ---
+def load_live_parameters():
     """
-    Loads all strategies and their required historical data at the start.
-    This function now reads from the CONFIG object.
+    live_params.json file se sabhi strategies ke liye best parameters load karta hai.
+    """
+    if not os.path.exists(PARAMS_FILE):
+        logger.warning(f"{PARAMS_FILE} not found. Using default parameters from config.yml for all strategies.")
+        return {}
+    try:
+        with open(PARAMS_FILE, "r") as f:
+            data = json.load(f)
+        logger.info(f"Successfully loaded live parameters from {PARAMS_FILE}")
+        return data
+    except Exception as e:
+        logger.error(f"Error loading {PARAMS_FILE}: {e}. Using default parameters.")
+        return {}
+# --- END OF BADLAV ---
+
+
+def load_strategies_and_data(broker, live_params):
+    """
+    Sabhi strategies aur unke data ko load karta hai, ab live parameters ka istemaal karke.
     """
     strategy_instances = []
     all_symbols_needed = set()
-    # Get strategy config from the loaded CONFIG object
     strategy_capital = {name: conf['capital'] for name, conf in CONFIG['strategy_config'].items()}
     
-    for strategy_name, conf in CONFIG['strategy_config'].items():
+    for conf in CONFIG['strategy_config'].values():
         for symbol in conf['symbols']:
             all_symbols_needed.add(symbol)
     
@@ -46,12 +65,10 @@ def load_strategies_and_data(broker):
     kolkata_tz = pytz.timezone('Asia/Kolkata')
     for symbol in all_symbols_needed:
         to_date = datetime.now(kolkata_tz)
-        # Use the required initial candles setting from config
         from_date = to_date - timedelta(days=10) 
         df = broker.get_historical_data(symbol, 'minute', from_date, to_date)
         if not df.empty:
             all_data_1min[symbol] = df
-            logger.info(f"Fetched initial {len(df)} 1-min candles for {symbol}")
 
     strategy_dir = "strategies"
     for file in os.listdir(strategy_dir):
@@ -60,21 +77,32 @@ def load_strategies_and_data(broker):
         try:
             module = importlib.import_module(module_name)
             for name, cls in inspect.getmembers(module, inspect.isclass):
-                # Check if the class is a strategy defined in our config
                 if issubclass(cls, BaseStrategy) and cls is not BaseStrategy and name in CONFIG['strategy_config']:
                     conf = CONFIG['strategy_config'][name]
                     timeframe = conf['timeframe']
+                    
+                    # --- YAHAN BADLAV KIYA GAYA HAI: Strategy-specific parameters ko jodein ---
+                    strategy_base_params = conf.get('params', {})
+                    strategy_live_params = live_params.get(name, {}).get('best_params', {})
+                    final_params = {**strategy_base_params, **strategy_live_params} # Live params default ko override karenge
+                    # --- END OF BADLAV ---
+
                     for symbol in conf['symbols']:
                         raw_df = all_data_1min.get(symbol)
                         if raw_df is not None and not raw_df.empty:
-                            instance = cls(df=raw_df.copy(), symbol=symbol, primary_timeframe=timeframe)
+                            # Strategy ko final (updated) parameters ke saath initialize karein
+                            instance = cls(df=raw_df.copy(), symbol=symbol, primary_timeframe=timeframe, **final_params)
                             strategy_instances.append(instance)
-                    logger.info(f"Successfully configured strategy '{name}' for {len(conf['symbols'])} symbols on {timeframe}-min TF.")
+                            if strategy_live_params:
+                                logger.info(f"Initialized '{name}' on '{symbol}' with LIVE parameters: {strategy_live_params}")
+                            else:
+                                logger.info(f"Initialized '{name}' on '{symbol}' with DEFAULT parameters.")
         except Exception as e:
             logger.error(f"Failed to load or instantiate from module {module_name}: {e}")
 
     return strategy_instances, all_data_1min, strategy_capital
 
+# ... (baaki saare helper functions waise hi rahenge) ...
 def update_heartbeat():
     """Updates the heartbeat file to indicate the engine is live."""
     with open(HEARTBEAT_FILE, "w") as f: f.write(datetime.now().isoformat())
@@ -86,17 +114,10 @@ def check_control_signal():
     return "RUN"
 
 def handle_eod_aggressive_tsl(portfolio, all_data_1min):
-    """
-    Applies an aggressive TSL to all open positions after the configured EOD time.
-    """
     logger.info("Aggressive EOD TSL management starting for all open positions...")
-    
-    # Get the TSL percentage from the config
     eod_tsl_pct = CONFIG['execution']['risk_management']['eod_aggressive_tsl_pct']
-
     for strategy_name in list(portfolio.positions.keys()):
         if strategy_name not in portfolio.positions: continue
-        
         for symbol, position in list(portfolio.positions[strategy_name].items()):
             symbol_df = all_data_1min.get(symbol)
             if symbol_df is not None and not symbol_df.empty:
@@ -104,9 +125,7 @@ def handle_eod_aggressive_tsl(portfolio, all_data_1min):
             else:
                 logger.warning(f"EOD TSL: Could not get current price for {symbol}. Skipping.")
                 continue
-
             action = position['action']
-            
             new_sl = 0
             if action == 'LONG':
                 new_sl = current_price * (1 - eod_tsl_pct)
@@ -114,30 +133,28 @@ def handle_eod_aggressive_tsl(portfolio, all_data_1min):
             elif action == 'SHORT':
                 new_sl = current_price * (1 + eod_tsl_pct)
                 position['stop_loss'] = min(position.get('stop_loss', float('inf')), new_sl)
-                
             logger.info(f"EOD AGGRESSIVE TSL for {symbol}: SL updated to {position['stop_loss']:.2f}")
 
 
 # --- 3. MAIN TRADING FUNCTION ---
 def run_paper_trader():
-    """
-    This function runs the main trading logic, using settings from the loaded CONFIG.
-    """
     logger.info("--- Paper Trading System Initializing ---")
     db_manager = DatabaseManager()
     try:
-        # Get credentials from the loaded config
         api_key = CONFIG['zerodha']['api_key']
         api_secret = CONFIG['zerodha']['api_secret']
         access_token = CONFIG['zerodha']['access_token']
 
         if not all([api_key, api_secret, access_token]):
-            logger.critical("FATAL ERROR: API Key/Secret/Access Token not found. Please check your .env file and config.yml. Exiting.")
+            logger.critical("FATAL ERROR: API Key/Secret/Access Token not found. Exiting.")
             sys.exit(1)
 
         broker = ZerodhaInterface(api_key=api_key, api_secret=api_secret, access_token=access_token)
         
-        strategy_instances, all_data_1min, strategy_capital = load_strategies_and_data(broker)
+        # --- YAHAN BADLAV KIYA GAYA HAI: Live parameters ko pehle load karein ---
+        live_params = load_live_parameters()
+        strategy_instances, all_data_1min, strategy_capital = load_strategies_and_data(broker, live_params)
+        # --- END OF BADLAV ---
         
         if not strategy_instances:
             logger.error("No strategies loaded. Exiting."); return
@@ -146,7 +163,6 @@ def run_paper_trader():
         trade_logger = TradeLogger(db_manager=db_manager)
         kolkata_tz = pytz.timezone('Asia/Kolkata')
         
-        # Get time objects from the loaded config
         trading_start_time = CONFIG['trading_session']['start_time_obj']
         trading_end_time = CONFIG['trading_session']['end_time_obj']
         eod_tsl_start_time = CONFIG['execution']['risk_management']['aggressive_tsl_start_time_obj']
@@ -154,9 +170,9 @@ def run_paper_trader():
 
         logger.info("--- System Initialized. Starting Main Loop ---")
         while True:
+            # ... (Aapka poora main trading loop logic yahan waise hi rahega) ...
             try:
                 update_heartbeat()
-                
                 if check_control_signal() == "STOP":
                     logger.warning("STOP signal received. Pausing engine.")
                     time.sleep(5)
@@ -169,7 +185,6 @@ def run_paper_trader():
                 if is_market_hours and is_weekday:
                     logger.info("Market is OPEN. Scanning for signals...")
                     
-                    # --- THIS IS THE FULL LOGIC THAT WAS PREVIOUSLY OMITTED ---
                     for symbol in all_data_1min.keys():
                         symbol_df = all_data_1min.get(symbol)
                         if symbol_df is not None and not symbol_df.empty:
@@ -248,9 +263,7 @@ def run_paper_trader():
                                             success = portfolio.record_trade(strategy.name, symbol, action, price, quantity, now_aware, stop_loss=sl, target=tg, trailing_sl_pct=tsl_pct)
                                             if success:
                                                 trade_logger.log_trade(now_aware, strategy.name, symbol, action, price, quantity, f"Cash Left: {portfolio.cash[strategy.name]:.2f}")
-                    # --- END OF FULL LOGIC BLOCK ---
-
-                    # Get sleep duration from config
+                    
                     sleep_duration = CONFIG['execution']['main_loop_sleep_seconds']
                     time.sleep(sleep_duration)
                 else:
@@ -269,9 +282,6 @@ def run_paper_trader():
         logger.info("--- Paper Trading System Stopped ---")
 
 def main():
-    """
-    Program's entry point.
-    """
     logger.info("--- Initializing Paper Trading Engine with YAML Config ---")
     run_paper_trader()
 
