@@ -14,7 +14,7 @@ class SankhyaEkStrategy(BaseStrategy):
         super().__init__(df, symbol=symbol, logger=logger, primary_timeframe=primary_timeframe)
         self.name = "SankhyaEkStrategy"
         self.bb_length, self.bb_std, self.rsi_period = 20, 2.0, 14
-        self.rsi_oversold, self.rsi_overbought = 35, 65
+        self.rsi_oversold, self.rsi_overbought = 30, 70
         self.stop_loss_pct, self.risk_reward_ratio = 0.01, 2.0
         self.max_trades_per_day, self.last_trade_date, self.signals_today = 3, None, 0
         self.trade_stop_time = time(14, 45)

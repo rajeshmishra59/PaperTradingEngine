@@ -14,9 +14,9 @@ import numpy as np
 
 # --- YAHAN BADLAV KIYA GAYA HAI: Dono Projects Ko Jodne Ke Liye Antim Pul ---
 # Yeh code sunishchit karega ki Python hamesha 'quantbacktest' folder ko dhoondh paaye.
+# Is script ki current directory lein (e.g., .../PaperTradingV1.3)
+current_dir = os.path.dirname(os.path.abspath(__file__))
 try:
-    # Is script ki current directory lein (e.g., .../PaperTradingV1.3)
-    current_dir = os.path.dirname(os.path.abspath(__file__))
     # Isse ek level upar jaayein (e.g., .../AI Generated App)
     parent_dir = os.path.dirname(current_dir)
     
@@ -30,6 +30,10 @@ try:
     # Parent directory ko Python ke search path mein sabse aage jodein
     if parent_dir not in sys.path:
         sys.path.insert(0, parent_dir)
+    
+    # Ensure quantbacktest directory itself is also in the path
+    if quantbacktest_path not in sys.path:
+        sys.path.insert(0, quantbacktest_path)
 
 except FileNotFoundError:
     print("FATAL ERROR: 'quantbacktest' directory nahi mili.")
@@ -39,7 +43,7 @@ except FileNotFoundError:
 
 
 # Ab yeh imports bina kisi error ke kaam karenge
-from quantbacktest.data.data_loader import DataLoader
+from quantbacktest.loaders.data_loader import DataLoader
 from quantbacktest.utils.strategy_loader import load_strategy
 from quantbacktest.utils.metrics import calculate_performance_metrics
 from quantbacktest.engine.upgraded_portfolio import UpgradedPortfolio
@@ -168,8 +172,8 @@ def find_best_parameters_for_live():
     
     with open("live_params.json", "w") as f:
         def convert(o):
-            if isinstance(o, np.int64): return int(o)  
-            if isinstance(o, np.float64): return float(o)
+            if isinstance(o, np.integer): return int(o)  
+            if isinstance(o, np.floating): return float(o)
             raise TypeError
         json.dump(output_data, f, indent=4, default=convert)
         

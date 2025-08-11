@@ -1,5 +1,7 @@
 # Environment variables
 .env
+# Ignore SSH private keys
+*.key
 
 # Python cache
 __pycache__/
