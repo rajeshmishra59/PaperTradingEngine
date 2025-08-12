@@ -1,0 +1,21 @@
+
+📊 DAILY TRADING MONITOR - 2025-08-12
+==================================================
+
+📈 TODAY'S STATISTICS:
+   Total Trades: 61/10
+   Symbols Traded: 29/8
+   Largest Position: ₹8,358
+   Total Volume: ₹211,131
+   Estimated Charges: ₹211.13
+   Last Trade: 2025-08-12T15:20:17.749304+05:30
+
+🚦 STATUS: 🔴 DANGER
+
+🚨 ALERTS:
+   🚨 TRADE LIMIT EXCEEDED: 61/10
+   🚨 POSITION SIZE EXCEEDED: ₹8,358
+   ⚠️ TOO MANY SYMBOLS: 29/8
+   💸 HIGH CHARGES: ₹211
+
+🛑 TRADING QUOTA EXHAUSTED - STOP TRADING

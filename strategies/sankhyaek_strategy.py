@@ -13,9 +13,10 @@ class SankhyaEkStrategy(BaseStrategy):
 
         super().__init__(df, symbol=symbol, logger=logger, primary_timeframe=primary_timeframe)
         self.name = "SankhyaEkStrategy"
-        self.bb_length, self.bb_std, self.rsi_period = 20, 2.0, 14
-        self.rsi_oversold, self.rsi_overbought = 30, 70
-        self.stop_loss_pct, self.risk_reward_ratio = 0.01, 2.0
+        # Updated parameters for better performance
+        self.bb_length, self.bb_std, self.rsi_period = 15, 2.5, 10
+        self.rsi_oversold, self.rsi_overbought = 25, 75
+        self.stop_loss_pct, self.risk_reward_ratio = 0.015, 2.0
         self.max_trades_per_day, self.last_trade_date, self.signals_today = 3, None, 0
         self.trade_stop_time = time(14, 45)
         self.log(f"Initialized for {self.symbol} with {self.primary_timeframe}-min TF.")
@@ -36,6 +37,9 @@ class SankhyaEkStrategy(BaseStrategy):
             
         resampled_df.ta.bbands(length=self.bb_length, std=self.bb_std, append=True)
         resampled_df.ta.rsi(length=self.rsi_period, append=True)
+        
+        # Add trend filter - 30-period moving average
+        resampled_df['ma_trend'] = resampled_df['close'].rolling(30).mean()
         
         # Find the actual column names that contain our indicators
         bb_lower_col = next((col for col in resampled_df.columns if f'BBL_{self.bb_length}_' in col), None)
@@ -79,8 +83,11 @@ class SankhyaEkStrategy(BaseStrategy):
         candle = df.iloc[-1]
         close, rsi = candle['close'], candle['rsi']
         bb_lower, bb_upper = candle['bb_lower'], candle['bb_upper']
+        ma_trend = candle['ma_trend']
 
-        if (close < bb_lower) and (rsi < self.rsi_oversold):
+        # Modified signal logic with trend filter
+        if (close < bb_lower) and (rsi < self.rsi_oversold) and (close > ma_trend):
+            # LONG signal only in uptrend
             sl = close * (1 - self.stop_loss_pct)
             target = close + ((close - sl) * self.risk_reward_ratio)
             df.loc[df.index[-1], ['entry_signal', 'stop_loss', 'target']] = ['LONG', sl, target]
@@ -88,7 +95,8 @@ class SankhyaEkStrategy(BaseStrategy):
             self.log(f"LONG signal! SL:{sl:.2f}, TGT:{target:.2f} ({self.signals_today}/{self.max_trades_per_day})", level='warning')
             return
 
-        if (close > bb_upper) and (rsi > self.rsi_overbought):
+        if (close > bb_upper) and (rsi > self.rsi_overbought) and (close < ma_trend):
+            # SHORT signal only in downtrend
             sl = close * (1 + self.stop_loss_pct)
             target = close - ((sl - close) * self.risk_reward_ratio)
             df.loc[df.index[-1], ['entry_signal', 'stop_loss', 'target']] = ['SHORT', sl, target]

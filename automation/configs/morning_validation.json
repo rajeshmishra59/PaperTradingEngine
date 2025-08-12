@@ -1,0 +1,53 @@
+{
+  "metadata": {
+    "validation_date": "2025-08-12T16:53:59.019976",
+    "validation_action": "VALIDATE_PARAMETERS",
+    "validation_reason": "Regime changed: high_volatility \u2192 trending_bullish",
+    "validation_duration": 0.00137,
+    "market_gap": 0,
+    "regime_change": true
+  },
+  "strategy_parameters": {
+    "AlphaOneStrategy": {
+      "entry_threshold": 0.01910446728103158,
+      "exit_threshold": 0.02851720962981958,
+      "stop_loss": 0.04074399616814331,
+      "position_size": 0.2804354303438601,
+      "optimization_score": 0.6055927991565629,
+      "regime_optimized_for": "high_volatility"
+    },
+    "ApexStrategy": {
+      "entry_threshold": 0.04501189503418839,
+      "exit_threshold": 0.023588827398745786,
+      "stop_loss": 0.020075877348283477,
+      "position_size": 0.253842947159604,
+      "optimization_score": 0.7591774595587237,
+      "regime_optimized_for": "high_volatility"
+    },
+    "NumeroUnoStrategy": {
+      "entry_threshold": 0.04570755405834235,
+      "exit_threshold": 0.02970732152090967,
+      "stop_loss": 0.027024576541940737,
+      "position_size": 0.21350029102437718,
+      "optimization_score": 0.7970244719454742,
+      "regime_optimized_for": "high_volatility"
+    },
+    "SankhyaEkStrategy": {
+      "entry_threshold": 0.03621666473048654,
+      "exit_threshold": 0.014044778588937889,
+      "stop_loss": 0.04660192862216882,
+      "position_size": 0.2801377473822746,
+      "optimization_score": 0.8904421415581061,
+      "regime_optimized_for": "high_volatility"
+    },
+    "TestStrategy": {
+      "entry_threshold": 0.04065863384388044,
+      "exit_threshold": 0.016182881164690213,
+      "stop_loss": 0.046222874111694276,
+      "position_size": 0.2764177775475347,
+      "optimization_score": 0.720898277062785,
+      "regime_optimized_for": "high_volatility"
+    }
+  },
+  "trading_ready": true
+}

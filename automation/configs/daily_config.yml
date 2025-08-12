@@ -1,0 +1,135 @@
+angelone:
+  api_key: ${ANGELONE_API_KEY}
+  client_code: ${ANGELONE_CLIENT_CODE}
+  password: ${ANGELONE_PASSWORD}
+  refresh_token: ${ANGELONE_REFRESH_TOKEN}
+  totp_secret: ${ANGELONE_TOTP_SECRET}
+broker: zerodha
+execution:
+  main_loop_sleep_seconds: 30
+  required_initial_candles: 100
+  risk_management:
+    aggressive_tsl_start_time: '15:00'
+    eod_aggressive_tsl_pct: 0.001
+    final_exit_time: '15:20'
+strategy_config:
+  ApexStrategy:
+    capital: 100000
+    symbols:
+    - RELIANCE
+    - TCS
+    - INFY
+    - HDFCBANK
+    - ICICIBANK
+    - HINDUNILVR
+    - SBIN
+    - ITC
+    - BHARTIARTL
+    - KOTAKBANK
+    timeframe: 5
+symbol_lists:
+  nifty_50:
+  - RELIANCE
+  - TCS
+  - INFY
+  - HDFCBANK
+  - ICICIBANK
+  - HINDUNILVR
+  - SBIN
+  - ITC
+  - BHARTIARTL
+  - KOTAKBANK
+  - LT
+  - ASIANPAINT
+  - HCLTECH
+  - BAJFINANCE
+  - MARUTI
+  - AXISBANK
+  - ULTRACEMCO
+  - NESTLEIND
+  - SUNPHARMA
+  - TITAN
+  - WIPRO
+  - TECHM
+  - POWERGRID
+  - COALINDIA
+  - NTPC
+  - GRASIM
+  - TATAMOTORS
+  - JSWSTEEL
+  - ADANIENT
+  - ADANIPORTS
+  - DIVISLAB
+  - ONGC
+  - HINDALCO
+  - SBILIFE
+  - BAJAJFINSV
+  - BRITANNIA
+  - HEROMOTOCO
+  - CIPLA
+  - EICHERMOT
+  - BPCL
+  - UPL
+  - INDUSINDBK
+  - APOLLOHOSP
+  - HDFCLIFE
+  - BAJAJ-AUTO
+  - TATASTEEL
+  - SHREECEM
+  - DRREDDY
+  - M&M
+  - IOC
+  nifty_next_50:
+  - AMBUJACEM
+  - AUROPHARMA
+  - BANKBARODA
+  - BERGEPAINT
+  - CANBK
+  - CHOLAFIN
+  - DABUR
+  - DLF
+  - GAIL
+  - GODREJCP
+  - ICICIGI
+  - ICICIPRULI
+  - IDFCFIRSTB
+  - IGL
+  - INDIGO
+  - MUTHOOTFIN
+  - NAUKRI
+  - PIDILITIND
+  - PNB
+  - RECLTD
+  - SAIL
+  - SRF
+  - TORNTPHARM
+  - TVSMOTOR
+  - UBL
+  - VEDL
+  - VOLTAS
+  - HAVELLS
+  - PEL
+  - PAGEIND
+  - COLPAL
+  - GLAND
+  - MPHASIS
+  - PETRONET
+  - HINDPETRO
+  - TRENT
+  - BEL
+  - CUMMINSIND
+  - ABBOTINDIA
+  - SBICARD
+  - INDUSTOWER
+  - BIOCON
+  - YESBANK
+  - BOSCHLTD
+  - CONCOR
+  - NMDC
+trading_session:
+  end_time: '15:35'
+  start_time: 09:15
+zerodha:
+  access_token: ${ZERODHA_ACCESS_TOKEN}
+  api_key: ${ZERODHA_API_KEY}
+  api_secret: ${ZERODHA_API_SECRET}

@@ -1,0 +1,426 @@
+{
+  "timestamp": "2025-08-12T17:02:17.732714",
+  "validation_duration": 1.998502,
+  "intelligence_report": {
+    "timestamp": "2025-08-12T17:02:15.734338",
+    "news_sentiment": {
+      "overall_sentiment": 0.10526785714285714,
+      "sentiment_category": "POSITIVE",
+      "sentiment_volatility": 0.15943461270075834,
+      "total_news_items": 10,
+      "key_topics": [
+        "inflation",
+        "market",
+        "earnings",
+        "ipo"
+      ],
+      "news_summary": [
+        {
+          "title": "Gold nudges higher after US inflation data",
+          "summary": "GLOBAL-PRECIOUS/ (UPDATE 8):PRECIOUS-Gold nudges higher after US inflation data",
+          "link": "https://www.livemint.com/market/commodities/gold-nudges-higher-after-us-inflation-data-11755017385638.html",
+          "published": "Tue, 12 Aug 2025 22:19:45 +0530",
+          "source": "livemint"
+        },
+        {
+          "title": "The Case for Fed Cuts Suddenly Has Some Holes",
+          "summary": "The inflation data for July should give Fed Governor Christopher Waller, a monetary policy\u00a0dove and a favorite to replace Jerome Powell, some pause.",
+          "link": "https://www.livemint.com/market/stock-market-news/the-case-for-fed-cuts-suddenly-has-some-holes-11755015976408.html",
+          "published": "Tue, 12 Aug 2025 21:56:15 +0530",
+          "source": "livemint"
+        },
+        {
+          "title": "Canadian dollar rebounds from one-week low after U.S. inflation report",
+          "summary": "CANADA-FOREX/:CANADA FX DEBT-Canadian dollar rebounds from one-week low after U.S. inflation report",
+          "link": "https://www.livemint.com/market/stock-market-news/canadian-dollar-rebounds-from-one-week-low-after-u-s-inflation-report-11755014624929.html",
+          "published": "Tue, 12 Aug 2025 21:33:44 +0530",
+          "source": "livemint"
+        },
+        {
+          "title": "Venture Global\u2019s Big IPO Flop Intact Even After Revenue Beat",
+          "summary": "Venture Global Inc.\u2019s crown as worst US public markets debutant this year is undented after the liquefied natural gas exporter reported second quarter earnings.",
+          "link": "https://www.livemint.com/market/ipo/venture-global-s-big-ipo-flop-intact-even-after-revenue-beat-11755014374509.html",
+          "published": "Tue, 12 Aug 2025 21:29:33 +0530",
+          "source": "livemint"
+        },
+        {
+          "title": "Oil prices dip as market awaits EIA report",
+          "summary": "GLOBAL-OIL:Oil prices dip as market awaits EIA report",
+          "link": "https://www.livemint.com/market/commodities/oil-prices-dip-as-market-awaits-eia-report-11755014312759.html",
+          "published": "Tue, 12 Aug 2025 21:28:32 +0530",
+          "source": "livemint"
+        },
+        {
+          "title": "German 30-year government bond yields hit highest since 2011",
+          "summary": "EUROZONE-BONDS/:German 30-year government bond yields hit highest since 2011",
+          "link": "https://www.livemint.com/market/stock-market-news/german-30-year-government-bond-yields-hit-highest-since-2011-11755013704481.html",
+          "published": "Tue, 12 Aug 2025 21:18:23 +0530",
+          "source": "livemint"
+        },
+        {
+          "title": "Trading platform eToros stock slide eclipses profit beat",
+          "summary": "ETORO-RESULTS:Trading platform eToro's stock slide eclipses profit beat",
+          "link": "https://www.livemint.com/market/stock-market-news/trading-platform-etoros-stock-slide-eclipses-profit-beat-11755013402101.html",
+          "published": "Tue, 12 Aug 2025 21:13:21 +0530",
+          "source": "livemint"
+        },
+        {
+          "title": "Sebi\u2019s litigation scoreboard: More courts wins, fewer appeals",
+          "summary": "Sebi\u2019s 2024-25 report shows a stronger courtroom record, with 73% SAT appeals and 90% Supreme Court cases decided in its favour..India\u2019s markets regulator also ramped up enforcement, boosting insider trading probes, front-running case completions, and settlement collections.",
+          "link": "https://www.livemint.com/market/sebi-litigation-scoreboard-court-wins-crackdowns-fy25-11755001460531.html",
+          "published": "Tue, 12 Aug 2025 20:32:50 +0530",
+          "source": "livemint"
+        },
+        {
+          "title": "Cement companies end June quarter with solid growth on volume rebound and higher realisations",
+          "summary": "Cement sector ends Q1 with solid performance, driven by price hikes, volume growth and a decline in power and fuel costs, along with other operating expenses, aided the EBITDA recovery.",
+          "link": "https://www.livemint.com/market/stock-market-news/cement-companies-end-june-quarter-with-solid-growth-on-volume-rebound-and-higher-realisations-11755005564228.html",
+          "published": "Tue, 12 Aug 2025 20:21:03 +0530",
+          "source": "livemint"
+        },
+        {
+          "title": "From Mumbai to mini-metros: India\u2019s most valuable family businesses spread their wings",
+          "summary": "Mumbai stays the hub for India\u2019s most valuable family businesses, but smaller cities are rapidly climbing the ranks, according to the 2025 Barclays Private Clients Hurun India list.",
+          "link": "https://www.livemint.com/market/stock-market-news/mumbai-mini-metros-valuable-family-businesses-ambani-inox-vardhman-adani-elgi-poonawalla-apollo-hospitals-super-rich-11754992450999.html",
+          "published": "Tue, 12 Aug 2025 18:40:32 +0530",
+          "source": "livemint"
+        }
+      ],
+      "sentiment_distribution": {
+        "positive": 4,
+        "negative": 1,
+        "neutral": 5
+      }
+    },
+    "global_markets": {
+      "market_data": {
+        "dow_jones": {
+          "current_price": 44422.3984375,
+          "previous_close": 43975.08984375,
+          "change_percent": 1.017186310111824,
+          "volume": 236229921.0
+        },
+        "nasdaq": {
+          "current_price": 21640.7578125,
+          "previous_close": 21385.400390625,
+          "change_percent": 1.194073607277161,
+          "volume": 4450323000.0
+        },
+        "sp500": {
+          "current_price": 6435.6298828125,
+          "previous_close": 6373.4501953125,
+          "change_percent": 0.9756048230475147,
+          "volume": 1342761000.0
+        },
+        "nikkei": {
+          "current_price": 42718.171875,
+          "previous_close": 41820.48046875,
+          "change_percent": 2.1465353725928433,
+          "volume": 0.0
+        },
+        "hang_seng": {
+          "current_price": 24969.6796875,
+          "previous_close": 24906.810546875,
+          "change_percent": 0.2524174683333272,
+          "volume": 0.0
+        },
+        "ftse": {
+          "current_price": 9147.8095703125,
+          "previous_close": 9129.7001953125,
+          "change_percent": 0.19835673256059352,
+          "volume": 0.0
+        },
+        "dax": {
+          "current_price": 24024.779296875,
+          "previous_close": 24081.33984375,
+          "change_percent": -0.23487292335887017,
+          "volume": 0.0
+        }
+      },
+      "global_bias": "POSITIVE",
+      "average_change": 0.7927573415091992,
+      "volatility": 0.7347375128771791,
+      "risk_on_sentiment": "True",
+      "major_movers": [
+        {
+          "market": "nikkei",
+          "change": 2.1465353725928433,
+          "direction": "UP"
+        },
+        {
+          "market": "nasdaq",
+          "change": 1.194073607277161,
+          "direction": "UP"
+        },
+        {
+          "market": "dow_jones",
+          "change": 1.017186310111824,
+          "direction": "UP"
+        }
+      ]
+    },
+    "economic_indicators": {
+      "upcoming_events": [
+        {
+          "time": "10:00 AM",
+          "event": "RBI Policy Decision",
+          "importance": "HIGH",
+          "expected": "No change in rates",
+          "previous": "6.50%"
+        },
+        {
+          "time": "2:00 PM",
+          "event": "US Inflation Data",
+          "importance": "MEDIUM",
+          "expected": "3.2%",
+          "previous": "3.0%"
+        }
+      ],
+      "currency_impact": {
+        "usd_inr": {
+          "current": 87.55500030517578,
+          "change": 0.07624310799104163
+        },
+        "dxy_impact": "moderate"
+      },
+      "commodity_watch": {
+        "crude_oil": {
+          "current": 63.18000030517578,
+          "change": -1.2195103040366249
+        },
+        "gold": {
+          "current": 3400.199951171875,
+          "change": 1.4046658955557831
+        }
+      }
+    },
+    "corporate_announcements": {
+      "earnings_today": [
+        {
+          "company": "RELIANCE",
+          "time": "Post-market",
+          "consensus": "Beat expected"
+        },
+        {
+          "company": "TCS",
+          "time": "Pre-market",
+          "consensus": "In-line"
+        }
+      ],
+      "major_announcements": [
+        {
+          "company": "HDFCBANK",
+          "type": "Merger Update",
+          "impact": "POSITIVE",
+          "details": "Integration ahead of schedule"
+        }
+      ],
+      "dividend_announcements": [],
+      "stock_splits": [],
+      "insider_trading": []
+    },
+    "technical_signals": {
+      "individual_signals": {
+        "RELIANCE": {
+          "overall_bias": "BEARISH",
+          "price_vs_sma5": -0.2110860159586836,
+          "price_vs_sma20": -0.7891423133520203
+        },
+        "TCS": {
+          "overall_bias": "BEARISH",
+          "price_vs_sma5": -0.09808115325129485,
+          "price_vs_sma20": -0.22877250033934704
+        },
+        "INFY": {
+          "overall_bias": "BEARISH",
+          "price_vs_sma5": -0.39865716165397025,
+          "price_vs_sma20": -2.374653117096759
+        }
+      },
+      "market_bias": "BEARISH",
+      "bullish_ratio": 0.0,
+      "key_levels": {
+        "nifty_support": 19800,
+        "nifty_resistance": 20200,
+        "bank_nifty_support": 45000,
+        "bank_nifty_resistance": 46500
+      }
+    },
+    "currency_analysis": {
+      "usd_inr_rate": 87.55500030517578,
+      "usd_change_percent": 0.07624310799104163,
+      "equity_impact": "NEUTRAL",
+      "fii_flow_bias": "OUTFLOW"
+    },
+    "risk_assessment": {
+      "risk_level": "LOW",
+      "risk_score": 0,
+      "risk_factors": [],
+      "recommendation": "Normal trading with standard risk management"
+    },
+    "trading_recommendations": {
+      "position_sizing": "INCREASE",
+      "strategy_preference": "TREND_FOLLOWING",
+      "risk_management": "STANDARD",
+      "sector_focus": [],
+      "specific_actions": [
+        "Consider increasing position sizes by 20%",
+        "Favor trend-following strategies"
+      ]
+    }
+  },
+  "parameter_validation": {
+    "base_validation": {
+      "action": "VALIDATE",
+      "reason": "Standard validation"
+    },
+    "news_impact": {
+      "impact_level": "MEDIUM",
+      "sentiment_score": 0.10526785714285714,
+      "category": "POSITIVE",
+      "adjustment_needed": true
+    },
+    "global_market_impact": {
+      "impact_level": "MEDIUM",
+      "global_bias": "POSITIVE",
+      "volatility": 0.7347375128771791,
+      "adjustment_needed": true
+    },
+    "risk_assessment": {
+      "risk_level": "LOW",
+      "risk_score": 0,
+      "risk_factors": [],
+      "recommendation": "Normal trading with standard risk management"
+    },
+    "currency_impact": {
+      "impact_level": "LOW",
+      "usd_change": 0.07624310799104163,
+      "equity_impact": "NEUTRAL",
+      "adjustment_needed": false
+    },
+    "technical_alignment": {
+      "alignment_strength": "STRONG",
+      "market_bias": "BEARISH",
+      "bullish_ratio": 0.0,
+      "adjustment_needed": true
+    },
+    "recommended_action": "APPLY_INTELLIGENT_ADJUSTMENTS"
+  },
+  "enhanced_recommendations": {
+    "position_sizing": "INCREASE_MODERATE",
+    "strategy_selection": "TREND_FOLLOWING",
+    "risk_management": "RELAXED",
+    "market_timing": "NORMAL_OPEN",
+    "sector_focus": [
+      "BANKING",
+      "IT",
+      "AUTO"
+    ],
+    "exit_strategy": "STANDARD"
+  },
+  "final_parameters": {
+    "AlphaOneStrategy": {
+      "entry_threshold": 0.01910446728103158,
+      "exit_threshold": 0.02851720962981958,
+      "stop_loss": 0.032595196934514646,
+      "position_size": 0.3505442879298251,
+      "optimization_score": 0.6055927991565629,
+      "regime_optimized_for": "high_volatility",
+      "adjustment_metadata": {
+        "position_multiplier": 1.25,
+        "risk_multiplier": 0.8,
+        "volatility_adjustment": 1.0,
+        "sentiment_adjustment": 1.0,
+        "adjusted_at": "2025-08-12T17:02:17.732683"
+      }
+    },
+    "ApexStrategy": {
+      "entry_threshold": 0.04501189503418839,
+      "exit_threshold": 0.023588827398745786,
+      "stop_loss": 0.016060701878626783,
+      "position_size": 0.317303683949505,
+      "optimization_score": 0.7591774595587237,
+      "regime_optimized_for": "high_volatility",
+      "adjustment_metadata": {
+        "position_multiplier": 1.25,
+        "risk_multiplier": 0.8,
+        "volatility_adjustment": 1.0,
+        "sentiment_adjustment": 1.0,
+        "adjusted_at": "2025-08-12T17:02:17.732693"
+      }
+    },
+    "NumeroUnoStrategy": {
+      "entry_threshold": 0.04570755405834235,
+      "exit_threshold": 0.02970732152090967,
+      "stop_loss": 0.021619661233552592,
+      "position_size": 0.2668753637804715,
+      "optimization_score": 0.7970244719454742,
+      "regime_optimized_for": "high_volatility",
+      "adjustment_metadata": {
+        "position_multiplier": 1.25,
+        "risk_multiplier": 0.8,
+        "volatility_adjustment": 1.0,
+        "sentiment_adjustment": 1.0,
+        "adjusted_at": "2025-08-12T17:02:17.732697"
+      }
+    },
+    "SankhyaEkStrategy": {
+      "entry_threshold": 0.03621666473048654,
+      "exit_threshold": 0.014044778588937889,
+      "stop_loss": 0.037281542897735054,
+      "position_size": 0.35017218422784324,
+      "optimization_score": 0.8904421415581061,
+      "regime_optimized_for": "high_volatility",
+      "adjustment_metadata": {
+        "position_multiplier": 1.25,
+        "risk_multiplier": 0.8,
+        "volatility_adjustment": 1.0,
+        "sentiment_adjustment": 1.0,
+        "adjusted_at": "2025-08-12T17:02:17.732701"
+      }
+    },
+    "TestStrategy": {
+      "entry_threshold": 0.04065863384388044,
+      "exit_threshold": 0.016182881164690213,
+      "stop_loss": 0.03697829928935542,
+      "position_size": 0.3455222219344184,
+      "optimization_score": 0.720898277062785,
+      "regime_optimized_for": "high_volatility",
+      "adjustment_metadata": {
+        "position_multiplier": 1.25,
+        "risk_multiplier": 0.8,
+        "volatility_adjustment": 1.0,
+        "sentiment_adjustment": 1.0,
+        "adjusted_at": "2025-08-12T17:02:17.732704"
+      }
+    }
+  },
+  "trading_plan": {
+    "market_outlook": "Market outlook: POSITIVE",
+    "strategy_allocation": {
+      "equal_weight": true
+    },
+    "risk_limits": {
+      "max_risk_per_trade": 0.02
+    },
+    "key_levels": {
+      "nifty_support": 19800,
+      "nifty_resistance": 20200,
+      "bank_nifty_support": 45000,
+      "bank_nifty_resistance": 46500
+    },
+    "watch_list": [
+      "RELIANCE",
+      "TCS",
+      "INFY"
+    ],
+    "exit_plan": {
+      "eod_exit": true
+    },
+    "contingency_plans": {
+      "high_volatility_plan": "Reduce positions"
+    }
+  },
+  "trading_ready": true,
+  "confidence_score": 1.0
+}

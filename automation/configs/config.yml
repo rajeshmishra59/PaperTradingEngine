@@ -1,4 +1,4 @@
-broker: angelone
+broker: zerodha
 zerodha:
   api_key: ${ZERODHA_API_KEY}
   api_secret: ${ZERODHA_API_SECRET}
@@ -19,6 +19,24 @@ execution:
     aggressive_tsl_start_time: '15:00'
     final_exit_time: '15:20'
     eod_aggressive_tsl_pct: 0.001
+  # NEW: Trading limits to prevent overtrading
+  trading_limits:
+    max_trades_per_day: 10
+    max_position_size: 2500
+    max_symbols_per_day: 8
+    min_gap_between_trades_minutes: 15
+    daily_loss_limit: 500
+    max_open_positions: 5
+  # NEW: Position sizing rules
+  position_sizing:
+    base_position_size: 1500
+    max_position_percentage: 2.5
+    reduce_size_after_loss: true
+  # NEW: Symbol rotation to avoid overtrading same stocks
+  symbol_rotation:
+    daily_symbol_limit: 8
+    cooldown_period_hours: 24
+    avoid_previous_day_losers: true
 symbol_lists:
   nifty_50:
   - RELIANCE

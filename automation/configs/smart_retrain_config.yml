@@ -1,0 +1,40 @@
+# SMART RETRAINING CONFIG - Realistic Daily Automation
+# Daily morning mein sirf top performers optimize karenge
+
+smart_retraining:
+  # Daily rotation - har din kuch strategies
+  daily_rotation:
+    enabled: true
+    strategies_per_day: 1  # Sirf 1 strategy per day optimize
+    
+  # Top performing symbols only
+  priority_symbols:
+    nifty_top_10:
+      - RELIANCE
+      - TCS  
+      - INFY
+      - HDFCBANK
+      - ICICIBANK
+      - HINDUNILVR
+      - SBIN
+      - ITC
+      - BHARTIARTL
+      - KOTAKBANK
+      
+  # Weekly schedule
+  weekly_schedule:
+    monday: "AlphaOneStrategy"
+    tuesday: "ApexStrategy" 
+    wednesday: "NumeroUnoStrategy"
+    thursday: "SankhyaEkStrategy"
+    friday: "TestStrategy"
+    
+  # Quick optimization settings
+  fast_optimization:
+    max_param_combinations: 50  # Instead of 2000+
+    reduced_backtest_period: 1  # Only 1 month data
+    parallel_processing: true
+    
+# REALISTIC TIMING:
+# 1 strategy × 10 symbols × 50 param combinations = 500 backtests
+# 500 backtests ÷ 85 per second = 6 seconds total! ✅

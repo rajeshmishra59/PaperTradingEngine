@@ -1,0 +1,110 @@
+{
+  "timestamp": "2025-08-12T17:13:26.936258",
+  "current_issues_identified": {
+    "overtrading": "54 trades/day vs recommended 10-15",
+    "high_charges": "\u20b92672 in 2 days",
+    "large_positions": "\u20b910,000+ positions",
+    "symbol_concentration": "16 symbols traded heavily"
+  },
+  "optimized_config": {
+    "trading_limits": {
+      "max_trades_per_day": 10,
+      "max_position_size": 2500,
+      "max_symbols_per_day": 8,
+      "min_gap_between_trades": 15,
+      "daily_loss_limit": 500,
+      "weekly_loss_limit": 1500
+    },
+    "position_sizing": {
+      "base_position_size": 1500,
+      "max_position_percentage": 2.5,
+      "reduce_size_after_loss": true,
+      "increase_size_after_wins": false
+    },
+    "risk_management": {
+      "stop_loss_percentage": 1.5,
+      "take_profit_percentage": 2.0,
+      "max_open_positions": 5,
+      "avoid_news_hours": true,
+      "avoid_volatile_symbols": true
+    },
+    "symbol_rotation": {
+      "daily_symbol_limit": 8,
+      "weekly_rotation": true,
+      "avoid_previous_day_losers": true,
+      "cooldown_period_hours": 24
+    },
+    "timing_optimization": {
+      "preferred_hours": [
+        "09:30-10:30",
+        "14:30-15:00"
+      ],
+      "avoid_hours": [
+        "12:00-13:00"
+      ],
+      "pre_market_analysis": true,
+      "market_sentiment_check": true
+    }
+  },
+  "implementation_plan": {
+    "phase_1_immediate": {
+      "timeline": "Today",
+      "actions": [
+        "\ud83d\uded1 Stop all trading for today",
+        "\ud83d\udcca Review and close losing open positions",
+        "\u2699\ufe0f Update config.yml with new limits",
+        "\ud83d\udd27 Implement position size limits in strategies",
+        "\ud83d\udcdd Add daily trade counter"
+      ]
+    },
+    "phase_2_tomorrow": {
+      "timeline": "Tomorrow morning",
+      "actions": [
+        "\ud83c\udf05 Run pre-market analysis",
+        "\ud83c\udfaf Select max 8 symbols for the day",
+        "\ud83d\udcd0 Set position size to \u20b91500-2500 range",
+        "\u23f0 Trade only during optimal hours",
+        "\ud83d\udcca Monitor daily P&L closely"
+      ]
+    },
+    "phase_3_weekly": {
+      "timeline": "This week",
+      "actions": [
+        "\ud83d\udd04 Implement symbol rotation",
+        "\ud83d\udcc8 Track performance daily",
+        "\ud83c\udfaf Optimize entry conditions",
+        "\ud83d\udee1\ufe0f Fine-tune stop loss levels",
+        "\ud83d\udcca Weekly performance review"
+      ]
+    }
+  },
+  "monitoring_system": {
+    "daily_metrics": [
+      "total_trades",
+      "total_charges",
+      "largest_position",
+      "symbols_traded",
+      "realized_pnl",
+      "stop_loss_count"
+    ],
+    "alerts": {
+      "max_trades_exceeded": "\ud83d\udea8 Daily trade limit exceeded",
+      "large_position_warning": "\u26a0\ufe0f Position size too large",
+      "daily_loss_limit": "\ud83d\uded1 Daily loss limit reached",
+      "overtrading_symbol": "\ud83d\udd04 Symbol traded too frequently"
+    },
+    "weekly_review": [
+      "total_pnl_vs_charges",
+      "win_rate_analysis",
+      "best_performing_symbols",
+      "worst_performing_symbols",
+      "strategy_efficiency"
+    ]
+  },
+  "expected_results": {
+    "daily_charge_reduction": "\u20b91300+ savings",
+    "risk_reduction": "70%+ lower exposure",
+    "improved_consistency": "More predictable returns",
+    "better_win_rate": "Maintain 90%+ with lower costs"
+  }
+}

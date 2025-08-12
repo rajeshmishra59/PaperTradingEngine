@@ -1,0 +1,9 @@
+{
+  "initial_capital": 100000.0,
+  "current_value": 98310.1540570257,
+  "unrealized_pnl": -1689.8459429742943,
+  "loss_percentage": 1.6898459429742945,
+  "charges_paid": 2672.2759429743,
+  "open_positions": 6,
+  "stop_loss_exits": 5
+}

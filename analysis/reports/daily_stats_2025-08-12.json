@@ -1,0 +1,15 @@
+{
+  "total_trades": 61,
+  "symbols_traded": 29,
+  "largest_position": 8358.0,
+  "total_volume": 211130.72999999995,
+  "estimated_charges": 211.13072999999994,
+  "last_trade_time": "2025-08-12T15:20:17.749304+05:30",
+  "date": "2025-08-12",
+  "alerts": [
+    "\ud83d\udea8 TRADE LIMIT EXCEEDED: 61/10",
+    "\ud83d\udea8 POSITION SIZE EXCEEDED: \u20b98,358",
+    "\u26a0\ufe0f TOO MANY SYMBOLS: 29/8",
+    "\ud83d\udcb8 HIGH CHARGES: \u20b9211"
+  ]
+}

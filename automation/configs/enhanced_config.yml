@@ -1,0 +1,212 @@
+adaptive_trading:
+  adaptive_indicators:
+    dynamic_periods: true
+    regime_based_parameters: true
+    volatility_adjustment: true
+  enabled: true
+  multi_timeframe:
+    confirmation_timeframe: 15m
+    enabled: true
+    higher_timeframe: 1h
+    primary_timeframe: 5m
+  regime_detection:
+    confidence_threshold: 0.6
+    lookback_period: 50
+    method: hybrid
+    regime_update_frequency: 5
+  risk_management:
+    adaptive_position_sizing: true
+    dynamic_risk_reward: true
+    max_risk_per_trade: 0.02
+    regime_based_stops: true
+    volatility_scaling: true
+angelone:
+  api_key: ${ANGELONE_API_KEY}
+  client_code: ${ANGELONE_CLIENT_CODE}
+  password: ${ANGELONE_PASSWORD}
+  refresh_token: ${ANGELONE_REFRESH_TOKEN}
+  totp_secret: ${ANGELONE_TOTP_SECRET}
+broker: zerodha
+execution:
+  main_loop_sleep_seconds: 30
+  required_initial_candles: 100
+  risk_management:
+    aggressive_tsl_start_time: '15:00'
+    eod_aggressive_tsl_pct: 0.001
+    final_exit_time: '15:20'
+ml_settings:
+  enabled: false
+  ensemble_method: true
+  feature_engineering: true
+  models:
+  - kmeans
+  - hmm
+  retrain_frequency: weekly
+regime_strategies:
+  high_volatility:
+    indicators:
+    - atr
+    - volume
+    - support_resistance
+    position_size_multiplier: 0.6
+    primary: breakout_scalping
+    risk_multiplier: 1.5
+  low_volatility:
+    indicators:
+    - bollinger_squeeze
+    - atr
+    - volume
+    position_size_multiplier: 1.0
+    primary: narrow_range_breakout
+    risk_multiplier: 0.8
+  range_bound:
+    indicators:
+    - rsi
+    - bollinger_bands
+    - stochastic
+    position_size_multiplier: 1.2
+    primary: mean_reversion
+    risk_multiplier: 0.7
+  trending_bearish:
+    indicators:
+    - ma_crossover
+    - macd
+    - adx
+    position_size_multiplier: 0.8
+    primary: trend_following
+    risk_multiplier: 1.0
+  trending_bullish:
+    indicators:
+    - ma_crossover
+    - macd
+    - adx
+    position_size_multiplier: 1.0
+    primary: trend_following
+    risk_multiplier: 1.0
+strategy_config:
+  AlphaOneStrategy:
+    capital: 100000
+    symbols: nifty_50
+    timeframe: 15
+  ApexStrategy:
+    capital: 100000
+    symbols: nifty_50
+    timeframe: 5
+  NumeroUnoStrategy:
+    capital: 100000
+    symbols: nifty_50
+    timeframe: 5
+  SankhyaEkStrategy:
+    capital: 100000
+    symbols: nifty_50
+    timeframe: 5
+  TestStrategy:
+    capital: 100000
+    symbols: nifty_50
+    timeframe: 1
+symbol_lists:
+  nifty_50:
+  - RELIANCE
+  - TCS
+  - INFY
+  - HDFCBANK
+  - ICICIBANK
+  - HINDUNILVR
+  - SBIN
+  - ITC
+  - BHARTIARTL
+  - KOTAKBANK
+  - LT
+  - ASIANPAINT
+  - HCLTECH
+  - BAJFINANCE
+  - MARUTI
+  - AXISBANK
+  - ULTRACEMCO
+  - NESTLEIND
+  - SUNPHARMA
+  - TITAN
+  - WIPRO
+  - TECHM
+  - POWERGRID
+  - COALINDIA
+  - NTPC
+  - GRASIM
+  - TATAMOTORS
+  - JSWSTEEL
+  - ADANIENT
+  - ADANIPORTS
+  - DIVISLAB
+  - ONGC
+  - HINDALCO
+  - SBILIFE
+  - BAJAJFINSV
+  - BRITANNIA
+  - HEROMOTOCO
+  - CIPLA
+  - EICHERMOT
+  - BPCL
+  - UPL
+  - INDUSINDBK
+  - APOLLOHOSP
+  - HDFCLIFE
+  - BAJAJ-AUTO
+  - TATASTEEL
+  - SHREECEM
+  - DRREDDY
+  - M&M
+  - IOC
+  nifty_next_50:
+  - AMBUJACEM
+  - AUROPHARMA
+  - BANKBARODA
+  - BERGEPAINT
+  - CANBK
+  - CHOLAFIN
+  - DABUR
+  - DLF
+  - GAIL
+  - GODREJCP
+  - ICICIGI
+  - ICICIPRULI
+  - IDFCFIRSTB
+  - IGL
+  - INDIGO
+  - MUTHOOTFIN
+  - NAUKRI
+  - PIDILITIND
+  - PNB
+  - RECLTD
+  - SAIL
+  - SRF
+  - TORNTPHARM
+  - TVSMOTOR
+  - UBL
+  - VEDL
+  - VOLTAS
+  - HAVELLS
+  - PEL
+  - PAGEIND
+  - COLPAL
+  - GLAND
+  - MPHASIS
+  - PETRONET
+  - HINDPETRO
+  - TRENT
+  - BEL
+  - CUMMINSIND
+  - ABBOTINDIA
+  - SBICARD
+  - INDUSTOWER
+  - BIOCON
+  - YESBANK
+  - BOSCHLTD
+  - CONCOR
+  - NMDC
+trading_session:
+  end_time: '15:35'
+  start_time: 09:15
+zerodha:
+  access_token: ${ZERODHA_ACCESS_TOKEN}
+  api_key: ${ZERODHA_API_KEY}
+  api_secret: ${ZERODHA_API_SECRET}

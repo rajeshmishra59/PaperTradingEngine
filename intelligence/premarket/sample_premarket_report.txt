@@ -1,0 +1,40 @@
+
+🌅 PRE-MARKET INTELLIGENCE REPORT
+Date: 2025-08-12
+Time: 17:02:17
+
+📰 NEWS SENTIMENT ANALYSIS
+├─ Overall Sentiment: POSITIVE
+├─ Sentiment Score: 0.105
+├─ Total News Items: 10
+└─ Key Topics: inflation, market, earnings, ipo
+
+🌍 GLOBAL MARKET CONDITIONS
+├─ Global Bias: POSITIVE
+├─ Average Change: 0.79%
+├─ Volatility: 0.73%
+└─ Risk-On Sentiment: Yes
+
+⚠️  RISK ASSESSMENT
+├─ Risk Level: LOW
+├─ Risk Score: 0/100
+├─ Risk Factors: 0 identified
+└─ Recommendation: Normal trading with standard risk management
+
+💱 CURRENCY ANALYSIS
+├─ USD-INR Rate: ₹87.56
+├─ USD Change: 0.08%
+└─ Equity Impact: NEUTRAL
+
+📈 TECHNICAL SIGNALS
+├─ Market Bias: BEARISH
+└─ Bullish Ratio: 0.0%
+
+💡 TRADING RECOMMENDATIONS
+├─ Position Sizing: INCREASE
+├─ Strategy Preference: TREND_FOLLOWING
+└─ Risk Management: STANDARD
+
+🎯 SPECIFIC ACTIONS:
+   • Consider increasing position sizes by 20%
+   • Favor trend-following strategies

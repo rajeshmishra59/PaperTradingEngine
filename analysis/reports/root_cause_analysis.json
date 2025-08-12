@@ -1,0 +1,13 @@
+{
+  "overtrading": true,
+  "high_stop_loss_rate": false,
+  "large_positions": "True",
+  "low_win_rate": false,
+  "recommendations": [
+    "1. \ud83d\uded1 REDUCE TRADING FREQUENCY: 54 trades/day is excessive",
+    "3. \ud83d\udcb0 REDUCE POSITION SIZES: Large positions increase risk",
+    "4. \ud83c\udfaf DIVERSIFY BETTER: Don't over-trade same symbols",
+    "5. \u23f0 IMPLEMENT PRE-MARKET ANALYSIS: Filter trades based on market conditions",
+    "6. \ud83d\udd04 WEEKLY ROTATION: Don't trade same symbols every day"
+  ]
+}

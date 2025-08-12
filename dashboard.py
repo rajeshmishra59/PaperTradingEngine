@@ -141,63 +141,67 @@ metrics_placeholder = st.empty()
 main_data_placeholder = st.empty()
 logs_placeholder = st.empty()
 
-# --- Main Loop for Live Updates ---
-while True:
-    # Fetch all data
-    state, trade_log, open_positions_raw = get_dashboard_data()
-    live_logs = read_live_logs()
-    
-    # --- KPIs Section ---
-    initial_capital_total = sum(data['initial_capital'] for data in state.values())
-    trading_capital_total = sum(data['trading_capital'] for data in state.values())
-    banked_profit_total = sum(data['banked_profit'] for data in state.values())
-    charges_total = sum(data['total_charges'] for data in state.values())
-    
-    live_pnl = calculate_live_pnl(open_positions_raw)
-    
-    net_pnl = banked_profit_total
-    pnl_percent = (net_pnl / initial_capital_total * 100) if initial_capital_total > 0 else 0
+# --- Data Fetching ---
+# Fetch all data
+state, trade_log, open_positions_raw = get_dashboard_data()
+live_logs = read_live_logs()
 
-    with metrics_placeholder.container(border=True):
-        pnl_cols = st.columns(5)
-        pnl_cols[0].metric(label="💰 Total Trading Capital", value=f"₹{trading_capital_total:,.2f}")
-        pnl_cols[1].metric(label="💸 Live P&L (Unrealized)", value=f"₹{live_pnl:,.2f}", delta=f"{live_pnl:,.2f}")
-        pnl_cols[2].metric(label="🏦 Banked Profit (Realized P&L)", value=f"₹{net_pnl:,.2f}", delta=f"{pnl_percent:.2f}%")
-        pnl_cols[3].metric(label="🧾 Total Charges Paid", value=f"₹{charges_total:,.2f}")
-        pnl_cols[4].metric(label="📈 Initial Capital", value=f"₹{initial_capital_total:,.2f}")
+# --- KPIs Section ---
+initial_capital_total = sum(data['initial_capital'] for data in state.values())
+trading_capital_total = sum(data['trading_capital'] for data in state.values())
+banked_profit_total = sum(data['banked_profit'] for data in state.values())
+charges_total = sum(data['total_charges'] for data in state.values())
 
-    # --- Main Data Section ---
-    with main_data_placeholder.container():
-        col1_data, col2_data = st.columns([2, 3]) 
-        
-        with col1_data:
-            # --- Interactive Equity Curve ---
-            with st.container(border=True):
-                st.markdown("### 💹 Capital Curve")
-                if not trade_log.empty and initial_capital_total > 0:
-                    exit_trades = trade_log[trade_log['action'].str.contains('EXIT', na=False)].copy()
-                    if not exit_trades.empty:
-                        exit_trades['PnL'] = exit_trades['details'].apply(parse_pnl)
-                        exit_trades['timestamp'] = pd.to_datetime(exit_trades['timestamp'])
-                        exit_trades = exit_trades.sort_values(by='timestamp')
-                        exit_trades['Equity'] = initial_capital_total + exit_trades['PnL'].cumsum()
-                        
-                        fig = go.Figure()
-                        fig.add_trace(go.Scatter(x=exit_trades['timestamp'], y=exit_trades['Equity'], mode='lines+markers', name='Portfolio Value'))
-                        fig.update_layout(title_text='Portfolio Growth Over Time', template='plotly_dark', height=350)
-                        # --- FIX: Removed the static key to prevent the crash ---
-                        st.plotly_chart(fig, use_container_width=True)
-                    else:
-                        st.info("Waiting for the first closed trade to plot the curve.")
+live_pnl = calculate_live_pnl(open_positions_raw)
+
+net_pnl = banked_profit_total
+pnl_percent = (net_pnl / initial_capital_total * 100) if initial_capital_total > 0 else 0
+
+with metrics_placeholder.container(border=True):
+    pnl_cols = st.columns(5)
+    pnl_cols[0].metric(label="💰 Total Trading Capital", value=f"₹{trading_capital_total:,.2f}")
+    pnl_cols[1].metric(label="💸 Live P&L (Unrealized)", value=f"₹{live_pnl:,.2f}", delta=f"{live_pnl:,.2f}")
+    pnl_cols[2].metric(label="🏦 Banked Profit (Realized P&L)", value=f"₹{net_pnl:,.2f}", delta=f"{pnl_percent:.2f}%")
+    pnl_cols[3].metric(label="🧾 Total Charges Paid", value=f"₹{charges_total:,.2f}")
+    pnl_cols[4].metric(label="📈 Initial Capital", value=f"₹{initial_capital_total:,.2f}")
+
+# --- Main Data Section ---
+with main_data_placeholder.container():
+    col1_data, col2_data = st.columns([2, 3]) 
+    
+    with col1_data:
+        # --- Interactive Equity Curve ---
+        with st.container(border=True):
+            st.markdown("### 💹 Capital Curve")
+            if not trade_log.empty and initial_capital_total > 0:
+                exit_trades = trade_log[trade_log['action'].str.contains('EXIT', na=False)].copy()
+                if not exit_trades.empty:
+                    exit_trades['PnL'] = exit_trades['details'].apply(parse_pnl)
+                    exit_trades['timestamp'] = pd.to_datetime(exit_trades['timestamp'])
+                    exit_trades = exit_trades.sort_values(by='timestamp')
+                    exit_trades['Equity'] = initial_capital_total + exit_trades['PnL'].cumsum()
+                    
+                    fig = go.Figure()
+                    fig.add_trace(go.Scatter(x=exit_trades['timestamp'], y=exit_trades['Equity'], mode='lines+markers', name='Portfolio Value'))
+                    fig.update_layout(title_text='Portfolio Growth Over Time', template='plotly_dark', height=350)
+                    # Remove key to let Streamlit auto-generate unique IDs
+                    st.plotly_chart(fig, use_container_width=True)
                 else:
-                    st.info("No trade data available to plot the curve.")
-            
-            # --- Live Open Positions ---
-            with st.container(border=True):
+                    st.info("Waiting for the first closed trade to plot the curve.")
+            else:
+                st.info("No trade data available to plot the curve.")
+        
+        # --- Live Open Positions ---
+        with st.container(border=True):
                 st.markdown("### 🟢 Live Open Positions")
                 open_positions_df = format_open_positions(open_positions_raw)
                 if not open_positions_df.empty:
-                    st.dataframe(open_positions_df.style.format({'Entry Price': '₹{:.2f}', 'SL': '₹{:.2f}', 'Target': '₹{:.2f}'}), use_container_width=True)
+                    # Format currency columns manually to avoid jinja2 dependency issue
+                    df_display = open_positions_df.copy()
+                    for col in ['Entry Price', 'SL', 'Target']:
+                        if col in df_display.columns:
+                            df_display[col] = df_display[col].apply(lambda x: f'₹{x:.2f}' if pd.notnull(x) else '')
+                    st.dataframe(df_display, use_container_width=True)
                 else:
                     st.info("No open positions.")
 
@@ -211,12 +215,22 @@ while True:
                 if not strategy_metrics.empty:
                     summary_df = summary_df.join(strategy_metrics)
                 
-                st.dataframe(summary_df.style.format({
-                    'initial_capital': '₹{:,.2f}', 'trading_capital': '₹{:,.2f}',
-                    'banked_profit': '₹{:,.2f}', 'total_charges': '₹{:,.2f}',
-                    'win_rate_pct': '{:.2f}%', 'total_pnl': '₹{:,.2f}',
-                    'avg_pnl_per_trade': '₹{:,.2f}'
-                }), use_container_width=True)
+                # Format columns manually to avoid jinja2 dependency issue
+                df_display = summary_df.copy()
+                format_mapping = {
+                    'initial_capital': lambda x: f'₹{x:,.2f}' if pd.notnull(x) else '',
+                    'trading_capital': lambda x: f'₹{x:,.2f}' if pd.notnull(x) else '',
+                    'banked_profit': lambda x: f'₹{x:,.2f}' if pd.notnull(x) else '',
+                    'total_charges': lambda x: f'₹{x:,.2f}' if pd.notnull(x) else '',
+                    'win_rate_pct': lambda x: f'{x:.2f}%' if pd.notnull(x) else '',
+                    'total_pnl': lambda x: f'₹{x:,.2f}' if pd.notnull(x) else '',
+                    'avg_pnl_per_trade': lambda x: f'₹{x:,.2f}' if pd.notnull(x) else ''
+                }
+                for col, formatter in format_mapping.items():
+                    if col in df_display.columns:
+                        df_display[col] = df_display[col].apply(formatter)
+                        
+                st.dataframe(df_display, use_container_width=True)
 
             # --- Full Trade History ---
             with st.container(border=True):
@@ -227,10 +241,14 @@ while True:
                 else:
                     st.info("No trades logged yet.")
     
-    # --- Live System Logs ---
-    with logs_placeholder.container(border=True):
-        st.markdown("### 💻 Live System Logs")
-        st.code(live_logs, language='log', line_numbers=True)
-    
-    # --- Refresh Interval ---
-    time.sleep(10)
+# --- Live System Logs ---
+with logs_placeholder.container(border=True):
+    st.markdown("### 💻 Live System Logs")
+    st.code(live_logs, language='log', line_numbers=True)
+
+# Add a refresh button for manual updates
+if st.button("🔄 Refresh Data", type="primary"):
+    st.rerun()
+
+# Show last refresh time
+st.caption(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
