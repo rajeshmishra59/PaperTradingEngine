@@ -12,14 +12,30 @@ import inspect
 import pytz
 import sys
 import json
+from dotenv import load_dotenv
+
+# Import broker interfaces at the top level
+from broker_interface import get_broker_interface, AngelOneInterface, ZerodhaInterface
+
+# Load .env
+load_dotenv()
+
+def to_broker_interval(broker, minutes: int):
+    """Map engine timeframe minutes to the broker's interval string."""
+    # Zerodha: '15minute', 'day' etc.
+    if isinstance(broker, ZerodhaInterface):
+        return f"{minutes}minute" if minutes < 60 else "day"
+    # AngelOne: enum names
+    if isinstance(broker, AngelOneInterface):
+        return AngelOneInterface.INTERVAL_MAP.get(minutes, "FIFTEEN_MINUTE")
+    return "FIFTEEN_MINUTE"
 
 # --- Updated Import ---
 from config_loader import CONFIG
-from broker_interface import ZerodhaInterface
 from database_manager import DatabaseManager
-from portfolio_manager import PortfolioManager
 from trade_logger import TradeLogger
 from strategies.base_strategy import BaseStrategy
+from portfolio_manager import PortfolioManager
 
 # --- 1. SETUP ---
 HEARTBEAT_FILE = "heartbeat.txt"
@@ -66,8 +82,10 @@ def load_strategies_and_data(broker, live_params):
     for symbol in all_symbols_needed:
         to_date = datetime.now(kolkata_tz)
         from_date = to_date - timedelta(days=10) 
-        df = broker.get_historical_data(symbol, 'minute', from_date, to_date)
-        if not df.empty:
+        df = broker.get_historical_data(symbol, to_broker_interval(broker, 1), from_date, to_date)
+        if df is not None and not df.empty:
+            df = df.sort_values("datetime")
+            df.set_index("datetime", inplace=True)
             all_data_1min[symbol] = df
 
     strategy_dir = "strategies"
@@ -141,28 +159,33 @@ def run_paper_trader():
     logger.info("--- Paper Trading System Initializing ---")
     db_manager = DatabaseManager()
     try:
-        api_key = CONFIG['zerodha']['api_key']
-        api_secret = CONFIG['zerodha']['api_secret']
-        access_token = CONFIG['zerodha']['access_token']
-
-        if not all([api_key, api_secret, access_token]):
-            logger.critical("FATAL ERROR: API Key/Secret/Access Token not found. Exiting.")
-            sys.exit(1)
-
-        broker = ZerodhaInterface(api_key=api_key, api_secret=api_secret, access_token=access_token)
+        # First create the broker interface dynamically
+        # 'broker' value config.yml se aayega, jise config_loader load karta hai
+        broker = get_broker_interface(CONFIG)
         
-        # --- YAHAN BADLAV KIYA GAYA HAI: Live parameters ko pehle load karein ---
+        # Then check credentials only if it's a specific broker type
+        if isinstance(broker, ZerodhaInterface):
+            z = CONFIG.get('zerodha', {})
+            if not all([z.get('api_key'), z.get('api_secret'), z.get('access_token')]):
+                logger.critical("FATAL: Zerodha credentials missing (api_key/api_secret/access_token).")
+                sys.exit(1)
+        elif isinstance(broker, AngelOneInterface):
+            a = CONFIG.get('angelone', {})
+            if not all([a.get('api_key'), a.get('client_code')]):
+                logger.critical("FATAL: AngelOne credentials missing (api_key/client_code).")
+                sys.exit(1)
+
         live_params = load_live_parameters()
         strategy_instances, all_data_1min, strategy_capital = load_strategies_and_data(broker, live_params)
-        # --- END OF BADLAV ---
         
         if not strategy_instances:
             logger.error("No strategies loaded. Exiting."); return
             
         portfolio = PortfolioManager(db_manager=db_manager, strategy_capital=strategy_capital)
         trade_logger = TradeLogger(db_manager=db_manager)
-        kolkata_tz = pytz.timezone('Asia/Kolkata')
         
+        kolkata_tz = pytz.timezone('Asia/Kolkata')
+
         trading_start_time = CONFIG['trading_session']['start_time_obj']
         trading_end_time = CONFIG['trading_session']['end_time_obj']
         eod_tsl_start_time = CONFIG['execution']['risk_management']['aggressive_tsl_start_time_obj']
@@ -189,11 +212,18 @@ def run_paper_trader():
                         symbol_df = all_data_1min.get(symbol)
                         if symbol_df is not None and not symbol_df.empty:
                             latest_timestamp = symbol_df.index[-1]
-                            from_date_live = latest_timestamp.to_pydatetime().astimezone(kolkata_tz) + timedelta(minutes=1)
+                            # When calculating the next fetch time:
+                            last_dt = all_data_1min[symbol].index[-1].to_pydatetime()
+                            if last_dt.tzinfo is None:
+                                last_dt = pytz.timezone("Asia/Kolkata").localize(last_dt)
+                            from_date_live = last_dt + timedelta(minutes=1)
                             if from_date_live < now_aware:
-                                new_data = broker.get_historical_data(symbol, 'minute', from_date=from_date_live, to_date=now_aware)
+                                new_data = broker.get_historical_data(symbol, to_broker_interval(broker, 1), from_date=from_date_live, to_date=now_aware)
                                 if not new_data.empty:
-                                    all_data_1min[symbol] = pd.concat([all_data_1min[symbol], new_data]).drop_duplicates()
+                                    new_data = new_data.sort_values("datetime").set_index("datetime")
+                                    combined = pd.concat([all_data_1min[symbol], new_data]).sort_index()
+                                    combined = combined[~combined.index.duplicated(keep="last")]
+                                    all_data_1min[symbol] = combined
                     
                     if eod_tsl_start_time <= now_aware.time() < final_exit_time:
                         handle_eod_aggressive_tsl(portfolio, all_data_1min)

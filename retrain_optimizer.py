@@ -34,6 +34,11 @@ try:
     # Ensure quantbacktest directory itself is also in the path
     if quantbacktest_path not in sys.path:
         sys.path.insert(0, quantbacktest_path)
+        
+    # Print debug information about the paths
+    print(f"Python paths: {sys.path}")
+    print(f"Looking for quantbacktest in: {quantbacktest_path}")
+    print(f"Files in quantbacktest directory: {os.listdir(quantbacktest_path) if os.path.exists(quantbacktest_path) else 'Directory not found'}")
 
 except FileNotFoundError:
     print("FATAL ERROR: 'quantbacktest' directory nahi mili.")
@@ -43,7 +48,7 @@ except FileNotFoundError:
 
 
 # Ab yeh imports bina kisi error ke kaam karenge
-from quantbacktest.loaders.data_loader import DataLoader
+from quantbacktest.data.data_loader import DataLoader
 from quantbacktest.utils.strategy_loader import load_strategy
 from quantbacktest.utils.metrics import calculate_performance_metrics
 from quantbacktest.engine.upgraded_portfolio import UpgradedPortfolio
@@ -53,7 +58,7 @@ from config_loader import CONFIG as p_config # Paper trading config ko import ka
 
 def generate_param_combinations(strategy_name):
     """Quant config se parameter combinations banata hai."""
-    param_config = q_config.STRATEGY_OPTIMIZATION_CONFIG.get(strategy_name.lower(), {})
+    param_config = q_config.STRATEGY_OPTIMIZATION_CONFIG.get(strategy_name, {}) # 'strategy_name.lower()' ko 'strategy_name' se badle
     if not param_config: return [{}]
     keys, values = zip(*param_config.items())
     return [dict(zip(keys, v)) for v in itertools.product(*values)]
@@ -65,7 +70,7 @@ def run_single_backtest(task_info):
         
         if data_df.empty: return None
 
-        strategy_obj = load_strategy(strategy_name.lower())
+        strategy_obj = load_strategy(strategy_name.lower()) # 'strategy_name.lower()' ko 'strategy_name' se badle
         if not strategy_obj: return None
 
         tf_value = int(''.join(filter(str.isdigit, timeframe)) or 1)
@@ -75,6 +80,7 @@ def run_single_backtest(task_info):
         signals_df = strategy_instance.run()
         if signals_df.empty: return None
 
+        # Yahan prices_1min_df ka istemal
         prices_1min_df = data_df.join(signals_df[['entries', 'exits', 'stop_loss', 'target']])
         prices_1min_df['entries'] = prices_1min_df['entries'].astype('boolean').fillna(False)
         prices_1min_df['exits'] = prices_1min_df['exits'].astype('boolean').fillna(False)
@@ -149,9 +155,15 @@ def find_best_parameters_for_live():
             for i, performance in enumerate(results):
                 if performance:
                     metric_value = performance.get(q_config.WALK_FORWARD_CONFIG['optimization_metric'], -np.inf)
-                    if metric_value > best_performance_metric:
-                        best_performance_metric = metric_value
-                        best_params = param_combos[i]
+                    # Ensure metric_value is numeric before comparison
+                    try:
+                        metric_value = float(metric_value)
+                        if metric_value > best_performance_metric:
+                            best_performance_metric = metric_value
+                            best_params = param_combos[i]
+                    except (ValueError, TypeError):
+                        # Skip this result if metric_value cannot be converted to float
+                        continue
 
             if best_params:
                 print(f"Found best parameters for {symbol}: {best_params} (Metric: {best_performance_metric:.2f})")

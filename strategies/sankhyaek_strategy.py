@@ -37,15 +37,27 @@ class SankhyaEkStrategy(BaseStrategy):
         resampled_df.ta.bbands(length=self.bb_length, std=self.bb_std, append=True)
         resampled_df.ta.rsi(length=self.rsi_period, append=True)
         
-        resampled_df.rename(columns={
-            f'BBL_{self.bb_length}_{self.bb_std:.1f}': 'bb_lower',
-            f'BBU_{self.bb_length}_{self.bb_std:.1f}': 'bb_upper',
-            f'RSI_{self.rsi_period}': 'rsi'
-        }, inplace=True, errors='ignore')
-
+        # Find the actual column names that contain our indicators
+        bb_lower_col = next((col for col in resampled_df.columns if f'BBL_{self.bb_length}_' in col), None)
+        bb_upper_col = next((col for col in resampled_df.columns if f'BBU_{self.bb_length}_' in col), None)
+        rsi_col = next((col for col in resampled_df.columns if f'RSI_{self.rsi_period}' in col), None)
+        
+        # Build a renaming dictionary with only the columns that exist
+        rename_dict = {}
+        if bb_lower_col: rename_dict[bb_lower_col] = 'bb_lower'
+        if bb_upper_col: rename_dict[bb_upper_col] = 'bb_upper'
+        if rsi_col: rename_dict[rsi_col] = 'rsi'
+        
+        # Only rename if we found matches
+        if rename_dict:
+            resampled_df.rename(columns=rename_dict, inplace=True)
+        
+        # Debug info if needed columns are missing
         if not all(col in resampled_df.columns for col in ['bb_lower', 'bb_upper', 'rsi']):
-             self.log("Indicator columns missing. Check pandas_ta names.", level='error')
-             return
+            self.log("Indicator columns missing after rename. Found columns: " + 
+                     ", ".join(sorted(c for c in resampled_df.columns if 'BB' in c or 'RSI' in c)), 
+                     level='error')
+            return
         self.df = resampled_df
 
     def generate_signals(self):
