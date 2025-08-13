@@ -1,6 +1,8 @@
 # Environment variables
 .env
 .env_*
+.venv/
+venv/
 
 # Ignore SSH private keys
 *.key
@@ -41,6 +43,8 @@ deprecated/
 development/
 docs/setup/
 trading_env/
+env/
+.virtualenv/
 
 # Strategy optimization files
 strategies/archived_strategies/
