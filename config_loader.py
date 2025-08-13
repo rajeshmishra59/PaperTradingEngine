@@ -13,6 +13,10 @@ def load_config(config_path="config.yml"):
     """
     Loads the YAML configuration file and resolves environment variables.
     """
+    # Check if file exists in current directory, otherwise check automation/configs/
+    if not os.path.exists(config_path):
+        config_path = "automation/configs/config.yml"
+    
     with open(config_path, 'r') as f:
         config_str = f.read()
 

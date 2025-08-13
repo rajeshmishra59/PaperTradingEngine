@@ -6,23 +6,27 @@ Integrates adaptive strategies with existing paper trading system
 
 import sys
 import os
+import numpy as np
+import pandas as pd
+import talib
+import yaml
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
 
 from strategies.base_strategy import BaseStrategy
 from adaptive_framework import RegimeDetector, MarketRegime
 from strategies.adaptive_alphaone_strategy import AdaptiveAlphaOneStrategy
-import pandas as pd
-import yaml
 
 class AdaptiveStrategyWrapper(BaseStrategy):
     """
     Wrapper to integrate adaptive strategies with existing system
     """
     
-    def __init__(self, config):
-        super().__init__(config)
-        self.adaptive_strategy = AdaptiveAlphaOneStrategy(config)
+    def __init__(self, df: pd.DataFrame, symbol: str = None, logger=None, 
+                 primary_timeframe: int = 5, **kwargs):
+        super().__init__(df, symbol=symbol, logger=logger, primary_timeframe=primary_timeframe)
+        self.name = "AdaptiveStrategyWrapper"
         self.regime_detector = RegimeDetector()
         
         # Load enhanced config if available
@@ -78,3 +82,50 @@ class AdaptiveStrategyWrapper(BaseStrategy):
         # Implement original strategy logic here
         # This is a placeholder - replace with actual logic
         return False
+    
+    def calculate_indicators(self):
+        """Required by BaseStrategy - resample and calculate indicators"""
+        if self.df_1min_raw.empty:
+            self.df = pd.DataFrame()
+            return
+            
+        # Resample to primary timeframe (data is already indexed properly)
+        tf_string = f'{self.primary_timeframe}T'
+        self.df = self.df_1min_raw.resample(tf_string).agg({
+            'open': 'first',
+            'high': 'max', 
+            'low': 'min',
+            'close': 'last',
+            'volume': 'sum'
+        }).dropna()
+        
+        if len(self.df) < 20:
+            return
+            
+        # Simple indicators
+        self.df['sma_20'] = talib.SMA(self.df['close'], timeperiod=20)
+        self.df['rsi'] = talib.RSI(self.df['close'], timeperiod=14)
+        
+    def generate_signals(self):
+        """Required by BaseStrategy - generate trading signals"""
+        if len(self.df) < 20:
+            return
+            
+        # Initialize columns
+        self.df['entry_signal'] = 'NONE'
+        self.df['stop_loss'] = np.nan
+        self.df['target'] = np.nan
+        
+        # Simple wrapper signals
+        last_idx = len(self.df) - 1
+        rsi = self.df['rsi'].iloc[last_idx]
+        close = self.df['close'].iloc[last_idx]
+        
+        if rsi < 35:
+            self.df.loc[last_idx, 'entry_signal'] = 'BUY'
+            self.df.loc[last_idx, 'stop_loss'] = close * 0.98
+            self.df.loc[last_idx, 'target'] = close * 1.03
+        elif rsi > 65:
+            self.df.loc[last_idx, 'entry_signal'] = 'SELL'
+            self.df.loc[last_idx, 'stop_loss'] = close * 1.02
+            self.df.loc[last_idx, 'target'] = close * 0.97
