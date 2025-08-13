@@ -1,0 +1,159 @@
+broker: zerodha
+zerodha:
+  api_key: ${ZERODHA_API_KEY}
+  api_secret: ${ZERODHA_API_SECRET}
+  access_token: ${ZERODHA_ACCESS_TOKEN}
+angelone:
+  api_key: ${ANGELONE_API_KEY}
+  client_code: ${ANGELONE_CLIENT_CODE}
+  password: ${ANGELONE_PASSWORD}
+  totp_secret: ${ANGELONE_TOTP_SECRET}
+  refresh_token: ${ANGELONE_REFRESH_TOKEN}
+trading_session:
+  start_time: 09:15
+  end_time: '15:35'
+execution:
+  main_loop_sleep_seconds: 60
+  required_initial_candles: 100
+  risk_management:
+    aggressive_tsl_start_time: '15:00'
+    final_exit_time: '15:20'
+    eod_aggressive_tsl_pct: 0.001
+  # NEW: Trading limits to prevent overtrading
+  trading_limits:
+    max_trades_per_day: 10
+    max_position_size: 2500
+    max_symbols_per_day: 8
+    min_gap_between_trades_minutes: 15
+    daily_loss_limit: 500
+    max_open_positions: 5
+  # NEW: Position sizing rules
+  position_sizing:
+    base_position_size: 1500
+    max_position_percentage: 2.5
+    reduce_size_after_loss: true
+  # NEW: Symbol rotation to avoid overtrading same stocks
+  symbol_rotation:
+    daily_symbol_limit: 8
+    cooldown_period_hours: 24
+    avoid_previous_day_losers: true
+symbol_lists:
+  nifty_50:
+  - RELIANCE
+  - TCS
+  - INFY
+  - HDFCBANK
+  - ICICIBANK
+  - HINDUNILVR
+  - SBIN
+  - ITC
+  - BHARTIARTL
+  - KOTAKBANK
+  - LT
+  - ASIANPAINT
+  - HCLTECH
+  - BAJFINANCE
+  - MARUTI
+  - AXISBANK
+  - ULTRACEMCO
+  - NESTLEIND
+  - SUNPHARMA
+  - TITAN
+  - WIPRO
+  - TECHM
+  - POWERGRID
+  - COALINDIA
+  - NTPC
+  - GRASIM
+  - TATAMOTORS
+  - JSWSTEEL
+  - ADANIENT
+  - ADANIPORTS
+  - DIVISLAB
+  - ONGC
+  - HINDALCO
+  - SBILIFE
+  - BAJAJFINSV
+  - BRITANNIA
+  - HEROMOTOCO
+  - CIPLA
+  - EICHERMOT
+  - BPCL
+  - UPL
+  - INDUSINDBK
+  - APOLLOHOSP
+  - HDFCLIFE
+  - BAJAJ-AUTO
+  - TATASTEEL
+  - SHREECEM
+  - DRREDDY
+  - M&M
+  - IOC
+  nifty_next_50:
+  - AMBUJACEM
+  - AUROPHARMA
+  - BANKBARODA
+  - BERGEPAINT
+  - CANBK
+  - CHOLAFIN
+  - DABUR
+  - DLF
+  - GAIL
+  - GODREJCP
+  - ICICIGI
+  - ICICIPRULI
+  - IDFCFIRSTB
+  - IGL
+  - INDIGO
+  - MUTHOOTFIN
+  - NAUKRI
+  - PIDILITIND
+  - PNB
+  - RECLTD
+  - SAIL
+  - SRF
+  - TORNTPHARM
+  - TVSMOTOR
+  - UBL
+  - VEDL
+  - VOLTAS
+  - HAVELLS
+  - PEL
+  - PAGEIND
+  - COLPAL
+  - GLAND
+  - MPHASIS
+  - PETRONET
+  - HINDPETRO
+  - TRENT
+  - BEL
+  - CUMMINSIND
+  - ABBOTINDIA
+  - SBICARD
+  - INDUSTOWER
+  - BIOCON
+  - YESBANK
+  - BOSCHLTD
+  - CONCOR
+  - NMDC
+strategy_config:
+  AdaptiveAlphaOneStrategy:
+    timeframe: 15
+    symbols: nifty_50
+    capital: 40000
+  AdaptiveStrategyWrapper:
+    timeframe: 5
+    symbols: nifty_50
+    capital: 30000
+  SankhyaEkStrategy:
+    timeframe: 5
+    symbols: nifty_50
+    capital: 30000
+  NumeroUnoStrategy:
+    timeframe: 5
+    symbols: nifty_50
+    capital: 25000
+  ApexStrategy:
+    timeframe: 5
+    symbols: nifty_50
+    capital: 25000
