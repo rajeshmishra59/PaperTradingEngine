@@ -1,21 +1,66 @@
 # Environment variables
 .env
+.env_*
+
 # Ignore SSH private keys
 *.key
 
 # Python cache
 __pycache__/
 *.pyc
+*.pyo
 
 # Generated data/state files
 instruments.csv
 portfolio_state.json
 control_signal.txt
 exit_command.txt
-trading_data.db  # <-- Add this line    
+trading_data.db
+*.db
 
-# Log files
+# Log files and optimization
 logs/
+*.log
+optimization/background/
+
+# Temporary status files
+heartbeat.txt
+system_status.json
+broker_status.txt
+*.txt
+*.json
 
 # IDE settings
 .vscode/
+.idea/
+
+# Backup and development directories
+archive/
+backup/
+deprecated/
+development/
+docs/setup/
+trading_env/
+
+# Strategy optimization files
+strategies/archived_strategies/
+strategies/*_optimized.py
+
+# Environment configs
+*.conf
+.venv/
+venv/
+trading_data.db
+
+# Environment and config
+.env
+.venv/
+*.conf
+
+# Temporary status files
+*.txt
+*.json
+
+# IDE
+.vscode/
+
